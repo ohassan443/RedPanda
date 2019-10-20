@@ -562,7 +562,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
     func testSpam() {
        var images = [String]()
         var expectations = [XCTestExpectation]()
-        for i in 0...4000 {
+        for i in 0...1000 {
             images.append("https://picsum.photos/id/\(i)/200/200")
             expectations.append(expectation(description: "\(i) not loaded"))
         }
