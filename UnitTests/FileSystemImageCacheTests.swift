@@ -56,7 +56,7 @@ class FileSystemImageCacheTests: XCTestCase {
         fileSystemCache.readFromFile(url: url, completion: {
             resultImage in
             XCTAssertNotNil(resultImage!)
-            XCTAssertEqual(resultImage!.pngData(), expectedImage.pngData())
+            XCTAssertEqual(resultImage!.jpegData(compressionQuality: 1), expectedImage.jpegData(compressionQuality: 1))
             expectationToFullfill.fulfill()
         })
     

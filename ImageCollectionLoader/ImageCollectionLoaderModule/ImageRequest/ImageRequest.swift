@@ -81,11 +81,14 @@ struct imageRequest : Hashable {
     static func == (lhs: imageRequest, rhs: imageRequest) -> Bool {
         return lhs.url == rhs.url && lhs.cellIndexPath == rhs.cellIndexPath && lhs.tag == rhs.tag
     }
+    static func compare(queryRequest:imageRequest,target:(url:String,cellIndexPath:IndexPath,tag:String)) -> Bool {
+        return queryRequest.url == target.url && queryRequest.cellIndexPath == target.cellIndexPath && queryRequest.tag == target.tag
+    }
     
     static func setContaints(set:Set<imageRequest>,url:String,cellIndexPath:IndexPath,tag:String) -> imageRequest? {
         let result = set.first(where: {
             element in
-            return element.url == url && element.cellIndexPath == cellIndexPath && element.tag == tag
+            return compare(queryRequest: element, target: (url,cellIndexPath,tag))
         })
         return result
     }

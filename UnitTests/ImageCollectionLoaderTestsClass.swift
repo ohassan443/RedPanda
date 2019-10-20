@@ -562,7 +562,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
     func testSpam() {
        var images = [String]()
         var expectations = [XCTestExpectation]()
-        for i in 0...10000 {
+        for i in 0...4000 {
             images.append("https://picsum.photos/id/\(i)/200/200")
             expectations.append(expectation(description: "\(i) not loaded"))
         }
@@ -581,7 +581,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
         
         
         for (index,url) in images.enumerated() {
-            DispatchQueue.global().async {
+          
                 let queryResult =  imageCollectionLoader.requestImage(requestDate: firstDate, url: url, indexPath: IndexPath(row: index, section: 0), tag: "i", successHandler: {
                     image,indexPath,date in
                     image
@@ -590,7 +590,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
                 
                 XCTAssert(queryResult == .processing)
             }
-        }
+        
        
         waitForExpectations(timeout: 100, handler: nil)
     }
