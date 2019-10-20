@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 
 class ImageLoaderTests: XCTestCase {
     
@@ -143,10 +143,10 @@ class ImageLoaderTests: XCTestCase {
      3. requestFromServer
      */
     func testLoadingFromRamCache() -> Void {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage =  testImage1
         let testUrl = "testUrl" // used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
         
-        
+
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
         
         let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
@@ -164,7 +164,7 @@ class ImageLoaderTests: XCTestCase {
         let ramCachedImage = imageLoader.queryRamCacheFor(url: testUrl)
        
         XCTAssertNotNil(ramCachedImage)
-        XCTAssertEqual(UIImagePNGRepresentation(ramCachedImage!), UIImagePNGRepresentation(testImage))
+        XCTAssertEqual(ramCachedImage!.pngData(), testImage.pngData())
     }
     
     /**
@@ -178,7 +178,7 @@ class ImageLoaderTests: XCTestCase {
      */
     func testLoadingFromDiskCache() -> Void {
         
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         let testUrl = "testUrl" // used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
         
         
@@ -201,7 +201,7 @@ class ImageLoaderTests: XCTestCase {
         
         imageLoader.getImageFrom(urlString: testUrl, completion: {
             diskCacheImage in
-            XCTAssertEqual(UIImagePNGRepresentation(testImage), UIImagePNGRepresentation(diskCacheImage))
+            XCTAssertEqual(testImage.pngData(), diskCacheImage.pngData())
             exp.fulfill()
             
         }, fail: {
@@ -216,7 +216,7 @@ class ImageLoaderTests: XCTestCase {
      - images loaded from disk are cached into ram
      */
     func testDiskLoadedImagesAreCachedIntoRam() {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         let testUrl = "testUrl" // used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
         
         
@@ -242,14 +242,14 @@ class ImageLoaderTests: XCTestCase {
         
         imageLoader.getImageFrom(urlString: testUrl, completion: {
             diskCacheImage in
-            XCTAssertEqual(UIImagePNGRepresentation(testImage), UIImagePNGRepresentation(diskCacheImage))
+            XCTAssertEqual(testImage.pngData(), diskCacheImage.pngData())
             diskCacheExp.fulfill()
             
             
             //check for image in ramCache that was passed in empty
             let ramCachedImage = initiallyEmptyRamCache.getImageFor(url: testUrl)
             XCTAssertNotNil(ramCachedImage)
-            XCTAssertEqual(UIImagePNGRepresentation(ramCachedImage!), UIImagePNGRepresentation(testImage))
+            XCTAssertEqual(ramCachedImage!.pngData(), testImage.pngData())
             
             ramCacheExp.fulfill()
             
@@ -269,3 +269,4 @@ class ImageLoaderTests: XCTestCase {
     
 }
 
+let testImage1 = UIImage(named: "testImage1", in: Bundle(for:ImageLoaderTests.self), compatibleWith: nil)!

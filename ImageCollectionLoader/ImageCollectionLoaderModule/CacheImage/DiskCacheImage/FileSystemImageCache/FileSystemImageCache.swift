@@ -27,11 +27,12 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     
     
     func writeToFile(image: UIImage, url: String, completion: @escaping (Bool) -> ()) {
+        createImagesDirectoryIfNoneExists()
         fileSystemQueue.async {[weak self] in
             guard let filesSystem = self else {return}
             let fileURL = filesSystem.directory.appendingPathComponent(url)
             // get your UIImage jpeg data representation and check if the destination file url already exists
-            guard let data = UIImagePNGRepresentation(image) else {
+            guard let data = image.pngData() else {
                 completion(false)
                 return
                 

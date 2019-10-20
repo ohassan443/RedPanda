@@ -8,7 +8,7 @@
 
 import XCTest
 
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 
 class RamSharedImageCacheTests: XCTestCase {
 
@@ -21,7 +21,7 @@ class RamSharedImageCacheTests: XCTestCase {
         
     }
     func testCacheAndQueryFor(url:String) -> Void {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
          let sharedRamCache = RamCacheImageBuilder().sharedConcrete()
         
         
@@ -36,7 +36,7 @@ class RamSharedImageCacheTests: XCTestCase {
         
         let cachedImage = sharedRamCache.getImageFor(url: url)
         XCTAssertNotNil(cachedImage)
-        XCTAssertEqual(UIImagePNGRepresentation(cachedImage!), UIImagePNGRepresentation(testImage))
+        XCTAssertEqual(cachedImage!.pngData(), testImage.pngData())
     }
 
     

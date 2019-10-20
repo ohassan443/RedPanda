@@ -7,14 +7,14 @@
 //
 
 import XCTest
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 
 /**
  -  This cache is just a Set of ImageUrlWrapper
  */
 class DiskCacheImageMockTests: XCTestCase {
     
-    let image = UIImage(named: "testImage1")!
+    let image = testImage1
     
     // use current date as url to avoid collisions
     
@@ -27,7 +27,7 @@ class DiskCacheImageMockTests: XCTestCase {
             resultImage in
             
             XCTAssertNotNil(resultImage!)
-            XCTAssertEqual(UIImagePNGRepresentation(resultImage!), UIImagePNGRepresentation(expectedImage))
+            XCTAssertEqual(resultImage!.pngData(), expectedImage.pngData())
             expectationToFullFill.fulfill()
         })
     }
@@ -105,7 +105,7 @@ class DiskCacheImageMockTests: XCTestCase {
     }
     
     func testStorePolicyFor(url:String) {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         
         
         
@@ -162,7 +162,7 @@ class DiskCacheImageMockTests: XCTestCase {
     }
     
     func testReadPolicyFor(url:String) {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: url, image: testImage)]
         
@@ -357,7 +357,7 @@ class DiskCacheImageMockTests: XCTestCase {
 
 extension UIImage{
     func png()-> Data?{
-        let x = UIImagePNGRepresentation(self)
+        let x = self.pngData()
         return x
     }
 }

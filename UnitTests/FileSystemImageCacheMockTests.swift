@@ -8,11 +8,11 @@
 
 import XCTest
 
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 
 class FileSystemImageCacheMockTests: XCTestCase {
 
-    let testImage = UIImage(named: "testImage1")!
+    let testImage = testImage1
    
     
     
@@ -25,7 +25,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
         fileSystemCache.readFromFile(url: url, completion: {
             resultImage in
             XCTAssertNotNil(resultImage!)
-            XCTAssertEqual(UIImagePNGRepresentation(resultImage!), UIImagePNGRepresentation(expectedImage))
+            XCTAssertEqual(resultImage!.pngData(), expectedImage.pngData())
             expectationToFullfill.fulfill()
         })
         
@@ -127,7 +127,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
             fileSystemCacheMock.readFromFile(url: url, completion: {
                 cachedImage in
                 XCTAssertNotNil(cachedImage)
-                XCTAssertEqual(UIImagePNGRepresentation(cachedImage!), UIImagePNGRepresentation(self.testImage))
+                XCTAssertEqual(cachedImage!.pngData(), self.testImage.pngData())
                 readFromFileExp.fulfill()
                 
                 
@@ -210,7 +210,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
         let url2 = "testUrl--2"
         let url3 = "testURl--3"
         
-        let tempTestImage = UIImage(named: "testImage1")!
+        let tempTestImage = testImage1
         
         let fileSystemCacheMock = FileSystemImageCacheBuilder()
             .with(images: [])

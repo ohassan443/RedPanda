@@ -7,12 +7,12 @@
 //
 
 import XCTest
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 
 class ImageLoaderMockTests: XCTestCase {
     
     
-    let image = UIImage(named: "testImage1")!
+    let image = testImage1
     
     /**
      - empty ram & disk caches and mock Loader (no internet)
@@ -37,7 +37,7 @@ class ImageLoaderMockTests: XCTestCase {
         let exp = expectation(description: "responded with image provided at initalization as response image ")
         imageLoader.getImageFrom(urlString: testUrl, completion: {
             directResponseImage in
-            XCTAssertEqual(UIImagePNGRepresentation(self.image), UIImagePNGRepresentation(directResponseImage))
+            XCTAssertEqual(self.image.pngData(), directResponseImage.pngData())
             exp.fulfill()
             
         }, fail: {
@@ -78,7 +78,7 @@ class ImageLoaderMockTests: XCTestCase {
         let exp = expectation(description: "loaded image successfullt from ram cache")
         imageLoader.getImageFrom(urlString: testUrl, completion: {
             ramCacheImage in
-            XCTAssertEqual(UIImagePNGRepresentation(self.image), UIImagePNGRepresentation(ramCacheImage))
+            XCTAssertEqual(self.image.pngData(), ramCacheImage.pngData())
             exp.fulfill()
             
         }, fail: {
@@ -95,7 +95,7 @@ class ImageLoaderMockTests: XCTestCase {
     // retreieve image from disk cache
     func testLoadingFromDiskCache() -> Void {
         
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         let testUrl = "testUrl" // used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
         
         
@@ -117,7 +117,7 @@ class ImageLoaderMockTests: XCTestCase {
         let exp = expectation(description: "loaded image successfullt from disk cache")
         imageLoader.getImageFrom(urlString: testUrl, completion: {
             diskCacheImage in
-            XCTAssertEqual(UIImagePNGRepresentation(testImage), UIImagePNGRepresentation(diskCacheImage))
+            XCTAssertEqual(testImage.pngData(), diskCacheImage.pngData())
             exp.fulfill()
             
         }, fail: {

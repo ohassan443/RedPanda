@@ -7,9 +7,9 @@
 //
 
 import XCTest
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 
-class ImageCollectionLoaderTests: XCTestCase {
+class ImageCollectionLoaderTestsClass: XCTestCase {
     
     
     /**
@@ -22,7 +22,7 @@ class ImageCollectionLoaderTests: XCTestCase {
      */
     func testFoundInCache() {
         
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         let testUrl = "url To Cache And retreieve"
         
         let imageWrapper = ImageUrlWrapper(url: testUrl, image: testImage)
@@ -64,7 +64,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         
         XCTAssertEqual(cachedQueryResult.state, .cached)
         XCTAssertNotNil(cachedImage)
-        XCTAssertEqual(UIImageJPEGRepresentation(cachedImage!, 0.5),     UIImageJPEGRepresentation(testImage, 0.5))
+        XCTAssertEqual(  cachedImage!.jpegData(compressionQuality: 0.5) ,    testImage.jpegData(compressionQuality: 0.5))
         
         
     
@@ -92,7 +92,7 @@ class ImageCollectionLoaderTests: XCTestCase {
      - reachabiliy and internet checker have no effect as long as the intenet connection is working correctly or images are found in cache
      */
     func testVerGoodConnection() -> Void {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         let testUrl = "testImage1"
         
         
@@ -137,7 +137,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         let requestState = imageCollectionLoader.requestImage(requestDate: requestDate, url: testUrl , indexPath: requestIndexPath, tag: tag, successHandler: {
             resultImage,indexPath,requestDate in
             XCTAssertEqual(indexPath, requestIndexPath)
-            XCTAssertEqual(UIImagePNGRepresentation(resultImage), UIImagePNGRepresentation(testImage))
+            XCTAssertEqual(resultImage.pngData(), testImage.pngData())
             exp.fulfill()
             
         }, failedHandler: {
@@ -165,7 +165,7 @@ class ImageCollectionLoaderTests: XCTestCase {
      - request succeeded but vc's requestDate was refreshed before callBack was executed
      */
     func testRequestDateRefreshed() -> Void {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         let testUrl = "testImage1"
         
         // imageLoader with response image and empty cache
@@ -334,7 +334,7 @@ class ImageCollectionLoaderTests: XCTestCase {
      
      */
     func testRequestIsCurrentlyLoading() -> Void {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         let testUrl = "testImage1"
         
         
@@ -377,7 +377,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         let firstRequestState = imageCollectionLoader.requestImage(requestDate:firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
             resultImage,indexPath,_ in
             
-            XCTAssertEqual(UIImagePNGRepresentation(resultImage), UIImagePNGRepresentation(testImage))
+            XCTAssertEqual(resultImage.pngData(), testImage.pngData())
             imageLoadedExp.fulfill()
             
         }, failedHandler: {
@@ -412,7 +412,7 @@ class ImageCollectionLoaderTests: XCTestCase {
      */
     
     func testNetworkDropThenComeBack() -> Void {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         let testUrl = "testImage1"
         
         
@@ -491,7 +491,7 @@ class ImageCollectionLoaderTests: XCTestCase {
     }
     
     func InternetConnectivityDropThenComeBack(retryTimerInterval : TimeInterval,InternetComesBackAfter:TimeInterval,maxWaitInterval:TimeInterval) -> Void {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         let testUrl = "testImage1"
         
         
@@ -572,7 +572,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         let imageCollectionLoader = ImageCollectionLoaderBuilder()
             .with(internetChecker: InternetConnectivityCheckerBuilder().with(successResponse: true).Mock())
             .with(reachability: ReachabailityMonitorMock(conncection: .wifi))
-            .with(imageLoader: ImageLoaderBuilder().loaderMock(response: .responseImage(image: UIImage())))
+            .with(imageLoader: ImageLoaderBuilder().loaderMock(response: .responseImage(image: testImage1)))
             .TESTCustomConcrete()
         imageCollectionLoader.changeTimerRetry(interval: 3)
         

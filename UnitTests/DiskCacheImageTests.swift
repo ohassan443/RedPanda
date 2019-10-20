@@ -7,14 +7,14 @@
 //
 
 import XCTest
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 /**
  - this cache is persisted in ram  for testing
  - uses realm's memory identifier to create actual realm object but just in memory and is deleted later
  */
 class DiskCacheImageTests: XCTestCase {
     
-    let image = UIImage(named: "testImage1")!
+    let image = testImage1
 
     
     
@@ -192,7 +192,7 @@ class DiskCacheImageTests: XCTestCase {
             mockFileSystemImageCache.readFromFile(url: url, completion: {
                 deletedImage in
                 XCTAssertNotNil(deletedImage)
-                XCTAssertEqual(UIImagePNGRepresentation(deletedImage!), UIImagePNGRepresentation(self.image))
+                XCTAssertEqual(deletedImage!.pngData(), self.image.pngData())
                 deleteExp.fulfill()
             })
         })
@@ -273,7 +273,7 @@ class DiskCacheImageTests: XCTestCase {
                     XCTFail()
                     return
                 }
-                XCTAssertEqual(UIImagePNGRepresentation(diskImage), UIImagePNGRepresentation(self.image))
+                XCTAssertEqual(diskImage.pngData(), self.image.pngData())
                 fileSystemCheckExp.fulfill()
             })
             
@@ -288,7 +288,7 @@ class DiskCacheImageTests: XCTestCase {
                     XCTFail()
                     return
                 }
-                XCTAssertEqual(UIImagePNGRepresentation(cachedImage!), UIImagePNGRepresentation(image))
+                XCTAssertEqual(cachedImage!.pngData(), image.pngData())
                 dataBaseCheckExp.fulfill()
                 
                 

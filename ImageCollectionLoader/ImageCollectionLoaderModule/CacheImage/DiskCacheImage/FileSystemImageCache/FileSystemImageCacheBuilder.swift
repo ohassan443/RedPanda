@@ -15,7 +15,7 @@ class FileSystemImageCacheBuilder {
     
     
     func concrete() -> FileSystemImageCache {
-         let directoryInCache =  FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent(AppConstants.imagesSubDirectoryInCache)
+         let directoryInCache =  FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent(Constants.imagesSubDirectoryInCache)
         return FileSystemImageCache(directory: directoryInCache)
     }
     func concreteForTestingWithDifferentDirectory(directory:URL) -> FileSystemImageCache {

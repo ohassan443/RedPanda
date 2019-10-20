@@ -8,7 +8,7 @@
 
 import XCTest
 
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 class RamCacheImageMockTests: XCTestCase {
 
     func testBasicCachingAndQuerying() {
@@ -20,7 +20,7 @@ class RamCacheImageMockTests: XCTestCase {
         
     }
     func testBasicCachingAndQueryingFor(url:String) -> Void {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
        
         let mockRamCache = RamCacheImageBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
         
@@ -36,7 +36,7 @@ class RamCacheImageMockTests: XCTestCase {
         
         let cachedImage = mockRamCache .getImageFor(url: url)
         XCTAssertNotNil(cachedImage)
-        XCTAssertEqual(UIImagePNGRepresentation(cachedImage!), UIImagePNGRepresentation(testImage))
+        XCTAssertEqual(cachedImage!.pngData(), testImage.pngData())
     }
     
     
@@ -52,7 +52,7 @@ class RamCacheImageMockTests: XCTestCase {
     }
     
     func testStorePolicyFor(url:String) {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         
      
         
@@ -87,7 +87,7 @@ class RamCacheImageMockTests: XCTestCase {
     }
     
     func testReadPolicyFor(url:String) {
-        let testImage = UIImage(named: "testImage1")!
+        let testImage = testImage1
         
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: url, image: testImage)]
         
@@ -104,7 +104,7 @@ class RamCacheImageMockTests: XCTestCase {
         
         let secondQueryImage = mockRamCache.getImageFor(url: url)
         XCTAssertNotNil(secondQueryImage)
-        XCTAssertEqual(UIImagePNGRepresentation(secondQueryImage!), UIImagePNGRepresentation(testImage))
+        XCTAssertEqual(secondQueryImage!.pngData(), testImage.pngData())
     
     }
     

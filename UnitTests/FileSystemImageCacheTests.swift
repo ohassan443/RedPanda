@@ -8,12 +8,12 @@
 
 import XCTest
 
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 
 class FileSystemImageCacheTests: XCTestCase {
     
     
-    let testImage = UIImage(named: "testImage1")!
+    let testImage = testImage1
     
     let tempDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("tempDirectoryForTestingFileSystemImageCache")
     
@@ -56,7 +56,7 @@ class FileSystemImageCacheTests: XCTestCase {
         fileSystemCache.readFromFile(url: url, completion: {
             resultImage in
             XCTAssertNotNil(resultImage!)
-            XCTAssertEqual(UIImagePNGRepresentation(resultImage!), UIImagePNGRepresentation(expectedImage))
+            XCTAssertEqual(resultImage!.pngData(), expectedImage.pngData())
             expectationToFullfill.fulfill()
         })
     
@@ -271,7 +271,7 @@ class FileSystemImageCacheTests: XCTestCase {
         let url2 = "testUrl--2"
         let url3 = "testURl--3"
         
-        let tempTestImage = UIImage(named: "testImage1")!
+        let tempTestImage = testImage1
         createTempDirectory()
         let fileSystemCache = FileSystemImageCacheBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
         

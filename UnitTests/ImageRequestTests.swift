@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Zabatnee
+@testable import ImageCollectionLoader
 
 class ImageRequestTests: XCTestCase {
     
