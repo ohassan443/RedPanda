@@ -24,10 +24,7 @@
 		072162AB235C484F00692A85 /* RamSharedImageCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FD235B76440003EB7C /* RamSharedImageCacheTests.swift */; };
 		072162AC235C484F00692A85 /* ImageRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429102235B76440003EB7C /* ImageRequestTests.swift */; };
 		072162AD235C484F00692A85 /* ImageCollectionLoaderTestsClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429117235B76440003EB7C /* ImageCollectionLoaderTestsClass.swift */; };
-		072162AE235C4B7600692A85 /* ImageCollectionLoaderAssetsTestingg.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07429155235B79FC0003EB7C /* ImageCollectionLoaderAssetsTestingg.xcassets */; };
-		072162AF235C4BD600692A85 /* ImageCollectionLoaderAssetsTestingg.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07429155235B79FC0003EB7C /* ImageCollectionLoaderAssetsTestingg.xcassets */; };
-		072162B0235C51AB00692A85 /* ImageCollectionLoaderAssetsTestingg.xcassets in Frameworks */ = {isa = PBXBuildFile; fileRef = 07429155235B79FC0003EB7C /* ImageCollectionLoaderAssetsTestingg.xcassets */; };
-		072162B1235C51EC00692A85 /* ImageCollectionLoaderAssetsTestingg.xcassets in Frameworks */ = {isa = PBXBuildFile; fileRef = 07429155235B79FC0003EB7C /* ImageCollectionLoaderAssetsTestingg.xcassets */; };
+		073F23A023604A2A00F7DFFB /* ImageCollectionLoaderAssetsTestingg.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 073F239F23604A2A00F7DFFB /* ImageCollectionLoaderAssetsTestingg.xcassets */; };
 		074290D4235B762F0003EB7C /* ImageCollectionLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 074290C6235B762F0003EB7C /* ImageCollectionLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0742911B235B76440003EB7C /* InternetConnectivityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E0235B76440003EB7C /* InternetConnectivityChecker.swift */; };
 		0742911E235B76440003EB7C /* InternetConnectivityCheckerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E4235B76440003EB7C /* InternetConnectivityCheckerMock.swift */; };
@@ -76,6 +73,7 @@
 		07216294235C484200692A85 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		07216296235C484200692A85 /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
 		07216298235C484200692A85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		073F239F23604A2A00F7DFFB /* ImageCollectionLoaderAssetsTestingg.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ImageCollectionLoaderAssetsTestingg.xcassets; sourceTree = "<group>"; };
 		074290C3235B762F0003EB7C /* ImageCollectionLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageCollectionLoader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		074290C6235B762F0003EB7C /* ImageCollectionLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCollectionLoader.h; sourceTree = "<group>"; };
 		074290C7235B762F0003EB7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -123,7 +121,6 @@
 		07429119235B76440003EB7C /* ImageCollectionLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionLoader.swift; sourceTree = "<group>"; };
 		0742911A235B76440003EB7C /* ImageCollectionLoaderBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionLoaderBuilder.swift; sourceTree = "<group>"; };
 		07429153235B79920003EB7C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		07429155235B79FC0003EB7C /* ImageCollectionLoaderAssetsTestingg.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ImageCollectionLoaderAssetsTestingg.xcassets; sourceTree = "<group>"; };
 		144F6B12E72F9D7A1A447866 /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1968C00EEFA1E0AFA4C74DEF /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 		4918B2B614EAB160A415F23B /* Pods-ImageCollectionLoader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageCollectionLoader.debug.xcconfig"; path = "Target Support Files/Pods-ImageCollectionLoader/Pods-ImageCollectionLoader.debug.xcconfig"; sourceTree = "<group>"; };
@@ -140,7 +137,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				072162B0235C51AB00692A85 /* ImageCollectionLoaderAssetsTestingg.xcassets in Frameworks */,
 				07216299235C484200692A85 /* ImageCollectionLoader.framework in Frameworks */,
 				0E42248495711D3F8E3203D2 /* Pods_UnitTests.framework in Frameworks */,
 			);
@@ -150,7 +146,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				072162B1235C51EC00692A85 /* ImageCollectionLoaderAssetsTestingg.xcassets in Frameworks */,
 				68336005CD191CB2D8CD87C1 /* Pods_ImageCollectionLoader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,7 +180,6 @@
 		074290B9235B762F0003EB7C = {
 			isa = PBXGroup;
 			children = (
-				07429155235B79FC0003EB7C /* ImageCollectionLoaderAssetsTestingg.xcassets */,
 				074290C5235B762F0003EB7C /* ImageCollectionLoader */,
 				07216295235C484200692A85 /* UnitTests */,
 				074290C4235B762F0003EB7C /* Products */,
@@ -206,6 +200,7 @@
 		074290C5235B762F0003EB7C /* ImageCollectionLoader */ = {
 			isa = PBXGroup;
 			children = (
+				073F239F23604A2A00F7DFFB /* ImageCollectionLoaderAssetsTestingg.xcassets */,
 				074290C6235B762F0003EB7C /* ImageCollectionLoader.h */,
 				074290DD235B76440003EB7C /* ImageCollectionLoaderModule */,
 				074290C7235B762F0003EB7C /* Info.plist */,
@@ -518,7 +513,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				072162AE235C4B7600692A85 /* ImageCollectionLoaderAssetsTestingg.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,7 +520,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				072162AF235C4BD600692A85 /* ImageCollectionLoaderAssetsTestingg.xcassets in Resources */,
+				073F23A023604A2A00F7DFFB /* ImageCollectionLoaderAssetsTestingg.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -757,13 +751,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -815,12 +810,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
