@@ -26,7 +26,6 @@ extension imageLoaderUser {
 
 protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
     typealias params = ( success : Bool,image : UIImage? , dateRequestedAt:Date , indexPath : IndexPath,failedRequest : imageRequest?,error:imageLoadingError?)
-    typealias imageLoadComletionHandler = ((params) -> ())
     typealias cellCompletionHandler = (_ image: UIImage?,_ indexPath:IndexPath)-> ()
     
     func cacheQueryState(url:String) -> (state:imageRequest.RequestState,image:UIImage?)

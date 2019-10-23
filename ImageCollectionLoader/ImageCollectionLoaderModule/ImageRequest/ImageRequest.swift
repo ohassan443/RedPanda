@@ -24,7 +24,7 @@ struct imageRequest : Hashable {
     private var loading : Bool
     private var dateRequestedAt : Date
     private var cellIndexPath : IndexPath
-    private var completion : ImageCollectionLoaderObj.imageLoadComletionHandler? = nil
+    private var completion : ((ImageCollectionLoaderObj.params) -> ())? = nil
     private var failedCount = 0
     private var maxAttemptCount = 0
     private var tag : String
@@ -62,7 +62,7 @@ struct imageRequest : Hashable {
         hasher.combine(keyValue)
     }
    
-    init(image:UIImage?,url:String,loading:Bool,dateRequestedAt : Date,cellIndexPath : IndexPath,tag:String,completion: ImageCollectionLoaderObj.imageLoadComletionHandler? = nil) {
+    init(image:UIImage?,url:String,loading:Bool,dateRequestedAt : Date,cellIndexPath : IndexPath,tag:String,completion: ((ImageCollectionLoaderObj.params)->())? = nil) {
         self.image = image
         self.url = url
         self.loading = loading
