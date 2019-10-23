@@ -70,7 +70,7 @@ extension SyncedSet where T == imageRequest {
     }
 }
 
-class ImageCollectionLoader  : ImageCollectionLoaderObj  {
+public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
     private var requests 			 	: SyncedSet<imageRequest> =  SyncedSet<imageRequest>.init()
     private var networkFailedRequests   : SyncedSet<imageRequest> =  SyncedSet<imageRequest>.init()

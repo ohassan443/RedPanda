@@ -7,14 +7,14 @@
 //
 
 import Foundation
-class ImageCollectionLoaderBuilder {
+public class ImageCollectionLoaderBuilder {
     var imageLoader : ImageLoaderObj = ImageLoaderBuilder().defaultErrorMock()
     var internetChecker : InternetConnectivityCheckerObj = InternetConnectivityCheckerBuilder().Mock()
     var reachability : ReachabilityMOnitorObj = ReachabailityMonitorMock(conncection: .none)
     
     
     
-    func defaultImp() -> ImageCollectionLoader {
+    public func defaultImp() -> ImageCollectionLoader {
         let imageloader = ImageLoaderBuilder().concrete()
         let internetChecker = InternetConnectivityCheckerBuilder().concrete()
         let reachability = ReachabailityMonitor()
@@ -29,7 +29,7 @@ class ImageCollectionLoaderBuilder {
     
     
     
-    func TESTCustomConcrete() -> ImageCollectionLoader {
+    public func TESTCustomConcrete() -> ImageCollectionLoader {
         return ImageCollectionLoader(imageLoader: imageLoader, reachability: reachability, connectivityChecker: internetChecker)
         
     }
