@@ -148,6 +148,9 @@ class ImageLoaderTests: XCTestCase {
             }
         })
         waitForExpectations(timeout: 20, handler: nil)
+        addTeardownBlock {
+            server.stop()
+        }
     }
     
     
