@@ -136,9 +136,6 @@ let ImageLoaderNetworkErrorCodes =  [
 ]
 
 func getTempAmazonUrlfrom(url:String) -> String {
-    return "https://zabatnee-backend-storage.s3.amazonaws.com/event/gallery/card" + url +  ".jpg?AWSAccessKeyId=AKIAIPYZV4JUWFFKGTXA&Expires=1548633347&Signature=zLIrOhMzDypfYeCFei%2Fq6r%2F9JPE%3D"
+    return "https://appName.amazonaws.com/Folder/subFolder/card" + url +  ".jpg?AWSAccessKeyId=A!@£$%124123123&Expires=1231231234&Signature=sadfsadfsadfs123@£$%^&^*(*(^*(^*(%3D"
 }
-enum PingResult{
-    case reachable
-    case error
-}
+

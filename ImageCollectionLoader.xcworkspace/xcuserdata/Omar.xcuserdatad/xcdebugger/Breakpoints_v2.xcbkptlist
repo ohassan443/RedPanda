@@ -37,7 +37,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/InternetConnectivityChecker/InternetConnectivityChecker/InternetConnectivityChecker.swift"
-            timestampString = "594075449.568329"
+            timestampString = "594079043.745401"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "33"
@@ -53,12 +53,92 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UnitTests/InternetConnectivityCheckerTests.swift"
-            timestampString = "594075449.569001"
+            timestampString = "594079043.7460769"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "34"
             endingLineNumber = "34"
             landmarkName = "testFunctionality()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UnitTests/ImageCollectionLoaderTestsClass.swift"
+            timestampString = "594079043.74633"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
+            landmarkName = "testFailedToParseImageData()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (ImageCollectionLoader.imageRequest, Swift.Optional&lt;__C.UIImage&gt;) -&gt; () in closure #1 (ImageCollectionLoader.imageLoadingError) -&gt; () in UnitTests.ImageCollectionLoaderTestsClass.testFailedToParseImageData() -&gt; ()"
+                  moduleName = "UnitTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/UnitTests/ImageCollectionLoaderTestsClass.swift"
+                  timestampString = "594078963.472363"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "298"
+                  endingLineNumber = "298"
+                  offsetFromSymbolStart = "153">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.UIImage, Foundation.IndexPath, Foundation.Date) -&gt; () in closure #2 (ImageCollectionLoader.imageRequest, Swift.Optional&lt;__C.UIImage&gt;) -&gt; () in closure #1 (ImageCollectionLoader.imageLoadingError) -&gt; () in UnitTests.ImageCollectionLoaderTestsClass.testFailedToParseImageData() -&gt; ()"
+                  moduleName = "UnitTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/UnitTests/ImageCollectionLoaderTestsClass.swift"
+                  timestampString = "594078963.474292"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "300"
+                  endingLineNumber = "300"
+                  offsetFromSymbolStart = "8">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UnitTests/ImageCollectionLoaderTestsClass.swift"
+            timestampString = "594079043.746856"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
+            landmarkName = "testFailedToParseImageData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UnitTests/ImageCollectionLoaderTestsClass.swift"
+            timestampString = "594079043.747139"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
+            landmarkName = "testFailedToParseImageData()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

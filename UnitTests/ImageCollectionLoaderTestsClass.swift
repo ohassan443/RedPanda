@@ -281,8 +281,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
             
             let sectionTimeInvalidRequestExp = expectation(description: "request failed , and requesting it again returns an invalid response ")
             
-            let invertedExp = expectation(description: "second request should not have its completion handlers called at all")
-            invertedExp.isInverted = true
+            
             
             
             
@@ -298,10 +297,10 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
                 
                 let secondRequest = imageCollectionLoader.requestImage(requestDate: firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
                     _,_,_ in
-                    invertedExp.fulfill()
+                    XCTFail()
                 }, failedHandler: {
                     _,_ in
-                    invertedExp.fulfill()
+                    XCTFail()
                 })
                 
                 
@@ -315,7 +314,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
             XCTAssertEqual(firstRequest, .processing)
             
             
-            waitForExpectations(timeout: 2, handler: nil)
+            waitForExpectations(timeout: 5, handler: nil)
         }
     }
 
