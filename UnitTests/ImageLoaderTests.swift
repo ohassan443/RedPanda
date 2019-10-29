@@ -25,7 +25,14 @@ class ImageLoaderTests: XCTestCase {
      */
     func testGetValidImage() {
         // this is a static url , if not valid anyMore change it for this test
-        let staticUrl = "https://picsum.photos/200/300/?image=1011"
+        
+        
+        let url = UITestsConstants.baseUrl + "testImage"
+        let testImage = testImage1
+        let server = LocallServer.getInstance { (params, callBack) in
+            callBack(LocallServer.LocalServerCallBack(statusCode: .s200, headers: [], body: testImage1.pngData()))
+        }
+        
         
         let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
        
@@ -38,7 +45,7 @@ class ImageLoaderTests: XCTestCase {
         
         let successExp = expectation(description: "calling image from placeholder server")
         
-        imageLoader.getImageFrom(urlString: staticUrl, completion: {
+        imageLoader.getImageFrom(urlString: url, completion: {
             image in
             successExp.fulfill()
         }, fail: {
@@ -48,6 +55,9 @@ class ImageLoaderTests: XCTestCase {
         
         
         waitForExpectations(timeout: 20, handler: nil)
+        addTeardownBlock {
+            server.stop()
+        }
     }
     
     
