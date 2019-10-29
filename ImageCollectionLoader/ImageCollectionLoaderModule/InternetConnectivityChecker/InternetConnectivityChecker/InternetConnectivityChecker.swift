@@ -10,9 +10,14 @@ import Foundation
 
 class  InternetConnectivityChecker : InternetConnectivityCheckerObj  {
 
-    let webAddress = "https://www.google.com" // Default Web Site
+    private var url : String
+    init(url:String) {
+        self.url = url
+    }
+    
+  
     func check(completionHandler: @escaping (Bool) -> Void) ->(){
-        guard let url = URL(string: webAddress) else {
+        guard let url = URL(string: url) else {
             completionHandler(false)
             //print("could not create url from: \(webAddress)")
             completionHandler(false)
@@ -25,11 +30,22 @@ class  InternetConnectivityChecker : InternetConnectivityCheckerObj  {
         
         let session = URLSession(configuration: config)
         let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
-            if error != nil || response == nil {
+            guard error == nil else {
                 completionHandler(false)
-            } else {
-                completionHandler(true)
+                return
             }
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
+                completionHandler(false)
+                return
+            }
+            
+            guard statusCode == 200 else {
+                completionHandler(false)
+                return
+            }
+            
+            completionHandler(true)
+            
         })
         task.resume()
     }

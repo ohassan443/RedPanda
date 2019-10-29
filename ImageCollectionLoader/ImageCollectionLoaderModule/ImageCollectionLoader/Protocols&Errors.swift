@@ -115,7 +115,9 @@ protocol InternetConnectivityCheckerObj {
 }
 
 
-
+protocol PingObj {
+    func ping(url:String ,result : @escaping (PingResult)->()) -> Void
+}
 
 
 enum imageLoadingError: Error {
@@ -135,4 +137,8 @@ let ImageLoaderNetworkErrorCodes =  [
 
 func getTempAmazonUrlfrom(url:String) -> String {
     return "https://zabatnee-backend-storage.s3.amazonaws.com/event/gallery/card" + url +  ".jpg?AWSAccessKeyId=AKIAIPYZV4JUWFFKGTXA&Expires=1548633347&Signature=zLIrOhMzDypfYeCFei%2Fq6r%2F9JPE%3D"
+}
+enum PingResult{
+    case reachable
+    case error
 }

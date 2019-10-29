@@ -23,6 +23,8 @@ end
 
 target 'UnitTests' do
    use_frameworks!
+   pod 'Embassy'
+
   # Pods for testing
 end
 

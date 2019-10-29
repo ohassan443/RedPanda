@@ -12,9 +12,9 @@ class InternetConnectivityCheckerBuilder  {
     private var delay : TimeInterval = 0
     private var successResponse : Bool? = false
     private var returnQueue : InternetConnectivityCheckerMock.ReturnQueue? = .Main
-    
-    func concrete() -> InternetConnectivityChecker {
-        return InternetConnectivityChecker()
+    private let webAddress = "https://www.google.com"
+    func concrete(url:String? = nil) -> InternetConnectivityChecker {
+        return InternetConnectivityChecker( url: url ?? webAddress)
     }
     
     

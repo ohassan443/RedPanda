@@ -33,16 +33,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/InternetConnectivityChecker/InternetConnectivityChecker/InternetConnectivityChecker.swift"
+            timestampString = "594074872.051419"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "check(completionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "UnitTests/DiskCacheImageTests.swift"
-            timestampString = "594057725.7734441"
+            filePath = "UnitTests/InternetConnectivityCheckerTests.swift"
+            timestampString = "594074872.052122"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "331"
-            endingLineNumber = "331"
-            landmarkName = "testFullFunctionalityfor(url:)"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "testFunctionality()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

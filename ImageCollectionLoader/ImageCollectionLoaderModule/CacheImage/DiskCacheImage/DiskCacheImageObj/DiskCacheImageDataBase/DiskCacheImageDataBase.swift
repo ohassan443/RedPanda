@@ -52,7 +52,7 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
  
     
     func cache(url: String,completion: @escaping (_ result : Bool)->()) -> Void{
-        databaseQueue.async { [weak self] in
+        databaseQueue.async(flags:.barrier){ [weak self] in
             guard let database = self else {return}
             
             let objToSave = PersistentUrl(url: url)
@@ -97,7 +97,7 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
     
     
     func delete(url: String, completion: @escaping (Bool) -> ()) -> Void{
-        databaseQueue.async { [weak self] in
+        databaseQueue.async (flags:.barrier){ [weak self] in
             guard let database = self else {return}
             
             let realmDeleteUrl = PersistentUrl.amazonCheck(url: url)
@@ -137,25 +137,28 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
         let dataBaseUrls = urls.map(){PersistentUrl.amazonCheck(url: $0)}
         
         var deletedAllSuccessfully = true
-        let database = createRealm()
-        for (index,url) in dataBaseUrls.enumerated() {
-            
-            guard let item = database.objects(PersistentUrl.self).filter("url == %@",url ).first else {
-                continue
-            }
-            
-            
-            
-            do{
-                try database.write {
-                    database.delete(item)
+        
+        databaseQueue.async (flags:.barrier){
+            let database = self.createRealm()
+            for (index,url) in dataBaseUrls.enumerated() {
+                
+                guard let item = database.objects(PersistentUrl.self).filter("url == %@",url ).first else {
+                    continue
                 }
-            }catch{
-                //print(error)
-                deletedAllSuccessfully = false
-            }
-            if index == urls.count - 1 {
-                completion(deletedAllSuccessfully)
+                
+                
+                
+                do{
+                    try database.write {
+                        database.delete(item)
+                    }
+                }catch{
+                    //print(error)
+                    deletedAllSuccessfully = false
+                }
+                if index == urls.count - 1 {
+                    completion(deletedAllSuccessfully)
+                }
             }
         }
     }
@@ -165,32 +168,34 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
     
     func deleteWith(minLastAccessDate:Date,completion:@escaping(_ result:Bool)->()) ->Void {
         
-
-        let database = createRealm()
-        let dataBaseItems = database.objects(PersistentUrl.self).filter("lastAccessDate <= %@", minLastAccessDate)
-
-
-        var deletedItemsSuccessfully = false
-        let count = dataBaseItems.count
-        for (index,item) in dataBaseItems.enumerated() {
-
-            let innerIndex = index
+        databaseQueue.async( flags: .barrier, execute: {
+            let database = self.createRealm()
+            let dataBaseItems = database.objects(PersistentUrl.self).filter("lastAccessDate <= %@", minLastAccessDate)
             
-            do{
-                try database.write {
-                    database.delete(item)
+            
+            var deletedItemsSuccessfully = false
+            let count = dataBaseItems.count
+            for (index,item) in dataBaseItems.enumerated() {
+                
+                let innerIndex = index
+                
+                do{
+                    try database.write {
+                        database.delete(item)
+                    }
+                }catch{
+                    //print(error)
+                    deletedItemsSuccessfully = false
                 }
-            }catch{
-                //print(error)
-                deletedItemsSuccessfully = false
+                
+                
+                if innerIndex == (count - 1) {
+                    completion(deletedItemsSuccessfully)
+                }
             }
             
-            
-            if innerIndex == (count - 1) {
-                completion(deletedItemsSuccessfully)
-            }
-        }
-     }
+        })
+    }
 
     
    
