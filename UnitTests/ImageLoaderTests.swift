@@ -110,7 +110,14 @@ class ImageLoaderTests: XCTestCase {
      */
     func testFiledParsingResponse() {
         // this is a static url , if not valid anyMore change it for this test
-        let staticUrl = "https://zabatnee-backend-storage.s3.amazonaws.com/event/gallery/card.jpg?AWSAccessKeyId=AKIAIPYZV4JUWFFKGTXA&Expires=1548633347&Signature=zLIrOhMzDypfYeCFei%2Fq6r%2F9JPE%3D"
+     
+     	let url = UITestsConstants.baseUrl
+        
+        let testImage = testImage1
+        let server = LocallServer.getInstance { (params, callBack) in
+            callBack(LocallServer.LocalServerCallBack(statusCode: .s200, headers: [], body: Data()))
+        }
+        
         
         let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
         
@@ -124,14 +131,14 @@ class ImageLoaderTests: XCTestCase {
         
         let failExp = expectation(description: "call should fail to load image as the response is not an image - text in the case of the above url")
         
-        imageLoader.getImageFrom(urlString: staticUrl, completion: {
+        imageLoader.getImageFrom(urlString: url, completion: {
             image in
             XCTFail()
         }, fail: {
             failedUrl,error in
             
             
-            XCTAssertEqual(failedUrl, staticUrl)
+            XCTAssertEqual(failedUrl, url)
             
             switch error {
             case imageLoadingError.imageParsingFailed :
