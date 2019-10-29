@@ -13,6 +13,7 @@ public class ImageCollectionLoaderBuilder {
     var reachability : ReachabilityMOnitorObj = ReachabailityMonitorMock(conncection: .none)
     
     
+    public init(){}
     
     public func defaultImp() -> ImageCollectionLoader {
         let imageloader = ImageLoaderBuilder().concrete()

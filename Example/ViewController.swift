@@ -7,14 +7,14 @@
 //
 
 import UIKit
-import  ImageCollectionLoader
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var tv1: UITableView!
     @IBOutlet weak var tv2: UITableView!
     
     var dataSource = [String]()
-    let imageCollectionLoader = ImageCollectionLoaderBuilder().defaultImp()
+    let imageCollectionLoader = ImageCollectionLoaderBuilder()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
