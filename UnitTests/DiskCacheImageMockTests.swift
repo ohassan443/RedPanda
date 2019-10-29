@@ -122,30 +122,36 @@ class DiskCacheImageMockTests: XCTestCase {
             result in
             XCTAssertEqual(result, false)
             skipsCachingExp.fulfill()
-            
-            mockDiskCache.getImageFor(url: url, completion: {
-                cachedImage in
-                XCTAssertEqual(cachedImage, nil)
-                verifySkippingCachingExp.fulfill()
-                
-                mockDiskCache.changeStore(Policy: .store)
-                
-                mockDiskCache.cache(image: image, url: url, completion: {
-                    secondcacheResult in
-                    XCTAssertEqual(secondcacheResult, true)
-                    cacheExp.fulfill()
-                    
-                    mockDiskCache.getImageFor(url: url, completion: {
-                        secondCachedImage in
-                        XCTAssertNotNil(secondCachedImage)
-                        XCTAssertEqual(secondCachedImage!.png(), testImage.png())
-                        verifyCaching.fulfill()
-                    })
-                })
-            })
         })
         
+        wait(for: [skipsCachingExp], timeout: 10)
         
+        
+        mockDiskCache.getImageFor(url: url, completion: {
+            cachedImage in
+            XCTAssertEqual(cachedImage, nil)
+            verifySkippingCachingExp.fulfill()
+        })
+        
+        wait(for: [verifySkippingCachingExp], timeout: 10)
+        
+        
+        mockDiskCache.changeStore(Policy: .store)
+        
+        mockDiskCache.cache(image: image, url: url, completion: {
+            secondcacheResult in
+            XCTAssertEqual(secondcacheResult, true)
+            cacheExp.fulfill()
+        })
+        
+        wait(for: [cacheExp], timeout: 10)
+        
+        mockDiskCache.getImageFor(url: url, completion: {
+            secondCachedImage in
+            XCTAssertNotNil(secondCachedImage)
+            XCTAssertEqual(secondCachedImage!.png(), testImage.png())
+            verifyCaching.fulfill()
+        })
         
         waitForExpectations(timeout: 20, handler: nil)
     }
@@ -179,18 +185,18 @@ class DiskCacheImageMockTests: XCTestCase {
             nilImage in
             XCTAssertNil(nilImage)
             imageNotAvaliableExp.fulfill()
-            
-            mockDiskCache.changeQuery(Policy: .checkInSet)
-            
-            mockDiskCache.getImageFor(url: url, completion: {
-                cachedImage in
-                XCTAssertNotNil(cachedImage!)
-                XCTAssertEqual(cachedImage!.png(),testImage.png())
-                policyChangeAvaliableExp.fulfill()
-            })
-            
-            
         })
+        
+        wait(for: [imageNotAvaliableExp], timeout: 10)
+        mockDiskCache.changeQuery(Policy: .checkInSet)
+        
+        mockDiskCache.getImageFor(url: url, completion: {
+            cachedImage in
+            XCTAssertNotNil(cachedImage!)
+            XCTAssertEqual(cachedImage!.png(),testImage.png())
+            policyChangeAvaliableExp.fulfill()
+        })
+        
         waitForExpectations(timeout: 20, handler: nil)
     }
     
@@ -224,38 +230,42 @@ class DiskCacheImageMockTests: XCTestCase {
             
             XCTAssertEqual(firstInsert, true)
             verifyUrlAndImageInCache(cache: mockDiskCache, url: url1, expectedImage: image, expectationToFullFill: verifyFirstInsertExp)
-            
-            
-            
-            
-            mockDiskCache.cache(image: image, url: url2, completion: {
-                secondInsert in
-                
-                XCTAssertEqual(secondInsert, true)
-                verifyUrlAndImageInCache(cache: mockDiskCache, url: url2, expectedImage: image, expectationToFullFill: verifySecondInsertExp)
-                
-                
-                
-                mockDiskCache.cache(image: image, url: url3, completion: {
-                    thirdInsert in
-                    
-                    XCTAssertEqual(thirdInsert, true)
-                    verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: image, expectationToFullFill: verifyThirdInsertExp)
-                    
-                    
-                    let deleteResult = mockDiskCache.deleteAll()
-                    XCTAssertEqual(deleteResult, true)
-                    
-                    
-                    cacheDoesNotContainUrl(cache: mockDiskCache, url: url1, expectedImage: image, expectationToFullFill: verifyDeletedFirstExp)
-                    cacheDoesNotContainUrl(cache: mockDiskCache, url: url2, expectedImage: image, expectationToFullFill: verifyDelectedSecondExp)
-                    cacheDoesNotContainUrl(cache: mockDiskCache, url: url3, expectedImage: image, expectationToFullFill: verifyDeletedThidExp)
-                    
-                    
-                    deletedAllExp.fulfill()
-                })
-            })
         })
+        
+        
+        wait(for: [verifyFirstInsertExp], timeout: 10)
+        
+        mockDiskCache.cache(image: image, url: url2, completion: {
+            secondInsert in
+            
+            XCTAssertEqual(secondInsert, true)
+            verifyUrlAndImageInCache(cache: mockDiskCache, url: url2, expectedImage: image, expectationToFullFill: verifySecondInsertExp)
+        })
+        
+        
+        wait(for: [verifySecondInsertExp], timeout: 10)
+        
+        mockDiskCache.cache(image: image, url: url3, completion: {
+            thirdInsert in
+            
+            XCTAssertEqual(thirdInsert, true)
+            verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: image, expectationToFullFill: verifyThirdInsertExp)
+        })
+        
+        wait(for: [verifyThirdInsertExp], timeout: 10)
+        
+        
+        let deleteResult = mockDiskCache.deleteAll()
+        XCTAssertEqual(deleteResult, true)
+        
+        
+        cacheDoesNotContainUrl(cache: mockDiskCache, url: url1, expectedImage: image, expectationToFullFill: verifyDeletedFirstExp)
+        cacheDoesNotContainUrl(cache: mockDiskCache, url: url2, expectedImage: image, expectationToFullFill: verifyDelectedSecondExp)
+        cacheDoesNotContainUrl(cache: mockDiskCache, url: url3, expectedImage: image, expectationToFullFill: verifyDeletedThidExp)
+        
+        wait(for: [verifyDeletedFirstExp,verifyDelectedSecondExp,verifyDeletedThidExp], timeout: 10)
+        
+        deletedAllExp.fulfill()
         
         waitForExpectations(timeout: 20, handler: nil)
     }
@@ -300,47 +310,47 @@ class DiskCacheImageMockTests: XCTestCase {
             
             XCTAssertEqual(firstInsert, true)
             verifyUrlAndImageInCache(cache: mockDiskCache, url: url1, expectedImage: image, expectationToFullFill: verifyFirstInsertExp)
+       })
+       
+        wait(for: [verifyFirstInsertExp], timeout: 10)
+        
+        mockDiskCache.cache(image: image, url: url2, completion: {
+            secondInsert in
             
-            
-            
-            
-            mockDiskCache.cache(image: image, url: url2, completion: {
-                secondInsert in
-                
-                XCTAssertEqual(secondInsert, true)
-                verifyUrlAndImageInCache(cache: mockDiskCache, url: url2, expectedImage: image, expectationToFullFill: verifySecondInsertExp)
-                
-                
-                //set minDate
-                minDate = Date()
-                
-                
-                mockDiskCache.cache(image: image, url: url3, completion: {
-                    thirdInsert in
-                    
-                    XCTAssertEqual(thirdInsert, true)
-                    verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: image, expectationToFullFill: verifyThirdInsertExp)
-                    
-                    
-                  mockDiskCache.deleteWith(minLastAccessDate: minDate, completion: {
-                    deletedSuccessfully in
-                    
-                    self.cacheDoesNotContainUrl(cache: mockDiskCache, url: url1, expectedImage: self.image, expectationToFullFill: verifyDeletedFirstExp)
-                    self.cacheDoesNotContainUrl(cache: mockDiskCache, url: url2, expectedImage: self.image, expectationToFullFill: verifyDelectedSecondExp)
-                    
-                    self.verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: self.image, expectationToFullFill: verifyThirdInNotDeletedExp)
-                    
-                  })
-                    
-                    
-                    
-                    
-                    
-                    deletedAllExp.fulfill()
-                })
-            })
+            XCTAssertEqual(secondInsert, true)
+            verifyUrlAndImageInCache(cache: mockDiskCache, url: url2, expectedImage: image, expectationToFullFill: verifySecondInsertExp)
         })
         
+        wait(for: [verifySecondInsertExp], timeout: 10)
+        
+        //set minDate
+        minDate = Date()
+        
+        
+        mockDiskCache.cache(image: image, url: url3, completion: {
+            thirdInsert in
+            
+            XCTAssertEqual(thirdInsert, true)
+            verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: image, expectationToFullFill: verifyThirdInsertExp)
+        })
+        
+        wait(for: [verifyThirdInsertExp], timeout: 10)
+        
+        mockDiskCache.deleteWith(minLastAccessDate: minDate, completion: {
+            deletedSuccessfully in
+            
+            self.cacheDoesNotContainUrl(cache: mockDiskCache, url: url1, expectedImage: self.image, expectationToFullFill: verifyDeletedFirstExp)
+            self.cacheDoesNotContainUrl(cache: mockDiskCache, url: url2, expectedImage: self.image, expectationToFullFill: verifyDelectedSecondExp)
+            
+            self.verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: self.image, expectationToFullFill: verifyThirdInNotDeletedExp)
+            
+        })
+        
+        
+        
+        
+        
+        deletedAllExp.fulfill()
         waitForExpectations(timeout: 20, handler: nil)
     }
     

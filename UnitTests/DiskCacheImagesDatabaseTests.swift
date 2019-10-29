@@ -107,43 +107,39 @@ class DiskCacheImagesDatabaseTests: XCTestCase {
             firstCacheResult in
             XCTAssertEqual(firstCacheResult, true)
             cachedFirstExp.fulfill()
-            
-            
-            
-            database.cache(url: secondUrl, completion: {
-                secondCacheResult in
-                XCTAssertEqual(secondCacheResult, true)
-                cachedSecondExp.fulfill()
+        })
+        
+        wait(for: [cachedFirstExp], timeout: 10)
+        
+        database.cache(url: secondUrl, completion: {
+            secondCacheResult in
+            XCTAssertEqual(secondCacheResult, true)
+            cachedSecondExp.fulfill()
+         })
+        
+        wait(for: [cachedSecondExp], timeout: 10)
+        
+        // set minDate
+        minDate = Date()
+        
+        database.cache(url: thirdUrl, completion: {
+            thirdCacheResult in
+            XCTAssertEqual(thirdCacheResult, true)
+            cachedThirdExp.fulfill()
+        })
+        
+        wait(for: [cachedThirdExp], timeout: 10)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 , execute: {
+            database.getUrlsWith(minlastAccessDate: minDate, completion: {
+                fileSystemUrls in
+                //print(url)
+                XCTAssert(fileSystemUrls.contains(firstFileSystemUrl))
+                XCTAssert(fileSystemUrls.contains(secondFileSystemUrl))
                 
-                
-                
-                
-                
-                // set minDate
-                minDate = Date()
-                
-                database.cache(url: thirdUrl, completion: {
-                    thirdCacheResult in
-                    XCTAssertEqual(thirdCacheResult, true)
-                    cachedThirdExp.fulfill()
-                    
-                    
-                   DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 , execute: {
-                    database.getUrlsWith(minlastAccessDate: minDate, completion: {
-                        fileSystemUrls in
-                        //print(url)
-                        XCTAssert(fileSystemUrls.contains(firstFileSystemUrl))
-                        XCTAssert(fileSystemUrls.contains(secondFileSystemUrl))
-                        
-                        XCTAssertNotEqual(fileSystemUrls.contains(thirdFileSystemUrl), true)
-                        verifyUrlsBeforeDate.fulfill()
-                    })
-                   })
-                })
-                
-             })
-            
-            
+                XCTAssertNotEqual(fileSystemUrls.contains(thirdFileSystemUrl), true)
+                verifyUrlsBeforeDate.fulfill()
+            })
         })
         
         waitForExpectations(timeout: 20, handler: nil)

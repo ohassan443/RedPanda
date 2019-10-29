@@ -125,25 +125,27 @@ class FileSystemImageCacheTests: XCTestCase {
             result in
             XCTAssertEqual(result, true)
             writeToFileExp.fulfill()
+       })
+       
+        wait(for: [writeToFileExp], timeout: 10)
+        
+        
+        fileSystemCache.readFromFile(url: url, completion: {
+            cachedImage in
+            //XCTAssertNotNil(XCTAssertEqual(UIImageJPEGRepresentation(cachedImage!, 1.0), UIImageJPEGRepresentation(self.testImage, 1.0))
+            readFromFileExp.fulfill()
+        })
+        wait(for: [readFromFileExp], timeout: 10)
+        
+        // clean up after test
+        fileSystemCache.deleteFromFile(url: url, completion: {
+            deleteResult in
+            XCTAssertEqual(deleteResult, true)
+            cleanUpExp.fulfill()
             
+            // verify clean up by qurying the url and getting nil
+            self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url, expectationToFullfill: cleanUpReadExp)
             
-            fileSystemCache.readFromFile(url: url, completion: {
-                cachedImage in
-                //XCTAssertNotNil(XCTAssertEqual(UIImageJPEGRepresentation(cachedImage!, 1.0), UIImageJPEGRepresentation(self.testImage, 1.0))
-                readFromFileExp.fulfill()
-                
-                
-                // clean up after test
-                fileSystemCache.deleteFromFile(url: url, completion: {
-                    deleteResult in
-                    XCTAssertEqual(deleteResult, true)
-                    cleanUpExp.fulfill()
-                    
-                    // verify clean up by qurying the url and getting nil
-                    self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url, expectationToFullfill: cleanUpReadExp)
-                  
-                })
-            })
         })
         
         waitForExpectations(timeout: 60, handler: nil)
@@ -177,30 +179,29 @@ class FileSystemImageCacheTests: XCTestCase {
             result in
             XCTAssertEqual(result, true)
             writeToFileExp.fulfill()
+        })
+        
+        wait(for: [writeToFileExp], timeout: 10)
+        
+        //verify writing by reading wrote data
+        fileSystemCache.readFromFile(url: url, completion: {
+            cachedImage in
+            XCTAssertNotNil(cachedImage)
+            readFromFileExp.fulfill()
+       })
+       
+        wait(for: [readFromFileExp], timeout: 10)
+        
+        
+        // delete from file
+        fileSystemCache.deleteFromFile(url: url, completion: {
+            deleteResult in
             
+            XCTAssertEqual(deleteResult, true)
+            deleteFromFileExp.fulfill()
             
-            
-            //verify writing by reading wrote data
-            fileSystemCache.readFromFile(url: url, completion: {
-                cachedImage in
-                XCTAssertNotNil(cachedImage)
-                readFromFileExp.fulfill()
-                
-                
-                // delete from file
-                fileSystemCache.deleteFromFile(url: url, completion: {
-                    deleteResult in
-                    
-                    XCTAssertEqual(deleteResult, true)
-                    deleteFromFileExp.fulfill()
-                    
-                    
-                    
-                    // verify delete by quering deleted data
-                    self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url, expectationToFullfill: verifyDeleteExp)
-                })
-            })
-            
+            // verify delete by quering deleted data
+            self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url, expectationToFullfill: verifyDeleteExp)
         })
         
         waitForExpectations(timeout: 60, handler: nil)
@@ -234,34 +235,29 @@ class FileSystemImageCacheTests: XCTestCase {
             XCTAssertEqual(firstWriteResult, true)
             firstWriteResultExp.fulfill()
             
-            
-            // write second Url & image to file
-            fileSystemCache.writeToFile(image: self.testImage, url: url2, completion: {
-                secondWriteResult in
-                XCTAssertEqual(secondWriteResult, true)
-                secondtWriteResultExp.fulfill()
-                
-                // dlete all data
-                let deleteAllResult = fileSystemCache.deleteAll()
-                XCTAssertEqual(deleteAllResult, true)
-                
-                
-                
-                
-                // verify first item deletion
-                self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url1, expectationToFullfill: verifyFirstUrlDeletedExp)
-                
-                
-                // verify second item deletion
-                self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url2, expectationToFullfill: verifySecondUrlDeletedExp)
-                
-                
-                
-            })
-            
-            
-            
-        })
+          })
+        
+        wait(for: [firstWriteResultExp], timeout: 10)
+        
+        // write second Url & image to file
+        fileSystemCache.writeToFile(image: self.testImage, url: url2, completion: {
+            secondWriteResult in
+            XCTAssertEqual(secondWriteResult, true)
+            secondtWriteResultExp.fulfill()
+         })
+        
+        wait(for: [secondtWriteResultExp], timeout: 10)
+        
+        
+        // dlete all data
+        let deleteAllResult = fileSystemCache.deleteAll()
+        XCTAssertEqual(deleteAllResult, true)
+        
+        // verify first item deletion
+        self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url1, expectationToFullfill: verifyFirstUrlDeletedExp)
+        
+        // verify second item deletion
+        self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url2, expectationToFullfill: verifySecondUrlDeletedExp)
         
         waitForExpectations(timeout: 60, handler: nil)
         deleteTempDirectory()
@@ -294,39 +290,40 @@ class FileSystemImageCacheTests: XCTestCase {
             firstWriteResult in
             XCTAssertEqual(firstWriteResult, true)
             firstWriteResultExp.fulfill()
+        })
+       
+        wait(for: [firstWriteResultExp], timeout: 10)
+        
+        // write second Url & image to file
+        fileSystemCache.writeToFile(image: tempTestImage, url: url2, completion: {
+            secondWriteResult in
+            XCTAssertEqual(secondWriteResult, true)
+            secondtWriteResultExp.fulfill()
+    	})
+        
+        wait(for: [secondtWriteResultExp], timeout: 10)
+        
+        
+        fileSystemCache.writeToFile(image: tempTestImage, url: url3, completion: {
+            secondWriteResult in
+            XCTAssertEqual(secondWriteResult, true)
+            thirdWriteResultExp.fulfill()
+        })
+        wait(for: [thirdWriteResultExp], timeout: 10)
+        
+        
+        let urlsToDelete = [url1,url2]
+        fileSystemCache.deleteFilesWith(urls: urlsToDelete, completion: {
+            deleteResult in
+            
+            // verify first item deletion
+            self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url1, expectationToFullfill: firstDeleteResultExp)
             
             
-            // write second Url & image to file
-            fileSystemCache.writeToFile(image: tempTestImage, url: url2, completion: {
-                secondWriteResult in
-                XCTAssertEqual(secondWriteResult, true)
-                secondtWriteResultExp.fulfill()
-                
-                
-                fileSystemCache.writeToFile(image: tempTestImage, url: url3, completion: {
-                    secondWriteResult in
-                    XCTAssertEqual(secondWriteResult, true)
-                    thirdWriteResultExp.fulfill()
-                    
-                    
-                    let urlsToDelete = [url1,url2]
-                    fileSystemCache.deleteFilesWith(urls: urlsToDelete, completion: {
-                        deleteResult in
-                        
-                        // verify first item deletion
-                        self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url1, expectationToFullfill: firstDeleteResultExp)
-                        
-                        
-                        // verify second item deletion
-                        self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url2, expectationToFullfill: secondtDeleteResultExp)
-                        
-                        self.fileSystemContainsUrlForImage(fileSystemCache: fileSystemCache, url: url3, expectedImage: tempTestImage, expectationToFullfill: thirdPersistanceResultExp)
-                        
-                        
-                    })
-                })
-            })
+            // verify second item deletion
+            self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url2, expectationToFullfill: secondtDeleteResultExp)
             
+            self.fileSystemContainsUrlForImage(fileSystemCache: fileSystemCache, url: url3, expectedImage: tempTestImage, expectationToFullfill: thirdPersistanceResultExp)
             
             
         })

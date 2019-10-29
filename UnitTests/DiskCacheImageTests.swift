@@ -174,6 +174,7 @@ class DiskCacheImageTests: XCTestCase {
     func testImageIsAvaliableOnlyOnFileSystem(url:String) {
         
         let deleteExp    = expectation(description: "deleteUnAvaliableImage")
+        let readVerifyExp = expectation(description: "verify not deletion  by reading ")
         let imageWrapper = ImageUrlWrapper(url: url, image: image)
         
         let mockFileSystemImageCache = FileSystemImageCacheBuilder()
@@ -187,14 +188,15 @@ class DiskCacheImageTests: XCTestCase {
         diskCache.delete(url: url, completion: {
             deleteResult in
             XCTAssertEqual(deleteResult, false)
-            
-            
-            mockFileSystemImageCache.readFromFile(url: url, completion: {
-                deletedImage in
-                XCTAssertNotNil(deletedImage)
-                XCTAssertEqual(deletedImage!.pngData(), self.image.pngData())
-                deleteExp.fulfill()
-            })
+            deleteExp.fulfill()
+        })
+        wait(for: [deleteExp], timeout: 10)
+        
+        mockFileSystemImageCache.readFromFile(url: url, completion: {
+            deletedImage in
+            XCTAssertNotNil(deletedImage)
+            XCTAssertEqual(deletedImage!.pngData(), self.image.pngData())
+            readVerifyExp.fulfill()
         })
         
         waitForExpectations(timeout: 2 * 60, handler: nil)
@@ -262,71 +264,67 @@ class DiskCacheImageTests: XCTestCase {
             insertResult in
             XCTAssertEqual(insertResult, true)
             dataBaseInsertExp.fulfill()
-            
-            
-            
-            // verify it was written to fileSystem
-            mockFileSystemImageCache.readFromFile(url: fileSystemUrl, completion: {
-                
-                fileSystemImage in
-                guard let diskImage = fileSystemImage else {
-                    XCTFail()
-                    return
-                }
-                XCTAssertEqual(diskImage.pngData(), self.image.pngData())
-                fileSystemCheckExp.fulfill()
-            })
-            
-            
-            
-            
-            // verify it is accessiable from Database
-            diskCache.getImageFor(url: url, completion: {
-                cachedImage in
-                XCTAssertNotNil(cachedImage)
-                guard let image = cachedImage else {
-                    XCTFail()
-                    return
-                }
-                XCTAssertEqual(cachedImage!.pngData(), image.pngData())
-                dataBaseCheckExp.fulfill()
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                //delete image from cache
-                diskCache.delete(url: url, completion: {
-                    deleteResult in
-                    XCTAssertEqual(deleteResult, true)
-                    dataBaseDeleteExp.fulfill()
-                    
-                    
-                    
-                    
-                    //check for deletetion in dataBase
-                    diskCache.getImageFor(url: url, completion: {
-                        deletedImage in
-                        XCTAssertNil(deletedImage)
-                        dataBaseVerifyDelete.fulfill()
-                    })
-                    
-                    
-                    
-                    // check for deletion in fileSystem
-                    mockFileSystemImageCache.readFromFile(url: fileSystemUrl, completion: {
-                        deletedFileSystemImage in
-                        XCTAssertNil(deletedFileSystemImage)
-                        fileSystemVerifyDelete.fulfill()
-                    })
-                })
-            })
         })
+        
+        wait(for: [dataBaseInsertExp], timeout: 10)
+        
+        // verify it was written to fileSystem
+        mockFileSystemImageCache.readFromFile(url: fileSystemUrl, completion: {
+            
+            fileSystemImage in
+            guard let diskImage = fileSystemImage else {
+                XCTFail()
+                return
+            }
+            XCTAssertEqual(diskImage.pngData(), self.image.pngData())
+            fileSystemCheckExp.fulfill()
+        })
+        
+        
+        
+        
+        // verify it is accessiable from Database
+        diskCache.getImageFor(url: url, completion: {
+            cachedImage in
+            XCTAssertNotNil(cachedImage)
+            guard let image = cachedImage else {
+                XCTFail()
+                return
+            }
+            XCTAssertEqual(cachedImage!.pngData(), image.pngData())
+            dataBaseCheckExp.fulfill()
+        })
+        
+        wait(for: [dataBaseCheckExp,fileSystemCheckExp], timeout: 10)
+        
+        
+        //delete image from cache
+        diskCache.delete(url: url, completion: {
+            deleteResult in
+            XCTAssertEqual(deleteResult, true)
+            dataBaseDeleteExp.fulfill()
+        })
+        wait(for: [dataBaseDeleteExp], timeout: 10)
+        
+        //check for deletetion in dataBase
+        diskCache.getImageFor(url: url, completion: {
+            deletedImage in
+            XCTAssertNil(deletedImage)
+            dataBaseVerifyDelete.fulfill()
+        })
+        
+        
+        
+        // check for deletion in fileSystem
+        mockFileSystemImageCache.readFromFile(url: fileSystemUrl, completion: {
+            deletedFileSystemImage in
+            XCTAssertNil(deletedFileSystemImage)
+            fileSystemVerifyDelete.fulfill()
+        })
+        
+     
+        
+        
         
         
         waitForExpectations(timeout: 20, handler: nil)

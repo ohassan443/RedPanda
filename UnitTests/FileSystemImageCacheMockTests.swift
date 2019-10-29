@@ -120,32 +120,32 @@ class FileSystemImageCacheMockTests: XCTestCase {
             result in
             XCTAssertEqual(result, true)
             writeToFileExp.fulfill()
+        })
+        
+        wait(for: [writeToFileExp], timeout: 10)
+        //verify writing by reading wrote data
+        fileSystemCacheMock.readFromFile(url: url, completion: {
+            cachedImage in
+            XCTAssertNotNil(cachedImage)
+            XCTAssertEqual(cachedImage!.pngData(), self.testImage.pngData())
+            readFromFileExp.fulfill()
+        })
+        
+        wait(for: [readFromFileExp], timeout: 10)
+        
+        
+        // delete from file
+        fileSystemCacheMock.deleteFromFile(url: url, completion: {
+            deleteResult in
             
-            
-            
-            //verify writing by reading wrote data
-            fileSystemCacheMock.readFromFile(url: url, completion: {
-                cachedImage in
-                XCTAssertNotNil(cachedImage)
-                XCTAssertEqual(cachedImage!.pngData(), self.testImage.pngData())
-                readFromFileExp.fulfill()
-                
-                
-                // delete from file
-                fileSystemCacheMock.deleteFromFile(url: url, completion: {
-                    deleteResult in
-                    
-                    XCTAssertEqual(deleteResult, true)
-                    deleteFromFileExp.fulfill()
-                    
-                    
-                    
-                    // verify delete by quering deleted data
-                   self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url, expectationToFullfill: verifyDeleteExp)
-                })
-            })
+            XCTAssertEqual(deleteResult, true)
+            deleteFromFileExp.fulfill()
+            // verify delete by quering deleted data
             
         })
+        wait(for: [deleteFromFileExp], timeout: 10)
+        
+        self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url, expectationToFullfill: verifyDeleteExp)
         
         waitForExpectations(timeout: 20, handler: nil)
     }
@@ -177,29 +177,31 @@ class FileSystemImageCacheMockTests: XCTestCase {
             firstWriteResult in
             XCTAssertEqual(firstWriteResult, true)
             firstWriteResultExp.fulfill()
-            
-            
-            // write second Url & image to file
-            fileSystemCacheMock.writeToFile(image: self.testImage, url: url2, completion: {
-                secondWriteResult in
-                XCTAssertEqual(secondWriteResult, true)
-                secondtWriteResultExp.fulfill()
-                
-                // dlete all data
-                let deleteAllResult = fileSystemCacheMock.deleteAll()
-                XCTAssertEqual(deleteAllResult, true)
-                
-                
-                   // verify first item deletion
-                self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url1, expectationToFullfill: verifyFirstUrlDeletedExp)
-             
-               
-                 // verify second item deletion
-                 self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url2, expectationToFullfill: verifySecondUrlDeletedExp)
-                
-             })
-            
         })
+        wait(for: [firstWriteResultExp], timeout: 10)
+        
+        
+        // write second Url & image to file
+        fileSystemCacheMock.writeToFile(image: self.testImage, url: url2, completion: {
+            secondWriteResult in
+            XCTAssertEqual(secondWriteResult, true)
+            secondtWriteResultExp.fulfill()
+        })
+        
+        wait(for: [secondtWriteResultExp], timeout: 10)
+        
+        // dlete all data
+        let deleteAllResult = fileSystemCacheMock.deleteAll()
+        XCTAssertEqual(deleteAllResult, true)
+        
+        
+        // verify first item deletion
+        self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url1, expectationToFullfill: verifyFirstUrlDeletedExp)
+        
+        
+        // verify second item deletion
+        self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url2, expectationToFullfill: verifySecondUrlDeletedExp)
+        
         
         waitForExpectations(timeout: 20, handler: nil)
     }
@@ -233,43 +235,44 @@ class FileSystemImageCacheMockTests: XCTestCase {
             firstWriteResult in
             XCTAssertEqual(firstWriteResult, true)
             firstWriteResultExp.fulfill()
+        })
+        
+        wait(for: [firstWriteResultExp], timeout: 10)
+        
+        // write second Url & image to file
+        fileSystemCacheMock.writeToFile(image: tempTestImage, url: url2, completion: {
+            secondWriteResult in
+            XCTAssertEqual(secondWriteResult, true)
+            secondtWriteResultExp.fulfill()
+        })
+        
+        wait(for: [secondtWriteResultExp], timeout: 10)
+        
+        
+        
+        fileSystemCacheMock.writeToFile(image: tempTestImage, url: url3, completion: {
+            secondWriteResult in
+            XCTAssertEqual(secondWriteResult, true)
+            thirdWriteResultExp.fulfill()
+       })
+      
+        wait(for: [thirdWriteResultExp], timeout: 10)
+        
+        let urlsToDelete = [url1,url2]
+        fileSystemCacheMock.deleteFilesWith(urls: urlsToDelete, completion: {
+            deleteResult in
+            
+            // verify first item deletion
+            self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url1, expectationToFullfill: firstDeleteResultExp)
             
             
-            // write second Url & image to file
-            fileSystemCacheMock.writeToFile(image: tempTestImage, url: url2, completion: {
-                secondWriteResult in
-                XCTAssertEqual(secondWriteResult, true)
-                secondtWriteResultExp.fulfill()
-                
-                
-                fileSystemCacheMock.writeToFile(image: tempTestImage, url: url3, completion: {
-                    secondWriteResult in
-                    XCTAssertEqual(secondWriteResult, true)
-                    thirdWriteResultExp.fulfill()
-                    
-                    
-                    let urlsToDelete = [url1,url2]
-                    fileSystemCacheMock.deleteFilesWith(urls: urlsToDelete, completion: {
-                        deleteResult in
-                        
-                        // verify first item deletion
-                        self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url1, expectationToFullfill: firstDeleteResultExp)
-                        
-                        
-                        // verify second item deletion
-                        self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url2, expectationToFullfill: secondtDeleteResultExp)
-                        
-                        self.fileSystemContainsUrlForImage(fileSystemCache: fileSystemCacheMock, url: url3, expectedImage: tempTestImage, expectationToFullfill: thirdPersistanceResultExp)
-                        
-                        
-                    })
-                })
-            })
+            // verify second item deletion
+            self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url2, expectationToFullfill: secondtDeleteResultExp)
             
+            self.fileSystemContainsUrlForImage(fileSystemCache: fileSystemCacheMock, url: url3, expectedImage: tempTestImage, expectationToFullfill: thirdPersistanceResultExp)
             
             
         })
-        
         waitForExpectations(timeout: 60, handler: nil)
         
     }
