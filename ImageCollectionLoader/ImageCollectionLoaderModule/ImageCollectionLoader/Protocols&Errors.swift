@@ -115,10 +115,6 @@ protocol InternetConnectivityCheckerObj {
 }
 
 
-protocol PingObj {
-    func ping(url:String ,result : @escaping (PingResult)->()) -> Void
-}
-
 
 enum imageLoadingError: Error {
     case imageParsingFailed
