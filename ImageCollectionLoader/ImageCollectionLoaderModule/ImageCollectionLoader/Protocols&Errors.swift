@@ -10,29 +10,15 @@
 import Foundation
 import Reachability
 
-
-protocol imageLoaderUser {
-    var requestDate:Date {get set}
-    var imageCollectionLoader : ImageCollectionLoaderObj! {get set}
-    func requestImages(currentCell:UITableViewCell,indexPath:IndexPath) -> Void
-    func requestImages(currentCell:UICollectionViewCell,indexPath:IndexPath) -> Void
-}
-extension imageLoaderUser {
-    func requestImages(currentCell:UITableViewCell,indexPath:IndexPath) -> Void {}
-    func requestImages(currentCell:UICollectionViewCell,indexPath:IndexPath) -> Void{}
-}
-
-
-
-protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
+public protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
     typealias params = ( success : Bool,image : UIImage? , dateRequestedAt:Date , indexPath : IndexPath,failedRequest : imageRequest?,error:imageLoadingError?)
     typealias cellCompletionHandler = (_ image: UIImage?,_ indexPath:IndexPath)-> ()
     
-    func cacheQueryState(url:String) -> (state:imageRequest.RequestState,image:UIImage?)
+    public func cacheQueryState(url:String) -> (state:imageRequest.RequestState,image:UIImage?)
   
-    func changeTimerRetry(interval:TimeInterval) -> Void
+    public func changeTimerRetry(interval:TimeInterval) -> Void
     
-    func requestImage(requestDate : Date
+    public func requestImage(requestDate : Date
     , url:String
     ,indexPath:IndexPath
     ,tag:String
@@ -44,7 +30,7 @@ protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
 
 
 
-protocol FileSystemImageCacheObj {
+public  protocol FileSystemImageCacheObj {
     
     func writeToFile(image:UIImage,url:String, completion: @escaping (_ result : Bool)->())-> Void
     
@@ -62,12 +48,12 @@ protocol FileSystemImageCacheObj {
 
 
 
-protocol RamCacheImageObj {
+public protocol RamCacheImageObj {
     func getImageFor(url:String) -> UIImage?
     func cache(image:UIImage,url: String) -> Bool
 }
 
-protocol DiskCahceImageObj {
+public protocol DiskCahceImageObj {
     func getImageFor(url:String,completion: @escaping (_ image : UIImage?)->()) -> Void
     func cache(image:UIImage,url: String,completion: @escaping (_ result : Bool)->()) -> Void
     func delete(url:String , completion : @escaping (_ result : Bool)->()) -> Void
@@ -77,7 +63,7 @@ protocol DiskCahceImageObj {
    
 }
 
-protocol DiskCacheImageDataBaseObj {
+public protocol DiskCacheImageDataBaseObj {
     func getFileSystemUrlFor(url:String,completion: @escaping (_ fileSystemUrl : String?)->()) -> Void
     func cache(url: String, completion: @escaping (Bool) -> ())
     func delete(url: String, completion: @escaping (Bool) -> ()) -> Void
@@ -87,7 +73,7 @@ protocol DiskCacheImageDataBaseObj {
     func deleteWith(minLastAccessDate:Date,completion:@escaping(_ result:Bool)->()) ->Void
 }
 
-protocol ImageLoaderObj {
+public protocol ImageLoaderObj {
     func queryRamCacheFor(url:String) -> UIImage?
     func getImageFrom(urlString:String, completion:  @escaping (_ : UIImage)-> (),fail : @escaping (_ url:String,_ error:Error)-> ()) -> Void
 }
@@ -95,7 +81,7 @@ protocol ImageLoaderObj {
 
 
 
-protocol ReachabilityMOnitorObj {
+public protocol ReachabilityMOnitorObj {
     var  reachabilityMonitorDelegate : ReachabilityMonitorDelegate? {get}
     func set(delegate:ReachabilityMonitorDelegate) -> Void
 }
@@ -103,20 +89,20 @@ protocol ReachabilityMOnitorObj {
 
 
 
-protocol ReachabilityMonitorDelegate : class {
+public protocol ReachabilityMonitorDelegate : class {
     func respondToReachabilityChange(reachable:Bool) -> Void
     var connected : Bool {get}
 }
 
 
 
-protocol InternetConnectivityCheckerObj {
+public protocol InternetConnectivityCheckerObj {
     func check(completionHandler: @escaping (Bool) -> Void) ->()
 }
 
 
 
-enum imageLoadingError: Error {
+public enum imageLoadingError: Error {
     case imageParsingFailed
     case invalidResponse
     case networkError
@@ -131,7 +117,7 @@ let ImageLoaderNetworkErrorCodes =  [
     ,URLError.callIsActive
 ]
 
-func getTempAmazonUrlfrom(url:String) -> String {
+public func getTempAmazonUrlfrom(url:String) -> String {
     return "https://appName.amazonaws.com/Folder/subFolder/card" + url +  ".jpg?AWSAccessKeyId=A!@£$%124123123&Expires=1231231234&Signature=sadfsadfsadfs123@£$%^&^*(*(^*(^*(%3D"
 }
 

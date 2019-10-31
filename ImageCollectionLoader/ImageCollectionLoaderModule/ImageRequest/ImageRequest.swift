@@ -8,8 +8,8 @@
 
 import Foundation
 import UIKit
-struct imageRequest : Hashable {
-    typealias cacheQueryResponse = (state:imageRequest.RequestState,image:UIImage?)
+public struct imageRequest : Hashable {
+    public typealias cacheQueryResponse = (state:imageRequest.RequestState,image:UIImage?)
     enum RequestState {
         case currentlyLoading
         case invalid

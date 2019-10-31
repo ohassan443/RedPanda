@@ -15,7 +15,7 @@ public class ImageCollectionLoaderBuilder {
     
     public init(){}
     
-    public func defaultImp() -> ImageCollectionLoader {
+    public func defaultImp() -> ImageCollectionLoaderObj {
         let imageloader = ImageLoaderBuilder().concrete()
         let internetChecker = InternetConnectivityCheckerBuilder().concrete()
         let reachability = ReachabailityMonitor()

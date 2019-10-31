@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ImageCollectionLoader
 
 class ViewController: UIViewController {
     

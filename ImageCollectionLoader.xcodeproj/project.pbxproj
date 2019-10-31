@@ -34,35 +34,6 @@
 		073F23CC236072F400F7DFFB /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073F23CB236072F400F7DFFB /* ExampleUITests.swift */; };
 		073F23D92360739700F7DFFB /* cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073F23D72360739700F7DFFB /* cell.swift */; };
 		073F23DA2360739700F7DFFB /* cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073F23D82360739700F7DFFB /* cell.xib */; };
-		073F23DC236074E900F7DFFB /* InternetConnectivityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E0235B76440003EB7C /* InternetConnectivityChecker.swift */; };
-		073F23DD236074E900F7DFFB /* InternetConnectivityCheckerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E4235B76440003EB7C /* InternetConnectivityCheckerMock.swift */; };
-		073F23DE236074E900F7DFFB /* InternetConnectivityCheckerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E5235B76440003EB7C /* InternetConnectivityCheckerBuilder.swift */; };
-		073F23DF236074E900F7DFFB /* FileSystemImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290EB235B76440003EB7C /* FileSystemImageCache.swift */; };
-		073F23E0236074E900F7DFFB /* FileSystemImageCacheBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290EC235B76440003EB7C /* FileSystemImageCacheBuilder.swift */; };
-		073F23E1236074E900F7DFFB /* FileSystemImageCacheMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290ED235B76440003EB7C /* FileSystemImageCacheMock.swift */; };
-		073F23E2236074E900F7DFFB /* DiskCacheImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F0235B76440003EB7C /* DiskCacheImage.swift */; };
-		073F23E3236074E900F7DFFB /* DiskCacheImageMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F3235B76440003EB7C /* DiskCacheImageMock.swift */; };
-		073F23E4236074E900F7DFFB /* DiskCacheImageDataBaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F7235B76440003EB7C /* DiskCacheImageDataBaseBuilder.swift */; };
-		073F23E5236074E900F7DFFB /* DiskCacheImageDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F8235B76440003EB7C /* DiskCacheImageDataBase.swift */; };
-		073F23E6236074E900F7DFFB /* DiskCacheImageDatabaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F9235B76440003EB7C /* DiskCacheImageDatabaseMock.swift */; };
-		073F23E7236074E900F7DFFB /* DiskCacheImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FA235B76440003EB7C /* DiskCacheImageBuilder.swift */; };
-		073F23E8236074E900F7DFFB /* RamCacheImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FE235B76440003EB7C /* RamCacheImageBuilder.swift */; };
-		073F23E9236074E900F7DFFB /* RamSharedImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FF235B76440003EB7C /* RamSharedImageCache.swift */; };
-		073F23EA236074E900F7DFFB /* RamCacheImageMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429100235B76440003EB7C /* RamCacheImageMock.swift */; };
-		073F23EB236074E900F7DFFB /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429103235B76440003EB7C /* ImageRequest.swift */; };
-		073F23EC236074E900F7DFFB /* ImageLoaderurlSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429105235B76440003EB7C /* ImageLoaderurlSession.swift */; };
-		073F23ED236074E900F7DFFB /* ImageUrlWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429106235B76440003EB7C /* ImageUrlWrapper.swift */; };
-		073F23EE236074E900F7DFFB /* PersistenetImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429107235B76440003EB7C /* PersistenetImage.swift */; };
-		073F23EF236074E900F7DFFB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429153235B79920003EB7C /* Constants.swift */; };
-		073F23F0236074E900F7DFFB /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742910A235B76440003EB7C /* ImageLoader.swift */; };
-		073F23F1236074E900F7DFFB /* ImageLoaderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742910C235B76440003EB7C /* ImageLoaderBuilder.swift */; };
-		073F23F2236074E900F7DFFB /* ImageLoaderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742910E235B76440003EB7C /* ImageLoaderMock.swift */; };
-		073F23F3236074E900F7DFFB /* ReachabailityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429111235B76440003EB7C /* ReachabailityMonitor.swift */; };
-		073F23F4236074E900F7DFFB /* ReachabailityMonitorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429114235B76440003EB7C /* ReachabailityMonitorMock.swift */; };
-		073F23F5236074E900F7DFFB /* ImageCollectionLoaderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429116235B76440003EB7C /* ImageCollectionLoaderMock.swift */; };
-		073F23F6236074E900F7DFFB /* Protocols&Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429118235B76440003EB7C /* Protocols&Errors.swift */; };
-		073F23F7236074E900F7DFFB /* ImageCollectionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429119235B76440003EB7C /* ImageCollectionLoader.swift */; };
-		073F23F8236074E900F7DFFB /* ImageCollectionLoaderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742911A235B76440003EB7C /* ImageCollectionLoaderBuilder.swift */; };
 		074290D4235B762F0003EB7C /* ImageCollectionLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 074290C6235B762F0003EB7C /* ImageCollectionLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0742911B235B76440003EB7C /* InternetConnectivityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E0235B76440003EB7C /* InternetConnectivityChecker.swift */; };
 		0742911E235B76440003EB7C /* InternetConnectivityCheckerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E4235B76440003EB7C /* InternetConnectivityCheckerMock.swift */; };
@@ -950,38 +921,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				073F23E4236074E900F7DFFB /* DiskCacheImageDataBaseBuilder.swift in Sources */,
 				073F23AE236072F200F7DFFB /* ViewController.swift in Sources */,
-				073F23E7236074E900F7DFFB /* DiskCacheImageBuilder.swift in Sources */,
-				073F23E8236074E900F7DFFB /* RamCacheImageBuilder.swift in Sources */,
-				073F23F5236074E900F7DFFB /* ImageCollectionLoaderMock.swift in Sources */,
-				073F23F6236074E900F7DFFB /* Protocols&Errors.swift in Sources */,
-				073F23F2236074E900F7DFFB /* ImageLoaderMock.swift in Sources */,
-				073F23F4236074E900F7DFFB /* ReachabailityMonitorMock.swift in Sources */,
-				073F23DD236074E900F7DFFB /* InternetConnectivityCheckerMock.swift in Sources */,
 				073F23D92360739700F7DFFB /* cell.swift in Sources */,
-				073F23EF236074E900F7DFFB /* Constants.swift in Sources */,
-				073F23ED236074E900F7DFFB /* ImageUrlWrapper.swift in Sources */,
-				073F23E6236074E900F7DFFB /* DiskCacheImageDatabaseMock.swift in Sources */,
-				073F23EB236074E900F7DFFB /* ImageRequest.swift in Sources */,
 				073F23AC236072F200F7DFFB /* AppDelegate.swift in Sources */,
-				073F23E3236074E900F7DFFB /* DiskCacheImageMock.swift in Sources */,
-				073F23EA236074E900F7DFFB /* RamCacheImageMock.swift in Sources */,
-				073F23EE236074E900F7DFFB /* PersistenetImage.swift in Sources */,
-				073F23F8236074E900F7DFFB /* ImageCollectionLoaderBuilder.swift in Sources */,
-				073F23F0236074E900F7DFFB /* ImageLoader.swift in Sources */,
-				073F23F3236074E900F7DFFB /* ReachabailityMonitor.swift in Sources */,
-				073F23EC236074E900F7DFFB /* ImageLoaderurlSession.swift in Sources */,
-				073F23DC236074E900F7DFFB /* InternetConnectivityChecker.swift in Sources */,
-				073F23E2236074E900F7DFFB /* DiskCacheImage.swift in Sources */,
-				073F23E1236074E900F7DFFB /* FileSystemImageCacheMock.swift in Sources */,
-				073F23E0236074E900F7DFFB /* FileSystemImageCacheBuilder.swift in Sources */,
-				073F23F7236074E900F7DFFB /* ImageCollectionLoader.swift in Sources */,
-				073F23F1236074E900F7DFFB /* ImageLoaderBuilder.swift in Sources */,
-				073F23E5236074E900F7DFFB /* DiskCacheImageDataBase.swift in Sources */,
-				073F23DF236074E900F7DFFB /* FileSystemImageCache.swift in Sources */,
-				073F23E9236074E900F7DFFB /* RamSharedImageCache.swift in Sources */,
-				073F23DE236074E900F7DFFB /* InternetConnectivityCheckerBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1124,6 +1066,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P98RF6S5R9;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1144,6 +1087,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P98RF6S5R9;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (

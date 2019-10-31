@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 class  InternetConnectivityChecker : InternetConnectivityCheckerObj  {
 
     private var url : String
