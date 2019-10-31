@@ -14,11 +14,11 @@ public protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
     typealias params = ( success : Bool,image : UIImage? , dateRequestedAt:Date , indexPath : IndexPath,failedRequest : imageRequest?,error:imageLoadingError?)
     typealias cellCompletionHandler = (_ image: UIImage?,_ indexPath:IndexPath)-> ()
     
-    public func cacheQueryState(url:String) -> (state:imageRequest.RequestState,image:UIImage?)
+     func cacheQueryState(url:String) -> (state:imageRequest.RequestState,image:UIImage?)
   
-    public func changeTimerRetry(interval:TimeInterval) -> Void
+     func changeTimerRetry(interval:TimeInterval) -> Void
     
-    public func requestImage(requestDate : Date
+     func requestImage(requestDate : Date
     , url:String
     ,indexPath:IndexPath
     ,tag:String

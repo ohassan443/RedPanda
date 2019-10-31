@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 public struct imageRequest : Hashable {
     public typealias cacheQueryResponse = (state:imageRequest.RequestState,image:UIImage?)
-    enum RequestState {
+    public enum RequestState {
         case currentlyLoading
         case invalid
         case processing
@@ -57,7 +57,7 @@ public struct imageRequest : Hashable {
     
    
     
-    internal func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         let keyValue = url + String(cellIndexPath.row) + String(cellIndexPath.section) + tag
         hasher.combine(keyValue)
     }
@@ -78,7 +78,7 @@ public struct imageRequest : Hashable {
         
     }
     
-    static func == (lhs: imageRequest, rhs: imageRequest) -> Bool {
+    public static func == (lhs: imageRequest, rhs: imageRequest) -> Bool {
         return lhs.url == rhs.url && lhs.cellIndexPath == rhs.cellIndexPath && lhs.tag == rhs.tag
     }
     static func compare(queryRequest:imageRequest,target:(url:String,cellIndexPath:IndexPath,tag:String)) -> Bool {

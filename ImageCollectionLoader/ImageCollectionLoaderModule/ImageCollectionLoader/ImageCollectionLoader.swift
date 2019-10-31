@@ -78,7 +78,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     private var timer : Timer?
     private var timerDelay : TimeInterval = 3
     private let invalidRequestImage : UIImage? = nil
-    var connected : Bool = false
+    public var connected : Bool = false
     
     private var imageLoader : ImageLoaderObj
     private var reachability : ReachabilityMOnitorObj
@@ -94,7 +94,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     }
     
     
-    func cacheQueryState(url: String) -> (state:imageRequest.RequestState,image:UIImage?) {
+    public func cacheQueryState(url: String) -> (state:imageRequest.RequestState,image:UIImage?) {
         guard !(url == "") else {return (.cached,UIImage()) }
         
         if invalidRequests.set.contains(url)  {
@@ -112,12 +112,12 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     }
     
     
-    func changeTimerRetry(interval: TimeInterval) {
+    public func changeTimerRetry(interval: TimeInterval) {
         self.timerDelay = interval
     }
     
     
-    func requestImage(requestDate : Date
+    public func requestImage(requestDate : Date
         , url:String
         ,indexPath:IndexPath
         ,tag:String
@@ -454,7 +454,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
 
 
 extension ImageCollectionLoader : ReachabilityMonitorDelegate {
-    func respondToReachabilityChange(reachable: Bool) {
+    public func respondToReachabilityChange(reachable: Bool) {
         reachable ? (retryFailedRequests()) : ()
         self.connected = reachable
     }
