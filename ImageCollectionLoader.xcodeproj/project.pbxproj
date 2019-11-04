@@ -61,6 +61,8 @@
 		07429144235B76440003EB7C /* ImageCollectionLoaderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742911A235B76440003EB7C /* ImageCollectionLoaderBuilder.swift */; };
 		07429154235B79920003EB7C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429153235B79920003EB7C /* Constants.swift */; };
 		0789943F236870E100AB544F /* Mediax.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0789943E236870E100AB544F /* Mediax.xcassets */; };
+		07BF9AE52370965800320731 /* cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE32370965800320731 /* cell.swift */; };
+		07BF9AE62370965800320731 /* cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07BF9AE42370965800320731 /* cell.xib */; };
 		0E42248495711D3F8E3203D2 /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 144F6B12E72F9D7A1A447866 /* Pods_UnitTests.framework */; };
 		68336005CD191CB2D8CD87C1 /* Pods_ImageCollectionLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E33A83E490EDE57BF9800 /* Pods_ImageCollectionLoader.framework */; };
 /* End PBXBuildFile section */
@@ -136,6 +138,8 @@
 		0742911A235B76440003EB7C /* ImageCollectionLoaderBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionLoaderBuilder.swift; sourceTree = "<group>"; };
 		07429153235B79920003EB7C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0789943E236870E100AB544F /* Mediax.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mediax.xcassets; sourceTree = "<group>"; };
+		07BF9AE32370965800320731 /* cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cell.swift; sourceTree = "<group>"; };
+		07BF9AE42370965800320731 /* cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = cell.xib; sourceTree = "<group>"; };
 		144F6B12E72F9D7A1A447866 /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1968C00EEFA1E0AFA4C74DEF /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 		412BC3B21FDD3BF790CFF2DB /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,6 +215,8 @@
 				072C895F2370466500FBF430 /* AppDelegate.swift */,
 				072C89612370466500FBF430 /* ViewController.swift */,
 				072C89632370466500FBF430 /* Main.storyboard */,
+				07BF9AE32370965800320731 /* cell.swift */,
+				07BF9AE42370965800320731 /* cell.xib */,
 				072C89662370466600FBF430 /* Assets.xcassets */,
 				072C89682370466600FBF430 /* LaunchScreen.storyboard */,
 				072C896B2370466600FBF430 /* Info.plist */,
@@ -593,6 +599,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				072C896A2370466600FBF430 /* LaunchScreen.storyboard in Resources */,
+				07BF9AE62370965800320731 /* cell.xib in Resources */,
 				072C89672370466600FBF430 /* Assets.xcassets in Resources */,
 				072C89652370466500FBF430 /* Main.storyboard in Resources */,
 			);
@@ -701,6 +708,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				072C89622370466500FBF430 /* ViewController.swift in Sources */,
+				07BF9AE52370965800320731 /* cell.swift in Sources */,
 				072C89602370466500FBF430 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -987,6 +995,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
+					"@executable_path",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
@@ -1014,6 +1023,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
+					"@executable_path",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);

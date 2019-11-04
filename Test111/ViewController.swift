@@ -72,16 +72,16 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! cell
         let element = dataSource[indexPath.row]
         
         if let card = imageCollectionLoader.cacheQueryState(url: element).image{
-           // cell.set(image: card)
+           cell.iv.image = card
         }else {
             imageCollectionLoader.requestImage(requestDate: Date(), url: element, indexPath: indexPath, tag: "card", successHandler: {
                 image , index , date in
-                guard let visibleCell = tableView.cellForRow(at: index) as? UITableViewCell else {return}
-               // visibleCell.set(image: image)
+                guard let visibleCell = tableView.cellForRow(at: index) as? cell else {return}
+                visibleCell.iv.image = image
             }, failedHandler: nil)
         }
         
