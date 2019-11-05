@@ -60,6 +60,8 @@
 		07429143235B76440003EB7C /* ImageCollectionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429119235B76440003EB7C /* ImageCollectionLoader.swift */; };
 		07429144235B76440003EB7C /* ImageCollectionLoaderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742911A235B76440003EB7C /* ImageCollectionLoaderBuilder.swift */; };
 		07429154235B79920003EB7C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429153235B79920003EB7C /* Constants.swift */; };
+		074BE0D62371B34800B9471E /* ImageCollectionLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074290C3235B762F0003EB7C /* ImageCollectionLoader.framework */; };
+		074BE0D72371B34800B9471E /* ImageCollectionLoader.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 074290C3235B762F0003EB7C /* ImageCollectionLoader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0789943F236870E100AB544F /* Mediax.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0789943E236870E100AB544F /* Mediax.xcassets */; };
 		07BF9AE52370965800320731 /* cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE32370965800320731 /* cell.swift */; };
 		07BF9AE62370965800320731 /* cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07BF9AE42370965800320731 /* cell.xib */; };
@@ -77,7 +79,28 @@
 			remoteGlobalIDString = 074290C2235B762F0003EB7C;
 			remoteInfo = ImageCollectionLoader;
 		};
+		074BE0D82371B34800B9471E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 074290BA235B762F0003EB7C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 074290C2235B762F0003EB7C;
+			remoteInfo = ImageCollectionLoader;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		074BE0DA2371B34800B9471E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				074BE0D72371B34800B9471E /* ImageCollectionLoader.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		04AA4B3C3D937A07DD3B9F49 /* Pods_ExampleUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExampleUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -174,6 +197,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				074BE0D62371B34800B9471E /* ImageCollectionLoader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,10 +545,12 @@
 				072C89592370466500FBF430 /* Sources */,
 				072C895A2370466500FBF430 /* Frameworks */,
 				072C895B2370466500FBF430 /* Resources */,
+				074BE0DA2371B34800B9471E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				074BE0D92371B34800B9471E /* PBXTargetDependency */,
 			);
 			name = Test111;
 			productName = Test111;
@@ -765,6 +791,11 @@
 			target = 074290C2235B762F0003EB7C /* ImageCollectionLoader */;
 			targetProxy = 0721629A235C484200692A85 /* PBXContainerItemProxy */;
 		};
+		074BE0D92371B34800B9471E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 074290C2235B762F0003EB7C /* ImageCollectionLoader */;
+			targetProxy = 074BE0D82371B34800B9471E /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -828,6 +859,7 @@
 		072C896D2370466600FBF430 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P98RF6S5R9;
@@ -847,6 +879,7 @@
 		072C896E2370466600FBF430 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P98RF6S5R9;

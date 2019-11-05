@@ -53,7 +53,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UnitTests/InternetConnectivityCheckerTests.swift"
-            timestampString = "594577135.574276"
+            timestampString = "594079043.7460769"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "34"
@@ -108,69 +108,6 @@
             endingLineNumber = "303"
             landmarkName = "testFailedToParseImageData()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Test111/AppDelegate.swift"
-            timestampString = "594582519.403284"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "13"
-            endingLineNumber = "13"
-            landmarkName = "AppDelegate"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Test111.AppDelegate.window.getter : Swift.Optional&lt;__C.UIWindow&gt;"
-                  moduleName = "Test111"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/Test111/AppDelegate.swift"
-                  timestampString = "594582519.466656"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "14"
-                  endingLineNumber = "14"
-                  offsetFromSymbolStart = "114">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Test111.AppDelegate.window.setter : Swift.Optional&lt;__C.UIWindow&gt;"
-                  moduleName = "Test111"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/Test111/AppDelegate.swift"
-                  timestampString = "594582519.468971"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "14"
-                  endingLineNumber = "14"
-                  offsetFromSymbolStart = "128">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Test111.AppDelegate.init() -&gt; Test111.AppDelegate"
-                  moduleName = "Test111"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/Test111/AppDelegate.swift"
-                  timestampString = "594582519.471686"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "14"
-                  endingLineNumber = "14"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
