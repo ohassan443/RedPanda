@@ -74,23 +74,6 @@ public final class HTTPConnection {
         transport.close()
     }
 
-    public func getHeaders()-> [String:String] {
-        var tempHeaders = [String:String]()
-        for element in headerElements {
-            switch element{
-            case .header(key: let key, value: let value):
-                tempHeaders[key] = value
-            default : break
-            }
-        }
-        
-        return tempHeaders
-    }
-    
-    public func getBody()->Data?{
-        return initialBody
-    }
-    
     // called to handle data received
     private func handleDataReceived(_ data: Data) {
         switch requestState {

@@ -1,11 +1,11 @@
 PODS:
   - Embassy (4.1.0)
   - ReachabilitySwift (4.3.1)
-  - Realm (3.18.0):
-    - Realm/Headers (= 3.18.0)
-  - Realm/Headers (3.18.0)
-  - RealmSwift (3.18.0):
-    - Realm (= 3.18.0)
+  - Realm (3.20.0):
+    - Realm/Headers (= 3.20.0)
+  - Realm/Headers (3.20.0)
+  - RealmSwift (3.20.0):
+    - Realm (= 3.20.0)
 
 DEPENDENCIES:
   - Embassy
@@ -13,19 +13,18 @@ DEPENDENCIES:
   - RealmSwift
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
+    - Embassy
     - ReachabilitySwift
     - Realm
     - RealmSwift
-  trunk:
-    - Embassy
 
 SPEC CHECKSUMS:
   Embassy: 296c51c4b16b8377b413f48f413a99aa736adc22
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
-  Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
-  RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
+  Realm: 8b2ca5bc6479a91f379b6b42b5922e396cd5ba5a
+  RealmSwift: 1949ef26a279e1845bd51d591b9103adfcd121df
 
-PODFILE CHECKSUM: 7d4cd1132700921ef60cf15fe60ff0abb4624006
+PODFILE CHECKSUM: c83bb38156596801a5cf97b089e5af5acdda6dcb
 
 COCOAPODS: 1.8.4

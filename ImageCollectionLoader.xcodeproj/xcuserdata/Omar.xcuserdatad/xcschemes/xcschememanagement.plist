@@ -17,7 +17,7 @@
 		<key>Test111.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>9</integer>
 		</dict>
 		<key>UnitTests.xcscheme_^#shared#^_</key>
 		<dict>
@@ -28,6 +28,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>07216293235C484200692A85</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>072C895C2370466500FBF430</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -13,48 +13,80 @@ class SyncedSet<T: Hashable>{
     private var timeStamp = Date()
     
     let syncQueue =  DispatchQueue(label: "queue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInitiated))
-    
+    let completionQueue = DispatchQueue(label: "queue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInitiated))
     
     public func updateTimeStamp()-> Void{
         timeStamp = Date()
     }
     
     func syncedInsert(element: T,completion:  (((Bool,T))->())? = nil  ) -> Void {
-        let requestDate = timeStamp
-        syncQueue.async(flags : .barrier) { [weak self] in
-            guard let container = self , container.timeStamp == requestDate else {return}
-            let result =   container.set.insert(element)
-            completion?(result)
-        }
+        asyncOperation(operation: {
+            return self.set.insert(element)
+        }, completion:{ response in
+            self.completionQueue.async {
+                completion?(response)
+            }
+        })
     }
     func syncedRemove(element:T,completion: ((T?)->())? = nil) -> Void {
-         let requestDate = timeStamp
-        syncQueue.async(flags : .barrier) { [weak self] in
-            guard let container = self , container.timeStamp == requestDate else {return}
-            let result =   container.set.remove(element)
-            completion?(result)
-        }
+        asyncOperation(operation: {
+            return self.set.remove(element)
+        }, completion:{ response in
+            self.completionQueue.async {
+                completion?(response)
+            }
+        })
     }
     func syncedUpdate(element:T,completion: ((T?)->())? = nil) -> Void {
-         let requestDate = timeStamp
-        syncQueue.async(flags : .barrier) { [weak self] in
-            guard let container = self , container.timeStamp == requestDate else {return}
-            let result =   container.set.update(with: element)
-            completion?(result)
-        }
+        asyncOperation(operation: {
+            return self.set.update(with: element)
+        }, completion:{ response in
+            self.completionQueue.async {
+                completion?(response)
+            }
+        })
+        
+        
     }
+    
+    
+    
     func syncedRead(criteria: (T)->(Bool)) -> T? {
-        var result : T? = nil
+        let operation : (() -> (T?)) = {
+            guard self.set.contains(where: criteria) else {return nil}
+            return  self.set.filter({  return criteria($0) }).first
+        }
+        return self.syncOperation(operation: operation)
+    }
+    func syncCheckContaines(element:T) -> Bool {
+        return syncOperation(operation: {
+            set.contains(element)
+        })
+    }
+    func syncCheckEmpty() -> Bool {
+        return syncOperation(operation: {
+            return set.isEmpty
+        })
+    }
+    
+    
+    private func syncOperation<T>(operation: ()->(T)) -> T {
+        var result : T! = nil
         syncQueue.sync {
-            guard set.contains(where: criteria) else {return}
-            
-            result = set.filter({
-                element in
-                return criteria(element)
-            }).first
+            result = operation()
         }
         return result
     }
+    
+    private func asyncOperation<U>(operation : @escaping ()->(U),completion: @escaping ((U)->())) -> Void {
+        let requestDate = timeStamp
+        syncQueue.async(flags : .barrier) { [weak self] in
+            guard let container = self , container.timeStamp == requestDate else {return}
+            let result = operation()
+            completion(result)
+        }
+    }
+    
     
 }
 
@@ -96,10 +128,12 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
     public func cacheQueryState(url: String) -> (state:imageRequest.RequestState,image:UIImage?) {
         guard !(url == "") else {return (.cached,UIImage()) }
+
         
-        if invalidRequests.set.contains(url)  {
-            return (.invalid,invalidRequestImage)
-        } // url does not contain corrupt or expired or removed image
+        if invalidRequests.syncCheckContaines(element: url){
+                 return (.invalid,invalidRequestImage)
+        }
+        
         
         
         if let image = imageLoader.queryRamCacheFor(url: url){
@@ -135,7 +169,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         
         /// url does not contain corrupt or expired or removed image
-        guard  invalidRequests.set.contains(url)  == false   else {return imageRequest.RequestState.invalid}
+        guard  invalidRequests.syncCheckContaines(element: url)  == false   else {return imageRequest.RequestState.invalid}
         
         if let currentlyLoadingRequest = requests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag) , currentlyLoadingRequest.currentlyLoading == true{
              return imageRequest.RequestState.currentlyLoading
@@ -191,9 +225,9 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         add(request: request)
         
         
-        DispatchQueue.main.async {
-            self.execute(request: request)
-        }
+   
+             self.execute(request: request)
+      
         return .processing
     }
     
@@ -222,8 +256,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
     fileprivate func execute(request:imageRequest) -> Void {
         
-
-        guard requests.set.contains(request) else {return}
+        guard requests.syncCheckContaines(element: request) else {return}
         var req = request
         req.setLoading()
         requests.syncedUpdate(element: req)
@@ -279,8 +312,8 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         networkFailedRequests =  SyncedSet<imageRequest>.init()
         
-        
-        requestsToTry.set.forEach(){
+        let requestsToRetry = requestsToTry.set
+        requestsToRetry.forEach(){
             request in
             
             requests.syncedInsert(element: request, completion: {
@@ -401,7 +434,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     private func runTimerCheck() -> Void{
         
         guard timer == nil else {return}
-        let requestsFailed = !networkFailedRequests.set.isEmpty
+        let requestsFailed = !networkFailedRequests.syncCheckEmpty()
         //        let networkExist = connected
         //
         //        guard requestsFailed && networkExist else {return}
@@ -440,7 +473,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
     
     @objc private func runTimedCode(){
-        guard networkFailedRequests.set.isEmpty == false else {
+        guard networkFailedRequests.syncCheckEmpty() == false else {
             timer?.invalidate()
             return
         }

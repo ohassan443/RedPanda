@@ -83,77 +83,6 @@ class LocallServer {
     sendBody : sendBody
     )
 
-    static  let networkCaller = NetWorkCallExecutor()
-    
-    
-    static func getInstance(call: @escaping ((requestParams) ->(startResponse?,Data?) ))-> HTTPServer{
-        
-        
-        
-        
-        let loop = try! SelectorEventLoop(selector: try! KqueueSelector())
-        
-        
-        let server = DefaultHTTPServer(eventLoop: loop, port: 8080){
-            (
-            environ: [String: Any],
-            startResponse: @escaping ((String, [(String, String)]) -> Void),
-            sendBody: @escaping ((Data) -> Void)
-            ) in
-            // Start HTTP response
-            
-            let path = environ["PATH_INFO"]! as! String
-            let queryStrings = environ["QUERY_STRING"] as? String
-            
-            
-            
-            
-            let currentServerResponse = call((path,queryStrings,nil))
-            
-            
-            if let statusCode = currentServerResponse.0?.0 , statusCode == LocallServer.statusCode.redirectToServer{
-                redirect(path: path, queryStrings: queryStrings, completion: {
-                    resultData,statusCode in
-                    guard loop.running == true else {return}
-                    guard let data = resultData else {
-                        startResponse("\(statusCode)",[])
-                        sendBody(Data())
-                        return
-                    }
-                    startResponse(LocallServer.statusCode.s200.rawValue,[])
-                    sendBody(data)
-                    sendBody(Data())
-                })
-            }
-            
-            guard let response = currentServerResponse.0?.0.rawValue ,
-                let header 		= currentServerResponse.0?.header,
-                let body 		= currentServerResponse.1
-                else {
-                    startResponse(LocallServer.statusCode.s500.rawValue,[])
-                    sendBody(Data())
-                    return}
-            
-            
-            
-            
-            startResponse(response,header )
-            sendBody(body)
-            sendBody(Data())
-            
-            
-        }
-        
-        
-        try! server.start()
-        DispatchQueue.global().async {
-            loop.runForever()
-        }
-        
-        
-        return  server
-    }
-    
     class LocalServerCallBack {
         let stautsCode 	: statusCode
         let headers  	: [(String,String)]
@@ -188,18 +117,6 @@ class LocallServer {
                 arg in
                 
                 if arg.stautsCode == LocallServer.statusCode.redirectToServer{
-                    redirect(path: path, queryStrings: queryStrings, completion: {
-                        resultData,statusCode in
-                        guard loop.running == true else {return}
-                        guard let data = resultData else {
-                            startResponse("\(statusCode)",[])
-                            sendBody(Data())
-                            return
-                        }
-                        startResponse(LocallServer.statusCode.s200.rawValue,[])
-                        sendBody(data)
-                        sendBody(Data())
-                    })
                     return
                 }
                 
@@ -224,44 +141,6 @@ class LocallServer {
         return server
     }
     
-    static func redirect(path:String,queryStrings:String?,completion : @escaping (_ data:Data?,_ statusCode:Int)->())-> Void{
-        
-            let call = ApiCallDetails()
-            call.requestUrl = AppConstants.serviceUrl + path
-            if let query = queryStrings {
-                call.requestUrl = call.requestUrl + "?" + query
-            }
-            
-            networkCaller.execute(callDetails: call, completionHandler: {
-                r in
-                switch r {
-                case .success(let x ):
-                    switch x {
-                    case .data(data: let data):
-                        completion(data, 200)
-                    default : break
-                    }
-                    
-                case .fail(let _, let statusCode, let _):
-                    completion(nil, statusCode ?? 500)
-                }
-            })
-            return
-
-    }
-    
-   static var timeOut : ((LocallServer.requestParams)->(LocallServer.startResponse,Data)) = {
-        params in
-        let path         = params.0
-        let _ = params.1
-        let _ = params.body
-        
-        
-        
-        
-        
-        return (LocallServer.startResponse(LocallServer.statusCode.s500,[]),Data())
-    }
-    
+   
     
 }
