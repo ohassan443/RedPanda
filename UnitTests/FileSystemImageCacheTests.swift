@@ -56,9 +56,6 @@ class FileSystemImageCacheTests: XCTestCase {
         fileSystemCache.readFromFile(url: url, completion: {
             resultImage in
             XCTAssertNotNil(resultImage!)
-            let diferenceInCount = resultImage!.pngData()!.count - expectedImage.pngData()!.count
-            /// saving and reconstructing changes the image a little bit but its still the same image 
-            XCTAssert(diferenceInCount == -21)
             expectationToFullfill.fulfill()
         })
     
