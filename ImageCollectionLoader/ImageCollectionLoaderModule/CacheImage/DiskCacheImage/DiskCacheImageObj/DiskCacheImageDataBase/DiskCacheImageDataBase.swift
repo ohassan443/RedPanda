@@ -59,7 +59,8 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
             
             let realm  = database.createRealm()
             let cache : ()? = try? database.createRealm().write {
-                realm.add(objToSave,update: true)
+                realm.add(objToSave,update: .all)
+                
             }
             
             let addResult  =  cache != nil

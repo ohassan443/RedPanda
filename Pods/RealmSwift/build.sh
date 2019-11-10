@@ -933,7 +933,7 @@ case "$COMMAND" in
         ;;
 
     "verify-ios-static")
-        sh build.sh test-ios-static
+        REALM_EXTRA_BUILD_ARGUMENTS="$REALM_EXTRA_BUILD_ARGUMENTS -workspace examples/ios/objc/RealmExamples.xcworkspace" sh build.sh test-ios-static
         sh build.sh examples-ios
         ;;
 
@@ -942,7 +942,7 @@ case "$COMMAND" in
         ;;
 
     "verify-ios-swift")
-        sh build.sh test-ios-swift
+        REALM_EXTRA_BUILD_ARGUMENTS="$REALM_EXTRA_BUILD_ARGUMENTS -workspace examples/ios/swift/RealmExamples.xcworkspace" sh build.sh test-ios-swift
         sh build.sh examples-ios-swift
         ;;
 
@@ -1500,8 +1500,13 @@ x.y.z Release notes (yyyy-MM-dd)
 ### Compatibility
 * File format: Generates Realms with format v9 (Reads and upgrades all previous formats)
 * Realm Object Server: 3.21.0 or later.
-* APIs are backwards compatible with all previous releases in the 3.x.y series.
-* Carthage release for Swift is built with Xcode 11.0.
+* APIs are backwards compatible with all previous releases in the 4.x.y series.
+* Carthage release for Swift is built with Xcode 11.2.
+
+### Internal
+Upgraded realm-core from ? to ?
+Upgraded realm-sync from ? to ?
+
 EOS)
         changelog=$(cat CHANGELOG.md)
         echo "$empty_section" > CHANGELOG.md
