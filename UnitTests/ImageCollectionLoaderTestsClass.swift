@@ -559,6 +559,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
     ///https://picsum.photos/id/1/200/200
     ////// check tag colision 
     func testSpam() {
+        let startDate = Date()
        var images = [String]()
         var expectations = [XCTestExpectation]()
         for i in 0...1000 {
@@ -592,6 +593,11 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
         
        
         waitForExpectations(timeout: 100, handler: nil)
+        let finishDate = Date()
+        
+        let lapsedTime = finishDate.timeIntervalSince1970 - startDate.timeIntervalSince1970
+        
+        print("lapsed time = \(lapsedTime)")
     }
     
     

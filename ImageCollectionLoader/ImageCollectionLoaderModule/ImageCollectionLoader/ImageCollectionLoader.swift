@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class SyncedSet<T: Hashable>{
-    var set : Set<T> = []
+    var values : [Int:T] = [:]
     private var timeStamp = Date()
     
     let syncQueue =  DispatchQueue(label: "queue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInitiated))
@@ -21,7 +21,8 @@ class SyncedSet<T: Hashable>{
     
     func syncedInsert(element: T,completion:  (((Bool,T))->())? = nil  ) -> Void {
         asyncOperation(operation: {
-            return self.set.insert(element)
+            self.values[element.hashValue] = element
+            return (true,element)
         }, completion:{ response in
             self.completionQueue.async {
                 completion?(response)
@@ -30,7 +31,8 @@ class SyncedSet<T: Hashable>{
     }
     func syncedRemove(element:T,completion: ((T?)->())? = nil) -> Void {
         asyncOperation(operation: {
-            return self.set.remove(element)
+            self.values[element.hashValue] = nil
+            return element
         }, completion:{ response in
             self.completionQueue.async {
                 completion?(response)
@@ -39,7 +41,8 @@ class SyncedSet<T: Hashable>{
     }
     func syncedUpdate(element:T,completion: ((T?)->())? = nil) -> Void {
         asyncOperation(operation: {
-            return self.set.update(with: element)
+            self.values[element.hashValue] = element
+            return element
         }, completion:{ response in
             self.completionQueue.async {
                 completion?(response)
@@ -51,21 +54,20 @@ class SyncedSet<T: Hashable>{
     
     
     
-    func syncedRead(criteria: (T)->(Bool)) -> T? {
+    func syncedRead(targetElementHashValue:Int) -> T? {
         let operation : (() -> (T?)) = {
-            guard self.set.contains(where: criteria) else {return nil}
-            return  self.set.filter({  return criteria($0) }).first
+            return self.values[targetElementHashValue]
         }
         return self.syncOperation(operation: operation)
     }
-    func syncCheckContaines(element:T) -> Bool {
+    func syncCheckContaines(elementHashValue:Int) -> Bool {
         return syncOperation(operation: {
-            set.contains(element)
+            return self.values[elementHashValue] != nil
         })
     }
     func syncCheckEmpty() -> Bool {
         return syncOperation(operation: {
-            return set.isEmpty
+            return self.values.isEmpty
         })
     }
     
@@ -93,10 +95,10 @@ class SyncedSet<T: Hashable>{
 extension SyncedSet where T == imageRequest {
     func specialSyncedRead(url:String,indexPath:IndexPath,tag:String) -> imageRequest? {
        
-        let result = syncedRead(criteria: {
-            queryRequest in
-            return imageRequest.compare(queryRequest: queryRequest, target: (url,indexPath,tag)
-            )})
+        
+        let targetHashValue = imageRequest(image: nil, url: url, loading: false, dateRequestedAt: Date(), cellIndexPath: indexPath, tag: tag).hashValue
+        
+        let result = syncedRead(targetElementHashValue: targetHashValue)
         
         return result
     }
@@ -130,7 +132,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         guard !(url == "") else {return (.cached,UIImage()) }
 
         
-        if invalidRequests.syncCheckContaines(element: url){
+        if invalidRequests.syncCheckContaines(elementHashValue: url.hashValue){
                  return (.invalid,invalidRequestImage)
         }
         
@@ -169,7 +171,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         
         /// url does not contain corrupt or expired or removed image
-        guard  invalidRequests.syncCheckContaines(element: url)  == false   else {return imageRequest.RequestState.invalid}
+        guard  invalidRequests.syncCheckContaines(elementHashValue: url.hashValue)  == false   else {return imageRequest.RequestState.invalid}
         
         if let currentlyLoadingRequest = requests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag) , currentlyLoadingRequest.currentlyLoading == true{
              return imageRequest.RequestState.currentlyLoading
@@ -243,7 +245,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         newRequest.setLoading()
         
         
-        guard let currentRequestInSet = requests.syncedRead(criteria: {return $0 == newRequest}) else {
+        guard let currentRequestInSet = requests.syncedRead(targetElementHashValue: newRequest.hashValue) else {
             requests.syncedInsert(element: newRequest)
             return
         }
@@ -256,7 +258,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
     fileprivate func execute(request:imageRequest) -> Void {
         
-        guard requests.syncCheckContaines(element: request) else {return}
+        guard requests.syncCheckContaines(elementHashValue: request.hashValue) else {return}
         var req = request
         req.setLoading()
         requests.syncedUpdate(element: req)
@@ -312,10 +314,10 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         networkFailedRequests =  SyncedSet<imageRequest>.init()
         
-        let requestsToRetry = requestsToTry.set
+        let requestsToRetry = requestsToTry.values
         requestsToRetry.forEach(){
-            request in
-            
+            pair in
+            let request = pair.value
             requests.syncedInsert(element: request, completion: {
                 inserted , _ in
                 guard inserted else {return}
