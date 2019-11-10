@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class SyncedSet<T: Hashable>{
+class SyncedDic<T: Hashable>{
     var values : [Int:T] = [:]
     private var timeStamp = Date()
     
@@ -19,33 +19,30 @@ class SyncedSet<T: Hashable>{
         timeStamp = Date()
     }
     
-    func syncedInsert(element: T,completion:  (((Bool,T))->())? = nil  ) -> Void {
+    func syncedInsert(element: T,completion:  (()->())? = nil  ) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = element
-            return (true,element)
         }, completion:{ response in
             self.completionQueue.async {
-                completion?(response)
+                completion?()
             }
         })
     }
-    func syncedRemove(element:T,completion: ((T?)->())? = nil) -> Void {
+    func syncedRemove(element:T,completion: (()->())? = nil) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = nil
-            return element
-        }, completion:{ response in
+        }, completion:{
             self.completionQueue.async {
-                completion?(response)
+                completion?()
             }
         })
     }
-    func syncedUpdate(element:T,completion: ((T?)->())? = nil) -> Void {
+    func syncedUpdate(element:T,completion: (()->())? = nil) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = element
-            return element
         }, completion:{ response in
             self.completionQueue.async {
-                completion?(response)
+                completion?()
             }
         })
         
@@ -92,7 +89,7 @@ class SyncedSet<T: Hashable>{
     
 }
 
-extension SyncedSet where T == imageRequest {
+extension SyncedDic where T == imageRequest {
     func specialSyncedRead(url:String,indexPath:IndexPath,tag:String) -> imageRequest? {
        
         
@@ -106,9 +103,9 @@ extension SyncedSet where T == imageRequest {
 
 public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
-    private var requests 			 	: SyncedSet<imageRequest> =  SyncedSet<imageRequest>.init()
-    private var networkFailedRequests   : SyncedSet<imageRequest> =  SyncedSet<imageRequest>.init()
-    private var invalidRequests 		: SyncedSet<String> = SyncedSet<String>.init() // failed image parsing - failed data
+    private var requests 			 	: SyncedDic<imageRequest> =  SyncedDic<imageRequest>.init()
+    private var networkFailedRequests   : SyncedDic<imageRequest> =  SyncedDic<imageRequest>.init()
+    private var invalidRequests 		: SyncedDic<String> = SyncedDic<String>.init() // failed image parsing - failed data
     private var timer : Timer?
     private var timerDelay : TimeInterval = 3
     private let invalidRequestImage : UIImage? = nil
@@ -228,7 +225,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         
    
-             self.execute(request: request)
+        self.execute(request: request)
       
         return .processing
     }
@@ -282,20 +279,16 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
     
     
-    private func retry(request:imageRequest){
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 1, execute: {[weak self] in
+    private func retry(request:imageRequest,afterInterval:TimeInterval){
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + afterInterval, execute: {[weak self] in
             guard let tableImageLoader = self else {return}
             
             var newRequest = request
             newRequest.reset()
             
-            tableImageLoader.networkFailedRequests.syncedRemove(element: newRequest, completion: { _ in
+            tableImageLoader.networkFailedRequests.syncedRemove(element: newRequest, completion: {
               
                 tableImageLoader.requests.syncedInsert(element: newRequest, completion: {
-                    inserted , _ in
-
-                    guard inserted == true else{return}
-                    
                       tableImageLoader.execute(request: newRequest)
                 })
             })
@@ -312,15 +305,13 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         networkFailedRequests.updateTimeStamp()
         let requestsToTry = networkFailedRequests
         
-        networkFailedRequests =  SyncedSet<imageRequest>.init()
+        networkFailedRequests =  SyncedDic<imageRequest>.init()
         
         let requestsToRetry = requestsToTry.values
         requestsToRetry.forEach(){
             pair in
             let request = pair.value
             requests.syncedInsert(element: request, completion: {
-                inserted , _ in
-                guard inserted else {return}
                 self.execute(request: request)
             })
         }
@@ -354,7 +345,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         var failedRequest = request
         failedRequest.addFailedAttemp()
-        requests.syncedUpdate(element: failedRequest,completion: { [weak self] _ in
+        requests.syncedUpdate(element: failedRequest,completion: { [weak self]  in
             guard let self = self else {return}
             switch error {
             case imageLoadingError.imageParsingFailed,imageLoadingError.invalidResponse :
@@ -362,8 +353,8 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
                 // such as expired Amazon urls
                 // these requests (urls) should not be retired and should be guarded aganist in future requests
                 
-                self.invalidRequests.syncedInsert(element: failedRequest.requestUrl, completion: {_ , _ in
-                    self.requests.syncedRemove(element: failedRequest, completion: {_ in
+                self.invalidRequests.syncedInsert(element: failedRequest.requestUrl, completion: {
+                    self.requests.syncedRemove(element: failedRequest, completion: {
                         let parameters = params(false,nil,failedRequest.date,request.indexPath,failedRequest,error as? imageLoadingError)
                         request.executeCompletionHandler(params: parameters)
                     })
@@ -402,7 +393,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
                 
                 //if request did not reach max attepmt count then reexecute it again
                 guard  failedRequest.failed == true else {
-                    self.retry(request: failedRequest)
+                    self.retry(request: failedRequest, afterInterval: 1)
                     return
                 }
                 
@@ -421,8 +412,8 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
     
     private func addToNetworkFailedRequests(request:imageRequest){
-        networkFailedRequests.syncedInsert(element: request, completion: { _ ,_ in
-            self.requests.syncedRemove(element: request, completion: { _ in
+        networkFailedRequests.syncedInsert(element: request, completion: {
+            self.requests.syncedRemove(element: request, completion: {
                 self.runTimerCheck()
             })
         })
