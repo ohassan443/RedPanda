@@ -41,7 +41,7 @@ class ImageLoader : ImageLoaderObj{
     func getImageFrom(urlString:String, completion:  @escaping (_ : UIImage)-> (),fail : @escaping (_ url:String,_ error:Error)-> ()) -> Void {
         
 
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
             [weak self] in
             guard let imageLoader = self else {return}
             
@@ -85,9 +85,8 @@ class ImageLoader : ImageLoaderObj{
              let tempSession = URLSession(configuration: config)
              */
             session.dataTask(with: url, completionHandler: { [weak self](data, response, error) -> Void in
-                guard let _ = self else {return}
-                DispatchQueue.main.async { [weak self] in
-                    guard let imageLoader = self else {return}
+                guard let self = self else {return}
+             
                     guard error == nil  else {
                         fail(urlString,error!)
                         return
@@ -102,11 +101,12 @@ class ImageLoader : ImageLoaderObj{
                         return
                     }
                     
-                    let cacheResult = imageLoader.cacheToRam(image: resultImage, url: urlString)
-                    imageLoader.diskCache.cache(image: resultImage, url: urlString, completion: {_ in})
-                    
+                    let cacheResult = self.cacheToRam(image: resultImage, url: urlString)
+                    self.diskCache.cache(image: resultImage, url: urlString, completion: {_ in})
+                
+                DispatchQueue.main.async { [weak self] in
+                    guard let _ = self else {return}
                     completion(resultImage)
-                    
                 }
                 
             }).resume()

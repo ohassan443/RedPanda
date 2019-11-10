@@ -13,15 +13,15 @@ import UIKit
 
 class RamSharedImageCache: RamCacheImageObj {
     
-    static private var globalImageRam : Set<ImageUrlWrapper> = []
+    static private var globalImageRam : SyncedDic<ImageUrlWrapper> = SyncedDic<ImageUrlWrapper>()
     private let queue = DispatchQueue(label: "sharedRamCacheQueue \(Date().timeIntervalSince1970)", qos: .userInitiated)
     
     func cache(image: UIImage, url: String) -> Bool {
         var inserted = false
         queue.sync {
             let queryUrl = PersistentUrl.amazonCheck(url: url)
-            let result =    RamSharedImageCache.globalImageRam.insert(ImageUrlWrapper(url: queryUrl, image: image))
-            inserted = result.inserted
+            RamSharedImageCache.globalImageRam.syncedInsert(element: ImageUrlWrapper(url: queryUrl, image: image), completion: {})
+            inserted = true
         }
         return inserted
     }
@@ -30,10 +30,8 @@ class RamSharedImageCache: RamCacheImageObj {
         var resultImage : UIImage? = nil
         queue.sync {
             let queryUrl = PersistentUrl.amazonCheck(url: url)
-            let obj = RamSharedImageCache.globalImageRam.filter(){
-                $0.url == queryUrl
-                }.first
-            resultImage =  obj?.image
+            let obj = RamSharedImageCache.globalImageRam.syncedRead(targetElementHashValue: queryUrl.hashValue)
+            resultImage = obj?.image
         }
         return resultImage
     }

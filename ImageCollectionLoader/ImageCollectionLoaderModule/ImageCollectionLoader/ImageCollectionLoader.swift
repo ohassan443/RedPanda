@@ -10,17 +10,6 @@ import UIKit
 
 
 
-extension SyncedDic where T == imageRequest {
-    func specialSyncedRead(url:String,indexPath:IndexPath,tag:String) -> imageRequest? {
-       
-        
-        let targetHashValue = imageRequest(image: nil, url: url, loading: false, dateRequestedAt: Date(), cellIndexPath: indexPath, tag: tag).hashValue
-        
-        let result = syncedRead(targetElementHashValue: targetHashValue)
-        
-        return result
-    }
-}
 
 public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
@@ -38,12 +27,17 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
     let imageRequestQueue = DispatchQueue(label: "realmClientQueue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInitiated))
     
+    
+    
+    
     init(imageLoader:ImageLoaderObj, reachability:ReachabilityMOnitorObj,connectivityChecker:InternetConnectivityCheckerObj) {
         self.imageLoader = imageLoader
         self.reachability = reachability
         self.connectivityChecker = connectivityChecker
         
     }
+    
+    
     
     
     public func cacheQueryState(url: String) -> (state:imageRequest.RequestState,image:UIImage?) {
@@ -54,16 +48,17 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
                  return (.invalid,invalidRequestImage)
         }
         
-        
-        
         if let image = imageLoader.queryRamCacheFor(url: url){
             return (.cached,image)
         }
         
-        
-        
         return (.notAvaliable,nil)
     }
+    
+    
+    
+    
+    
     
     
     public func changeTimerRetry(interval: TimeInterval) {
@@ -96,16 +91,6 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         }
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         let request = imageRequest(image: nil, url: url, loading: false, dateRequestedAt: requestDate, cellIndexPath: indexPath, tag: tag, completion: {      [weak self]
             result  in
             guard let tableImageLoader = self else{//print("deallocated")
@@ -133,15 +118,15 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         
         if let _ = networkFailedRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag){
-           networkFailedRequests.syncedRemove(element: request)
+            networkFailedRequests.syncedRemove(element: request, completion: {})
         }
        
         
         add(request: request)
         
-        
-   
-        self.execute(request: request)
+        DispatchQueue.global().async {
+            self.execute(request: request)
+        }
       
         return .processing
     }
@@ -159,12 +144,12 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         
         guard let currentRequestInSet = requests.syncedRead(targetElementHashValue: newRequest.hashValue) else {
-            requests.syncedInsert(element: newRequest)
+            requests.syncedInsert(element: newRequest, completion: {})
             return
         }
         
         guard currentRequestInSet.date != request.date else {return}
-        requests.syncedUpdate(element: newRequest)
+        requests.syncedUpdate(element: newRequest, completion: {})
     }
     
     
@@ -174,20 +159,20 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         guard requests.syncCheckContaines(elementHashValue: request.hashValue) else {return}
         var req = request
         req.setLoading()
-        requests.syncedUpdate(element: req)
-        
-        imageLoader.getImageFrom(urlString: req.requestUrl
-            , completion: {
-                [weak self]
-                image in
-                guard let tableImageLoader = self else {return}
-                tableImageLoader.loadImageSuccessHandler(request: req, loadedImage: image)
-            }
-            ,fail : { [weak self]
-                failedUrl,error in
-                guard let tableImageLoader = self else {return}
-                
-                tableImageLoader.loadImageFailHandler(request: req,error: error)
+        requests.syncedUpdate(element: req, completion: {
+            self.imageLoader.getImageFrom(urlString: req.requestUrl
+                , completion: {
+                    [weak self]
+                    image in
+                    guard let tableImageLoader = self else {return}
+                    tableImageLoader.loadImageSuccessHandler(request: req, loadedImage: image)
+                }
+                ,fail : { [weak self]
+                    failedUrl,error in
+                    guard let tableImageLoader = self else {return}
+                    
+                    tableImageLoader.loadImageFailHandler(request: req,error: error)
+            })
         })
     }
     
@@ -245,7 +230,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         
         request.executeCompletionHandler(response: response)
-        requests.syncedRemove(element: request, completion: nil)
+        requests.syncedRemove(element: request, completion: {})
     }
     
     
@@ -310,18 +295,17 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
                 
                 var failedRequest = request
                 failedRequest.addFailedAttemp()
-                self.requests.syncedUpdate(element: failedRequest)
-                
-                //if request did not reach max attepmt count then reexecute it again
-                guard  failedRequest.failed == true else {
-                    self.retry(request: failedRequest, afterInterval: 1)
-                    return
-                }
-                
-                // this request reached the max number of consecitive retries and its execution will be deferred to the next fire of the timer
-                failedRequest.reset()
-                self.addToNetworkFailedRequests(request: failedRequest)
-                
+                self.requests.syncedUpdate(element: failedRequest, completion: {
+                    //if request did not reach max attepmt count then reexecute it again
+                                  guard  failedRequest.failed == true else {
+                                      self.retry(request: failedRequest, afterInterval: 1)
+                                      return
+                                  }
+                                  
+                                  // this request reached the max number of consecitive retries and its execution will be deferred to the next fire of the timer
+                                  failedRequest.reset()
+                                  self.addToNetworkFailedRequests(request: failedRequest)
+                })
             }
 
         })

@@ -104,6 +104,14 @@ public struct imageRequest : Hashable {
     }
 }
 
-extension Set where Element == imageRequest {
-   
+extension SyncedDic where T == imageRequest {
+    func specialSyncedRead(url:String,indexPath:IndexPath,tag:String) -> imageRequest? {
+       
+        
+        let targetHashValue = imageRequest(image: nil, url: url, loading: false, dateRequestedAt: Date(), cellIndexPath: indexPath, tag: tag).hashValue
+        
+        let result = syncedRead(targetElementHashValue: targetHashValue)
+        
+        return result
+    }
 }

@@ -19,30 +19,27 @@ class SyncedDic<T: Hashable>{
         timeStamp = Date()
     }
     
-    func syncedInsert(element: T,completion:  (()->())? = nil  ) -> Void {
+    func syncedInsert(element: T,completion:  @escaping (()->())  ) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = element
-        }, completion:{ response in
             self.completionQueue.async {
-                completion?()
+                 completion()
             }
         })
     }
-    func syncedRemove(element:T,completion: (()->())? = nil) -> Void {
+    func syncedRemove(element:T,completion: @escaping (()->())) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = nil
-        }, completion:{
             self.completionQueue.async {
-                completion?()
+                 completion()
             }
         })
     }
-    func syncedUpdate(element:T,completion: (()->())? = nil) -> Void {
+    func syncedUpdate(element:T,completion: @escaping (()->())) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = element
-        }, completion:{ response in
             self.completionQueue.async {
-                completion?()
+                 completion()
             }
         })
         
@@ -86,12 +83,11 @@ class SyncedDic<T: Hashable>{
         return result
     }
     
-    private func asyncOperation<U>(operation : @escaping ()->(U),completion: @escaping ((U)->())) -> Void {
+    private func asyncOperation(operation : @escaping ()->()) -> Void {
         let requestDate = timeStamp
         syncQueue.async(flags : .barrier) { [weak self] in
             guard let container = self , container.timeStamp == requestDate else {return}
-            let result = operation()
-            completion(result)
+            operation()
         }
     }
     
