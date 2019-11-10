@@ -8,6 +8,7 @@
 
 import UIKit
 import ImageCollectionLoader
+import Embassy
 
 class ViewController: UIViewController {
     
@@ -17,6 +18,7 @@ class ViewController: UIViewController {
     var dataSource = [String]()
     let imageCollectionLoader = ImageCollectionLoaderBuilder().defaultImp()
     var session : URLSession? = nil
+    var server : HTTPServer! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +52,18 @@ class ViewController: UIViewController {
         //            }
         //        }.resume()
         
+        
+        let response : LocallServer.wrappedResponse = {
+            params,callBack in
+            
+            
+                let data = UIImage(named: "testImage1")!.pngData()
+                    callBack(LocallServer.LocalServerCallBack(statusCode: .s200, headers: [], body: data!))
+        }
+        
+     
+        
+        
         let tvs = [tv1]
         tvs.forEach({
             $0?.delegate = self
@@ -63,7 +77,8 @@ class ViewController: UIViewController {
         
         
         for i in 0...1000 {
-            dataSource.append("https://picsum.photos/id/\(i)/200/200")
+            //dataSource.append("https://picsum.photos/id/\(i)/200/200")
+            dataSource.append(getTempAmazonUrlfrom(url: "\(i)"))
         }
     }
     

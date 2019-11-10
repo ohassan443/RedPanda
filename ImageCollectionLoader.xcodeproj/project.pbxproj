@@ -67,6 +67,12 @@
 		07BF9AE62370965800320731 /* cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07BF9AE42370965800320731 /* cell.xib */; };
 		07BF9AEA23709C8A00320731 /* UITestsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE823709C8A00320731 /* UITestsConstants.swift */; };
 		07BF9AEB23709C8A00320731 /* LocalServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE923709C8A00320731 /* LocalServer.swift */; };
+		07E2735323786D140033D427 /* SyncedDic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E2735223786D140033D427 /* SyncedDic.swift */; };
+		07E27354237891880033D427 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C89612370466500FBF430 /* ViewController.swift */; };
+		07E27356237891B70033D427 /* LocalServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE923709C8A00320731 /* LocalServer.swift */; };
+		07E273572378924C0033D427 /* UITestsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE823709C8A00320731 /* UITestsConstants.swift */; };
+		07E27358237899020033D427 /* cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE32370965800320731 /* cell.swift */; };
+		07E27359237899020033D427 /* cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07BF9AE42370965800320731 /* cell.xib */; };
 		45730F5B2F6CD49F9070881C /* Pods_Test111.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 051784596DF2712845F9D68C /* Pods_Test111.framework */; };
 		CF2467393013207A5E071A85 /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7022673DAE6B945E96B69382 /* Pods_UnitTests.framework */; };
 		D4E10ED795487536CE3EDD27 /* Pods_ImageCollectionLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BC4B12298CA00EF8B063AA2 /* Pods_ImageCollectionLoader.framework */; };
@@ -175,6 +181,7 @@
 		07BF9AE42370965800320731 /* cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = cell.xib; sourceTree = "<group>"; };
 		07BF9AE823709C8A00320731 /* UITestsConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestsConstants.swift; sourceTree = "<group>"; };
 		07BF9AE923709C8A00320731 /* LocalServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalServer.swift; sourceTree = "<group>"; };
+		07E2735223786D140033D427 /* SyncedDic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncedDic.swift; sourceTree = "<group>"; };
 		4BC4B12298CA00EF8B063AA2 /* Pods_ImageCollectionLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageCollectionLoader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EC61D42E43A90D503C209E4 /* Pods-Test111.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test111.debug.xcconfig"; path = "Target Support Files/Pods-Test111/Pods-Test111.debug.xcconfig"; sourceTree = "<group>"; };
 		6DE75DC3FEB3F1CAB9331BD9 /* Pods-Test111.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test111.release.xcconfig"; path = "Target Support Files/Pods-Test111/Pods-Test111.release.xcconfig"; sourceTree = "<group>"; };
@@ -472,6 +479,7 @@
 			children = (
 				07429116235B76440003EB7C /* ImageCollectionLoaderMock.swift */,
 				07429118235B76440003EB7C /* Protocols&Errors.swift */,
+				07E2735223786D140033D427 /* SyncedDic.swift */,
 				07429119235B76440003EB7C /* ImageCollectionLoader.swift */,
 				0742911A235B76440003EB7C /* ImageCollectionLoaderBuilder.swift */,
 			);
@@ -624,6 +632,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0789943F236870E100AB544F /* Mediax.xcassets in Resources */,
+				07E27359237899020033D427 /* cell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -757,6 +766,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				072162AA235C484F00692A85 /* RamCacheImageMockTests.swift in Sources */,
+				07E27354237891880033D427 /* ViewController.swift in Sources */,
 				072162A0235C484F00692A85 /* RachabailityMonitorMockTests.swift in Sources */,
 				072162AC235C484F00692A85 /* ImageRequestTests.swift in Sources */,
 				07216297235C484200692A85 /* UnitTests.swift in Sources */,
@@ -768,6 +778,7 @@
 				0721629F235C484F00692A85 /* InternetConnectivityCheckerTests.swift in Sources */,
 				072162A6235C484F00692A85 /* FileSystemImageCacheTests.swift in Sources */,
 				072162A4235C484F00692A85 /* ImageLoaderMockTests.swift in Sources */,
+				07E27358237899020033D427 /* cell.swift in Sources */,
 				072162A3235C484F00692A85 /* ImageCollectionLoaderTests.swift in Sources */,
 				072162A7235C484F00692A85 /* DiskCacheImageTests.swift in Sources */,
 				07BF9AEB23709C8A00320731 /* LocalServer.swift in Sources */,
@@ -781,6 +792,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07E27356237891B70033D427 /* LocalServer.swift in Sources */,
+				07E273572378924C0033D427 /* UITestsConstants.swift in Sources */,
 				072C89622370466500FBF430 /* ViewController.swift in Sources */,
 				07BF9AE52370965800320731 /* cell.swift in Sources */,
 				072C89602370466500FBF430 /* AppDelegate.swift in Sources */,
@@ -793,6 +806,7 @@
 			files = (
 				07429135235B76440003EB7C /* ImageLoaderurlSession.swift in Sources */,
 				07429123235B76440003EB7C /* FileSystemImageCacheBuilder.swift in Sources */,
+				07E2735323786D140033D427 /* SyncedDic.swift in Sources */,
 				0742913F235B76440003EB7C /* ReachabailityMonitorMock.swift in Sources */,
 				0742913B235B76440003EB7C /* ImageLoaderMock.swift in Sources */,
 				07429138235B76440003EB7C /* ImageLoader.swift in Sources */,

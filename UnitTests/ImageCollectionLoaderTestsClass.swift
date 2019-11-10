@@ -244,7 +244,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
     func testFailedToParseImageData() {
         let testUrl = "testImage1"
         
-        let parsingErrors = [imageLoadingError.imageParsingFailed,imageLoadingError.invalidResponse]
+        let parsingErrors = [imageLoadingError.imageParsingFailed,imageLoadingError.nilData]
         
         
         parsingErrors.forEach(){

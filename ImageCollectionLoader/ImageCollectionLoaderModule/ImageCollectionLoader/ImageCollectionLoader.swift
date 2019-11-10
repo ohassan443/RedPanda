@@ -8,86 +8,7 @@
 import Foundation
 import UIKit
 
-class SyncedDic<T: Hashable>{
-    var values : [Int:T] = [:]
-    private var timeStamp = Date()
-    
-    let syncQueue =  DispatchQueue(label: "queue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInitiated))
-    let completionQueue = DispatchQueue(label: "queue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInitiated))
-    
-    public func updateTimeStamp()-> Void{
-        timeStamp = Date()
-    }
-    
-    func syncedInsert(element: T,completion:  (()->())? = nil  ) -> Void {
-        asyncOperation(operation: {
-            self.values[element.hashValue] = element
-        }, completion:{ response in
-            self.completionQueue.async {
-                completion?()
-            }
-        })
-    }
-    func syncedRemove(element:T,completion: (()->())? = nil) -> Void {
-        asyncOperation(operation: {
-            self.values[element.hashValue] = nil
-        }, completion:{
-            self.completionQueue.async {
-                completion?()
-            }
-        })
-    }
-    func syncedUpdate(element:T,completion: (()->())? = nil) -> Void {
-        asyncOperation(operation: {
-            self.values[element.hashValue] = element
-        }, completion:{ response in
-            self.completionQueue.async {
-                completion?()
-            }
-        })
-        
-        
-    }
-    
-    
-    
-    func syncedRead(targetElementHashValue:Int) -> T? {
-        let operation : (() -> (T?)) = {
-            return self.values[targetElementHashValue]
-        }
-        return self.syncOperation(operation: operation)
-    }
-    func syncCheckContaines(elementHashValue:Int) -> Bool {
-        return syncOperation(operation: {
-            return self.values[elementHashValue] != nil
-        })
-    }
-    func syncCheckEmpty() -> Bool {
-        return syncOperation(operation: {
-            return self.values.isEmpty
-        })
-    }
-    
-    
-    private func syncOperation<T>(operation: ()->(T)) -> T {
-        var result : T! = nil
-        syncQueue.sync {
-            result = operation()
-        }
-        return result
-    }
-    
-    private func asyncOperation<U>(operation : @escaping ()->(U),completion: @escaping ((U)->())) -> Void {
-        let requestDate = timeStamp
-        syncQueue.async(flags : .barrier) { [weak self] in
-            guard let container = self , container.timeStamp == requestDate else {return}
-            let result = operation()
-            completion(result)
-        }
-    }
-    
-    
-}
+
 
 extension SyncedDic where T == imageRequest {
     func specialSyncedRead(url:String,indexPath:IndexPath,tag:String) -> imageRequest? {
@@ -187,28 +108,23 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         let request = imageRequest(image: nil, url: url, loading: false, dateRequestedAt: requestDate, cellIndexPath: indexPath, tag: tag, completion: {      [weak self]
             result  in
-            guard let tableImageLoader = self else{
-                //print("deallocated")
+            guard let tableImageLoader = self else{//print("deallocated")
                 return
             }
-            guard  result.indexPath == indexPath else {
-                //print("image requested for differenet indexPath")
-                return
-            }
-            
-            
-            if result.success == true , let image = result.image{
-                successHandler(image,indexPath, result.dateRequestedAt)
+            guard  result.getIndexPath() == indexPath else { //print("image requested for differenet indexPath")
                 return
             }
             
-            
-            if let loadingError = result.error {
+            switch result {
+            case .success(let params):
+                successHandler(params.image,params.indexPath, params.date )
+                return
                 
-                switch loadingError {
-                case .imageParsingFailed,.invalidResponse :
-                    guard let failedRequest = result.failedRequest else {return}
-                    failedHandler?(failedRequest, tableImageLoader.invalidRequestImage)
+            case .fail(let params):
+                
+                switch params.error {
+                case .imageParsingFailed,.nilData :
+                    failedHandler?(params.request, tableImageLoader.invalidRequestImage)
                 case .networkError :
                     break // will retry
                 }
@@ -325,9 +241,10 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
      execute the completion block & and add image to the (url:String,image:UIImage) list if its not added
      */
     private func loadImageSuccessHandler(request:imageRequest,loadedImage:UIImage) -> Void {
+        let response = ImageCollectionLoaderRequestResponse.success(params: successparams(image: loadedImage, date: request.date, indexPath: request.indexPath))
         
-        let parameters = params(true,loadedImage,request.date,request.indexPath,request,nil)
-        request.executeCompletionHandler(params: parameters)
+        
+        request.executeCompletionHandler(response: response)
         requests.syncedRemove(element: request, completion: nil)
     }
     
@@ -347,22 +264,25 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         failedRequest.addFailedAttemp()
         requests.syncedUpdate(element: failedRequest,completion: { [weak self]  in
             guard let self = self else {return}
+            
+            
+            
+            
+            
+            
             switch error {
-            case imageLoadingError.imageParsingFailed,imageLoadingError.invalidResponse :
+            case imageLoadingError.imageParsingFailed,imageLoadingError.nilData :
                 // corrupt image or invalid ImageData
                 // such as expired Amazon urls
                 // these requests (urls) should not be retired and should be guarded aganist in future requests
                 
                 self.invalidRequests.syncedInsert(element: failedRequest.requestUrl, completion: {
                     self.requests.syncedRemove(element: failedRequest, completion: {
-                        let parameters = params(false,nil,failedRequest.date,request.indexPath,failedRequest,error as? imageLoadingError)
-                        request.executeCompletionHandler(params: parameters)
+                        
+                        let parameters =  ImageCollectionLoaderRequestResponse.fail( params: failparams(error: error as! imageLoadingError, request: failedRequest))
+                        request.executeCompletionHandler(response: parameters)
                     })
                 })
-                
-                
-                
-             
                 return
                 
                 
@@ -375,8 +295,9 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
                  - requesting wile network is avaliable but no internet connectivity
                  - requesting while in bad network and network keeps droping
                  */
-                let parameters = params(false,nil,failedRequest.date,request.indexPath,failedRequest,imageLoadingError.networkError)
-                request.executeCompletionHandler(params: parameters)
+               
+                let parameters =  ImageCollectionLoaderRequestResponse.fail( params: failparams(error: imageLoadingError.networkError, request: failedRequest))
+                request.executeCompletionHandler(response: parameters)
                 
                 self.addToNetworkFailedRequests(request: failedRequest)
                 return

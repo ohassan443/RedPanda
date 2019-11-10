@@ -26,13 +26,6 @@ class InternetConnectivityCheckerBuilder  {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
     func with(delayInterval:TimeInterval) -> InternetConnectivityCheckerBuilder {
         self.delay = delayInterval
         return self

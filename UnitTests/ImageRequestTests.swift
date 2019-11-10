@@ -69,8 +69,10 @@ class ImageRequestTests: XCTestCase {
         let insertR1 = set.insert(r1)
         XCTAssertEqual(insertR1.inserted, true)
         
-        let searchR1 = imageRequest.setContaints(set: set, request: r1)
-        XCTAssertNotEqual(searchR1, nil)
+        
+        
+        let searchR1 = set.contains(r1)
+        XCTAssertTrue(searchR1)
         
         
        
@@ -78,8 +80,8 @@ class ImageRequestTests: XCTestCase {
         
         let r2 = imageRequest(image: nil, url: "newUrl", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "newTag")
         
-        let searchR2 = imageRequest.setContaints(set: set, request: r2)
-        XCTAssertEqual(searchR2, nil)
+        let searchR2 = set.contains(r2)
+        XCTAssertFalse(searchR2)
     }
     
     

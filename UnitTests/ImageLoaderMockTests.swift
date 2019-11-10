@@ -132,7 +132,7 @@ class ImageLoaderMockTests: XCTestCase {
     /// validate target errors are thrown
     func testThrowingErrors() {
         let imageParsingFailed = imageLoadingError.imageParsingFailed
-        let invalidResponse = imageLoadingError.invalidResponse
+        let invalidResponse = imageLoadingError.nilData
         let networkError = imageLoadingError.networkError
         
         testMockThrowingError(error: imageParsingFailed)

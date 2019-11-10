@@ -6,7 +6,7 @@
 //  Copyright © 2019 omar hammad. All rights reserved.
 //
 
-import XCTest
+
 import Foundation
 
 import Embassy

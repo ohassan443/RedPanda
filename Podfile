@@ -16,6 +16,7 @@ target 'Test111' do
   use_frameworks!
   pod 'ReachabilitySwift' , '~> 4.3.0'
   pod 'RealmSwift'
+     pod 'Embassy'
   
   # Pods for testing
 end

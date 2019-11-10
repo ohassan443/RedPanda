@@ -44,7 +44,7 @@ import UIKit
     static func amazonCheck(url:String) -> String {
         var modifiedUrl = url
         
-        guard modifiedUrl.contains("amazonaws.com") else {return modifiedUrl}
+        guard modifiedUrl.contains("?") else {return modifiedUrl}
         
         modifiedUrl = discardAmazonAccessKey(url: modifiedUrl)
         return  modifiedUrl

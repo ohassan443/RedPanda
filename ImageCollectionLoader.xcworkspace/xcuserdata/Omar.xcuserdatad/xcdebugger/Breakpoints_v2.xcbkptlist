@@ -30,5 +30,373 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D64EEA67-A93D-426B-A0FA-A8043BD70113"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UnitTests/LocalServer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "getInstance(response:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F3F8CA35-B275-4A7E-91C0-FED97E32062C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "loadFromServer(urlString:completion:fail:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "227004DC-CCBB-4995-BA1C-6FCC1B48D953"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Test111/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "227004DC-CCBB-4995-BA1C-6FCC1B48D953 - 73863210b15ab510"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.UIImage, Foundation.IndexPath, Foundation.Date) -&gt; () in Test111.ViewController.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
+                  moduleName = "Test111"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/Test111/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "146">
+               </Location>
+               <Location
+                  uuid = "227004DC-CCBB-4995-BA1C-6FCC1B48D953 - ec4a40c5f242ad4a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.UIImage, Foundation.IndexPath, Foundation.Date) -&gt; () in UnitTests.ViewController.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
+                  moduleName = "UnitTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/Test111/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "146">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "89E784A6-5DE1-4AF7-ADF5-7A15200090FC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageCollectionLoader/ImageCollectionLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "requestImage(requestDate:url:indexPath:tag:successHandler:failedHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B2D05854-A53A-4152-BE95-91633EB0E72B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageCollectionLoader/ImageCollectionLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "execute(request:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8B0C53F4-EEA5-4CDA-A9D0-7EE06DE853A2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageCollectionLoader/ImageCollectionLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
+            landmarkName = "execute(request:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8B0C53F4-EEA5-4CDA-A9D0-7EE06DE853A2 - 72bc1840034d7737"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ImageCollectionLoader.ImageCollectionLoader.(execute in _E6D568148299E9A23AF7DD1763B0B376)(request: ImageCollectionLoader.imageRequest) -&gt; ()"
+                  moduleName = "ImageCollectionLoader"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/ImageCollectionLoader/ImageCollectionLoaderModule/ImageCollectionLoader/ImageCollectionLoader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "181"
+                  endingLineNumber = "181"
+                  offsetFromSymbolStart = "935">
+               </Location>
+               <Location
+                  uuid = "8B0C53F4-EEA5-4CDA-A9D0-7EE06DE853A2 - 5624a4b8993528ca"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.UIImage) -&gt; () in ImageCollectionLoader.ImageCollectionLoader.(execute in _E6D568148299E9A23AF7DD1763B0B376)(request: ImageCollectionLoader.imageRequest) -&gt; ()"
+                  moduleName = "ImageCollectionLoader"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/ImageCollectionLoader/ImageCollectionLoaderModule/ImageCollectionLoader/ImageCollectionLoader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "181"
+                  endingLineNumber = "181"
+                  offsetFromSymbolStart = "106">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DBD59AD4-1644-44A2-8924-0267472B057D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageCollectionLoader/ImageCollectionLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "188"
+            endingLineNumber = "188"
+            landmarkName = "execute(request:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A156FC50-9277-4A8E-A7A6-7A89DF72BE60"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageCollectionLoader/ImageCollectionLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "execute(request:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C35B617C-C7B3-42D0-9582-09C2964FDADF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageCollectionLoader/ImageCollectionLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "execute(request:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4D583690-BA7C-491F-8762-3C12A2853AF2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "getImageFrom(urlString:completion:fail:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0CBCDC5F-57C0-4B67-BCD2-2FCC98BDEC21"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "getImageFrom(urlString:completion:fail:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7B32BF70-21D9-41AC-9881-0FAB2F4ACD89"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "loadFromServer(urlString:completion:fail:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7B32BF70-21D9-41AC-9881-0FAB2F4ACD89 - 96a6ce950f74feb4"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in ImageCollectionLoader.ImageLoader.(loadFromServer in _4050D8B651E430326BF9ADD306B17750)(urlString: Swift.String, completion: (__C.UIImage) -&gt; (), fail: (Swift.String, Swift.Error) -&gt; ()) -&gt; ()"
+                  moduleName = "ImageCollectionLoader"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87"
+                  offsetFromSymbolStart = "323">
+               </Location>
+               <Location
+                  uuid = "7B32BF70-21D9-41AC-9881-0FAB2F4ACD89 - 32b3cc9ffca691d"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in closure #1 () -&gt; () in ImageCollectionLoader.ImageLoader.(loadFromServer in _4050D8B651E430326BF9ADD306B17750)(urlString: Swift.String, completion: (__C.UIImage) -&gt; (), fail: (Swift.String, Swift.Error) -&gt; ()) -&gt; ()"
+                  moduleName = "ImageCollectionLoader"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87"
+                  offsetFromSymbolStart = "347">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "14DB116A-DB67-4371-AC87-0995BA3F3D29"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "loadFromServer(urlString:completion:fail:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "14DB116A-DB67-4371-AC87-0995BA3F3D29 - 9411ac1b1c217898"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ImageCollectionLoader.ImageLoader.(loadFromServer in _4050D8B651E430326BF9ADD306B17750)(urlString: Swift.String, completion: (__C.UIImage) -&gt; (), fail: (Swift.String, Swift.Error) -&gt; ()) -&gt; ()"
+                  moduleName = "ImageCollectionLoader"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "511">
+               </Location>
+               <Location
+                  uuid = "14DB116A-DB67-4371-AC87-0995BA3F3D29 - 96a6ce950f74feb4"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in ImageCollectionLoader.ImageLoader.(loadFromServer in _4050D8B651E430326BF9ADD306B17750)(urlString: Swift.String, completion: (__C.UIImage) -&gt; (), fail: (Swift.String, Swift.Error) -&gt; ()) -&gt; ()"
+                  moduleName = "ImageCollectionLoader"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/omarhassanmohamed/Desktop/cocoapods/ImageCollectionLoader/ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "169">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "69CB179D-09AD-4A20-A692-748D0D3356CD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "queryRamCacheFor(url:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CA3139DB-8E80-4483-8D5F-B84B999778F8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/CacheImage/RamCacheImage/RamSharedImageCache.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "getImageFor(url:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

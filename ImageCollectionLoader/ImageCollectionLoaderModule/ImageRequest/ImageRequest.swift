@@ -24,7 +24,7 @@ public struct imageRequest : Hashable {
     private var loading : Bool
     private var dateRequestedAt : Date
     private var cellIndexPath : IndexPath
-    private var completion : ((ImageCollectionLoaderObj.params) -> ())? = nil
+    private var completion : ImageCollectionLoaderRequestCompletionHandler? = nil
     private var failedCount = 0
     private var maxAttemptCount = 0
     private var tag : String
@@ -62,7 +62,7 @@ public struct imageRequest : Hashable {
         hasher.combine(keyValue)
     }
    
-    init(image:UIImage?,url:String,loading:Bool,dateRequestedAt : Date,cellIndexPath : IndexPath,tag:String,completion: ((ImageCollectionLoaderObj.params)->())? = nil) {
+    init(image:UIImage?,url:String,loading:Bool,dateRequestedAt : Date,cellIndexPath : IndexPath,tag:String,completion: ImageCollectionLoaderRequestCompletionHandler? = nil) {
         self.image = image
         self.url = url
         self.loading = loading
@@ -81,21 +81,7 @@ public struct imageRequest : Hashable {
     public static func == (lhs: imageRequest, rhs: imageRequest) -> Bool {
         return lhs.url == rhs.url && lhs.cellIndexPath == rhs.cellIndexPath && lhs.tag == rhs.tag
     }
-    static func compare(queryRequest:imageRequest,target:(url:String,cellIndexPath:IndexPath,tag:String)) -> Bool {
-        return queryRequest.url == target.url && queryRequest.cellIndexPath == target.cellIndexPath && queryRequest.tag == target.tag
-    }
-    
-    static func setContaints(set:Set<imageRequest>,url:String,cellIndexPath:IndexPath,tag:String) -> imageRequest? {
-        let result = set.first(where: {
-            element in
-            return compare(queryRequest: element, target: (url,cellIndexPath,tag))
-        })
-        return result
-    }
-    static func setContaints(set:Set<imageRequest>,request:imageRequest) -> imageRequest? {
-      return setContaints(set: set, url: request.url, cellIndexPath: request.cellIndexPath, tag: request.tag)
-        
-    }
+  
     
     
     mutating public func reset(){
@@ -113,8 +99,8 @@ public struct imageRequest : Hashable {
     mutating public func setLoading(){
         loading = true
     }
-    func executeCompletionHandler(params:ImageCollectionLoader.params) -> Void {
-        completion?(params)
+    func executeCompletionHandler(response : ImageCollectionLoaderRequestResponse) -> Void {
+        completion?(response)
     }
 }
 

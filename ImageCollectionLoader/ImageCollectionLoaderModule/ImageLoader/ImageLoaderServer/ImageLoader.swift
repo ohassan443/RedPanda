@@ -31,8 +31,7 @@ class ImageLoader : ImageLoaderObj{
     
     
     private func cacheToRam(image:UIImage,url:String)-> Bool{
-        let urlToCache = PersistentUrl.amazonCheck(url: url)
-        let cacheResult = ramCache.cache(image: image, url: urlToCache)
+        let cacheResult = ramCache.cache(image: image, url: url)
         return cacheResult
     }
     
@@ -47,8 +46,7 @@ class ImageLoader : ImageLoaderObj{
             guard let imageLoader = self else {return}
             
             
-            let ramCacheUrl = PersistentUrl.amazonCheck(url: urlString)
-            if let ramCachedImage = imageLoader.ramCache.getImageFor(url: ramCacheUrl){
+            if let ramCachedImage = imageLoader.ramCache.getImageFor(url: urlString){
                 completion(ramCachedImage)
                 return
             }
@@ -57,7 +55,7 @@ class ImageLoader : ImageLoaderObj{
                 diskCacheImage in
                 
                 if let image = diskCacheImage {
-                  let _ = imageLoader.cacheToRam(image: image, url: ramCacheUrl)
+                  let _ = imageLoader.cacheToRam(image: image, url: urlString)
                     DispatchQueue.main.async {
                         completion(image)
                     }
@@ -96,7 +94,7 @@ class ImageLoader : ImageLoaderObj{
                     }
                     
                     guard let data = data else{
-                        fail(urlString,imageLoadingError.invalidResponse)
+                        fail(urlString,imageLoadingError.nilData)
                         return
                     }
                     guard let resultImage = UIImage(data: data) else {
