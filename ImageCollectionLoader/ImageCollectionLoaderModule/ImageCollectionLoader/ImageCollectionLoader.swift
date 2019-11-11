@@ -44,6 +44,8 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     /// bings the server to check for internet avaliablity
     private var connectivityChecker : InternetConnectivityCheckerObj
         
+    private var requestCheckingQueue = DispatchQueue(label: "queuex", qos: .userInitiated,attributes: .concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInteractive))
+    
     
     /// init
     init(imageLoader:ImageLoaderObj, reachability:ReachabilityMOnitorObj,connectivityChecker:InternetConnectivityCheckerObj) {
@@ -93,18 +95,32 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         ,indexPath:IndexPath
         ,tag:String
         ,successHandler:@escaping (_ image:UIImage,_ indexPath:IndexPath,_ requestDate:Date)->()
-        ,failedHandler: ((_ failedRequest:imageRequest,_ image:UIImage?)->())? = nil)-> imageRequest.RequestState.AsynchronousCallBack {
+        ,failedHandler: ((_ failedRequest:imageRequest?,_ image:UIImage?,_ requestState:imageRequest.RequestState.AsynchronousCallBack)->())? = nil )-> Void{
         
         
         
         /// check that url does not refer to corrupt or expired or removed image
-        guard  invalidRequests.syncCheckContaines(elementHashValue: url.hashValue)  == false   else {return imageRequest.RequestState.AsynchronousCallBack.invalid}
+        guard  self.invalidRequests.syncCheckContaines(elementHashValue: url.hashValue)  == false   else {
+            DispatchQueue.main.async {
+                failedHandler?(nil, self.invalidRequestImage, .invalid)
+            }
+            return
+        }
+        
+        
         
         /// check wether there is a request that is currently being processed with the same url & indexPath & tag
         /// to avoid false negatives here , change the tag to create another request with the same indexpath and url
-        if let currentlyLoadingRequest = processingRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag) , currentlyLoadingRequest.currentlyLoading == true{
-            return imageRequest.RequestState.AsynchronousCallBack.currentlyLoading
+        if let currentlyLoadingRequest = self.processingRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag) , currentlyLoadingRequest.currentlyLoading == true{
+            DispatchQueue.main.async {
+                failedHandler?(nil, self.invalidRequestImage, .currentlyLoading)
+            }
+            return
         }
+        
+        
+        
+        
         
         /// the request execution completionHandler
         let request = imageRequest(image: nil, url: url, loading: false, dateRequestedAt: requestDate, cellIndexPath: indexPath, tag: tag, completion: {[weak self]
@@ -122,37 +138,45 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
             /// switch on the response and execute success or fail handlers accordingly
             switch result {
             case .success(let params):
-                successHandler(params.image,params.indexPath, params.date )
+                DispatchQueue.main.async {
+                    successHandler(params.image , params.indexPath , params.date)
+                }
                 return
                 
             case .fail(let params):
                 
                 switch params.error {
-                    /// notify the caller that the request failed because the image cant be parsed or expired link ,....
+                /// notify the caller that the request failed because the image cant be parsed or expired link ,....
                 case .imageParsingFailed,.nilData :
-                    failedHandler?(params.request, tableImageLoader.invalidRequestImage)
-                    
-                    /// do not notify the caller because the request will be retried when the network or the internet problem is resolved
+                    DispatchQueue.main.async {
+                        failedHandler?(params.request, tableImageLoader.invalidRequestImage, .invalid)
+                    }
+                    return
+                /// do not notify the caller because the request will be retried when the network or the internet problem is resolved
                 case .networkError :
                     break // will retry
                 }
             }
         })
         
+        
+        
+        
         /// if this call was made earlier and failed due to network or internet error then remove if from the 'failed requests list' and execute it now
         /// the requests in the failed requests list will be retried when the ( network connection / internet ) returns
-        if let _ = networkFailedRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag){
-            networkFailedRequests.syncedRemove(element: request, completion: {})
+        if let _ = self.networkFailedRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag){
+            self.networkFailedRequests.syncedRemove(element: request, completion: {})
         }
-       
-       ///
-        addToProcessingRequests(request: request)
         
-        DispatchQueue.global().async {
-            self.execute(request: request)
-        }
-      
-        return .processing
+        self.addToProcessingRequests(request: request)
+        
+        DispatchQueue.global(qos: .userInteractive)
+        self.execute(request: request, alreadyExecutingHandler: {
+            failedHandler?(request,nil,.currentlyLoading)
+        })
+        
+        
+        
     }
     
     
@@ -184,9 +208,12 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     
     
     /// execute request
-    fileprivate func execute(request:imageRequest) -> Void {
+    fileprivate func execute(request:imageRequest,alreadyExecutingHandler : @escaping ()->()) -> Void {
         
-        guard processingRequests.syncCheckContaines(elementHashValue: request.hashValue) else {return}
+        guard processingRequests.syncCheckContaines(elementHashValue: request.hashValue) else {
+            alreadyExecutingHandler()
+            return
+        }
         var req = request
         req.setLoading()
         processingRequests.syncedUpdate(element: req, completion: {
@@ -220,7 +247,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
             tableImageLoader.networkFailedRequests.syncedRemove(element: newRequest, completion: {
               
                 tableImageLoader.processingRequests.syncedInsert(element: newRequest, completion: {
-                      tableImageLoader.execute(request: newRequest)
+                    tableImageLoader.execute(request: newRequest, alreadyExecutingHandler: {})
                 })
             })
         })
@@ -243,7 +270,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
             pair in
             let request = pair.value
             processingRequests.syncedInsert(element: request, completion: {
-                self.execute(request: request)
+                self.execute(request: request, alreadyExecutingHandler: {})
             })
         }
     }

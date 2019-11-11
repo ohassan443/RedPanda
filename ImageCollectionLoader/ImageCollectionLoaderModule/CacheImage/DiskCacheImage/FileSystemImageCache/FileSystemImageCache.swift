@@ -27,8 +27,8 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     
     
     func writeToFile(image: UIImage, url: String, completion: @escaping (Bool) -> ()) {
-        createImagesDirectoryIfNoneExists()
-        fileSystemQueue.async {[weak self] in
+        //createImagesDirectoryIfNoneExists()
+        fileSystemQueue.async (flags:.barrier){[weak self] in
             guard let filesSystem = self else {return}
             let fileURL = filesSystem.directory.appendingPathComponent(url)
             // get your UIImage jpeg data representation and check if the destination file url already exists
@@ -86,7 +86,7 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     }
     
     func deleteFilesWith(urls: [String], completion: @escaping (Bool) -> ()) {
-        fileSystemQueue.async {
+        fileSystemQueue.async (flags:.barrier){
             var deletedAll = true
             urls.forEach(){
                 let fileToDelete = self.directory.appendingPathComponent($0)

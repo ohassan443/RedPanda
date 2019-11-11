@@ -134,18 +134,17 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
         
         
         
-        let requestState = imageCollectionLoader.requestImage(requestDate: requestDate, url: testUrl , indexPath: requestIndexPath, tag: tag, successHandler: {
+        imageCollectionLoader.requestImage(requestDate: requestDate, url: testUrl , indexPath: requestIndexPath, tag: tag, successHandler: {
             resultImage,indexPath,requestDate in
             XCTAssertEqual(indexPath, requestIndexPath)
             XCTAssertEqual(resultImage.pngData(), testImage.pngData())
             exp.fulfill()
             
         }, failedHandler: {
-            _,_ in
+            _,_,_ in
             XCTFail()
         })
         
-        XCTAssertEqual(requestState, .processing)
         
         waitForExpectations(timeout: 1, handler: nil)
     }
@@ -200,19 +199,18 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
         let invertedExp = expectation(description: "neverEnteredHere")
         invertedExp.isInverted = true
         
-        let requestState = imageCollectionLoader.requestImage(requestDate: firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
+        imageCollectionLoader.requestImage(requestDate: firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
             image,indexpath,requestDate in
             XCTAssertNotEqual(firstDate, requestDate)
             exp.fulfill()
         }, failedHandler: {
-            _,_ in
+            _,_ ,_ in
             XCTFail()
         })
         
         
         
         // change reuqstDate to indicate that the tableView was refreshed
-        XCTAssertEqual(requestState, .processing)
         firstDate = Date()
         
         waitForExpectations(timeout: 1, handler: nil)
@@ -292,26 +290,19 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
                     
                     
             }, failedHandler: {
-                failedRequest,failedRequestImage in
+                failedRequest,failedRequestImage,firstRequestState in
                 
+                XCTAssertEqual(firstRequestState, .invalid)
                 
-                let secondRequest = imageCollectionLoader.requestImage(requestDate: firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
+                imageCollectionLoader.requestImage(requestDate: firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
                     _,_,_ in
                     XCTFail()
                 }, failedHandler: {
-                    _,_ in
-                    XCTFail()
+                    _,_ , secondRequestState in
+                    XCTAssertEqual(secondRequestState, .invalid)
+                     sectionTimeInvalidRequestExp.fulfill()
                 })
-                
-                
-                
-                XCTAssertEqual(secondRequest, .invalid)
-                
-                sectionTimeInvalidRequestExp.fulfill()
-                
-            })
-            
-            XCTAssertEqual(firstRequest, .processing)
+               })
             
             
             waitForExpectations(timeout: 5, handler: nil)
@@ -368,38 +359,34 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
         
         let imageLoadedExp = expectation(description: "image loaded")
         
-        let invertedExp = expectation(description: "second request should not have its completion handlers called at all")
-        invertedExp.isInverted = true
+        let expSecondRequestFailed = expectation(description: "first request returned successfully")
         
         
         
-        let firstRequestState = imageCollectionLoader.requestImage(requestDate:firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
+        imageCollectionLoader.requestImage(requestDate:firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
             resultImage,indexPath,_ in
             
             XCTAssertEqual(resultImage.pngData(), testImage.pngData())
             imageLoadedExp.fulfill()
             
         }, failedHandler: {
-            _ ,_ in
-            invertedExp.fulfill()
+            _ ,_,_ in
+            XCTFail()
         })
         
-        XCTAssertEqual(firstRequestState, .processing)
         
-        
-        
-        
-        
-        let secondRequestState = imageCollectionLoader.requestImage(requestDate:firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
+         imageCollectionLoader.requestImage(requestDate:firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
             resultImage,indexPath,_ in
             
-           invertedExp.fulfill()
+           XCTFail()
             
         }, failedHandler: {
-            _ ,_ in
-            invertedExp.fulfill()
+            _ ,_ ,secondRequestState in
+            XCTAssertEqual(secondRequestState, .currentlyLoading)
+            expSecondRequestFailed.fulfill()
+            
         })
-          XCTAssertEqual(secondRequestState, .currentlyLoading)
+        
         
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -449,19 +436,16 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
         let imageReloadedSuccess = expectation(description: "loading image")
         
         
-        let invertedExp = expectation(description: "neverEnteredHere")
-        invertedExp.isInverted = true
         
         
-        
-        let firstRequestState = imageCollectionLoader.requestImage(requestDate:firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
+        imageCollectionLoader.requestImage(requestDate:firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag, successHandler: {
             resultImage,IndexPath,_ in
             
             
             imageReloadedSuccess.fulfill()
         }, failedHandler: {
-            failedRequest,failedRequestImage in
-           invertedExp.fulfill()
+            _,_,_ in
+           XCTFail()
         })
        
         
@@ -471,7 +455,6 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
             reachability.changeConnectionState(newState: .wifi)
         })
         
-        XCTAssertEqual(firstRequestState, .processing)
         waitForExpectations(timeout: 2, handler: nil)
     }
     
@@ -528,8 +511,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
         let imageReloadedSuccess = expectation(description: "loading image")
         
         
-        let invertedExp = expectation(description: "neverEnteredHere")
-        invertedExp.isInverted = true
+    
         
         
         
@@ -539,8 +521,8 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
             
             imageReloadedSuccess.fulfill()
         }, failedHandler: {
-            failedRequest,failedRequestImage in
-            invertedExp.fulfill()
+            _,_,_ in
+            XCTFail()
         })
         
         
@@ -549,60 +531,58 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
             imageLoader.change(returnResponse: .responseImage(image: testImage))
         })
         
-        XCTAssertEqual(firstRequestState, .processing)
         waitForExpectations(timeout: maxWaitInterval, handler: nil)
     }
     
     
     
-    
+
     ///https://picsum.photos/id/1/200/200
-    ////// check tag colision 
+    ////// check tag colision
     func testSpam() {
         let startDate = Date()
        var images = [String]()
         var expectations = [XCTestExpectation]()
         for i in 0...1000 {
-            images.append("https://picsum.photos/id/\(i)/200/200")
+            images.append("https://picsum.photos/id/\(i)+/200/200")
             expectations.append(expectation(description: "\(i) not loaded"))
         }
-        
-    
-        
+
+
+
         let imageCollectionLoader = ImageCollectionLoaderBuilder()
             .with(internetChecker: InternetConnectivityCheckerBuilder().with(successResponse: true).Mock())
             .with(reachability: ReachabailityMonitorMock(conncection: .wifi))
             .with(imageLoader: ImageLoaderBuilder().loaderMock(response: .responseImage(image: testImage1)))
             .TESTCustomConcrete()
         imageCollectionLoader.changeTimerRetry(interval: 3)
-        
-        
+
+
         let firstDate =  Date()
-        
-        
+
+
         for (index,url) in images.enumerated() {
-          
-                let queryResult =  imageCollectionLoader.requestImage(requestDate: firstDate, url: url, indexPath: IndexPath(row: index, section: 0), tag: "i", successHandler: {
+
+                 imageCollectionLoader.requestImage(requestDate: firstDate, url: url, indexPath: IndexPath(row: index, section: 0), tag: "i", successHandler: {
                     image,indexPath,date in
                     image
                     expectations[index].fulfill()
                 },failedHandler: {
-                    request , image in
+                    request , image, requestState in
                     print("failed")
                 })
-                
-                XCTAssert(queryResult == .processing)
+
             }
-        
-       
-        waitForExpectations(timeout: 100, handler: nil)
+
+
+        waitForExpectations(timeout: 10, handler: nil)
         let finishDate = Date()
-        
+
         let lapsedTime = finishDate.timeIntervalSince1970 - startDate.timeIntervalSince1970
-        
+
         print("lapsed time = \(lapsedTime)")
     }
-    
+
     
     
 }

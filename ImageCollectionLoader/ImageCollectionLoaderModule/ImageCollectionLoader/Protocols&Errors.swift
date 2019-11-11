@@ -88,8 +88,8 @@ public protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
     ,indexPath:IndexPath
     ,tag:String
         ,successHandler:@escaping (_ successImage:UIImage,_ successIndexPath:IndexPath,_ successRequestDate:Date)->()
-    ,failedHandler: ((_ failedRequest:imageRequest,_ image:UIImage?)->())?
-     )-> imageRequest.RequestState.AsynchronousCallBack
+    ,failedHandler: ((_ failedRequest:imageRequest?,_ image:UIImage?,_ requestState:imageRequest.RequestState.AsynchronousCallBack)->())?
+    )-> Void
     
  }
 

@@ -77,7 +77,7 @@ class ViewController: UIViewController {
         
         
         for i in 0...1000 {
-            dataSource.append("https://picsum.photos/id/\(i)/200/200")
+           // dataSource.append("https://picsum.photos/id/\(i)/200/200")
            // dataSource.append(getTempAmazonUrlfrom(url: "\(i)"))
         }
     }
@@ -90,15 +90,15 @@ extension ViewController: UITableViewDelegate,UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! cell
         let element = dataSource[indexPath.row]
         
-        if let card = imageCollectionLoader.cacheQueryState(url: element).image{
-           cell.iv.image = card
-        }else {
+//        if let card = imageCollectionLoader.cacheQueryState(url: element).image{
+//           cell.iv.image = card
+//        }else {
             imageCollectionLoader.requestImage(requestDate: Date(), url: element, indexPath: indexPath, tag: "card", successHandler: {
                 image , index , date in
                 guard let visibleCell = tableView.cellForRow(at: index) as? cell else {return}
                 visibleCell.iv.image = image
             }, failedHandler: nil)
-        }
+        ///}
         
         
         return cell
