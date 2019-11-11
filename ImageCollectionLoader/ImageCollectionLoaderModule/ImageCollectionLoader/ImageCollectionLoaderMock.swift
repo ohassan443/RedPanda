@@ -15,20 +15,20 @@ class ImageCollectionLoaderMock: ImageCollectionLoaderObj {
     
     
     enum Response {
-        case success(_ image : UIImage,_ Index:IndexPath,_ requestDate:Date,requestState:imageRequest.RequestState)
-        case failed(failedRequest:imageRequest,failedImage: UIImage?,requestState:imageRequest.RequestState)
-        case returnWithoutEecute(requestState:imageRequest.RequestState)
+        case success(_ image : UIImage,_ Index:IndexPath,_ requestDate:Date,requestState:imageRequest.RequestState.AsynchronousCallBack)
+        case failed(failedRequest:imageRequest,failedImage: UIImage?,requestState:imageRequest.RequestState.AsynchronousCallBack)
+        case returnWithoutEecute(requestState:imageRequest.RequestState.AsynchronousCallBack)
         case none
     }
     
     var response                    : Response = .none
-    var cacheQueryState             : (imageRequest.RequestState,UIImage?) = (imageRequest.RequestState.notAvaliable,nil)
+    var cacheQueryState             : (imageRequest.RequestState.SynchronousCheck,UIImage?) = (.notAvaliable,nil)
     var connected: Bool             = false
     
     func requestImage(requestDate: Date, url: String, indexPath: IndexPath, tag: String
         , successHandler: @escaping (UIImage, IndexPath,Date) -> ()
         , failedHandler: ((_ failedRequest:imageRequest,_ image:UIImage?)->())?
-        ) -> imageRequest.RequestState {
+    ) -> imageRequest.RequestState.AsynchronousCallBack {
         
         
         
@@ -53,7 +53,7 @@ class ImageCollectionLoaderMock: ImageCollectionLoaderObj {
             return requestState
             
         case .none :
-            return imageRequest.RequestState.notAvaliable
+            return imageRequest.RequestState.AsynchronousCallBack.invalid
         }
     }
     
@@ -62,7 +62,7 @@ class ImageCollectionLoaderMock: ImageCollectionLoaderObj {
     func changeTimerRetry(interval: TimeInterval) {}
     
     
-    func cacheQueryState(url: String) -> (state:imageRequest.RequestState,image:UIImage?) {
+    func cacheQueryState(url: String) -> (state:imageRequest.RequestState.SynchronousCheck,image:UIImage?) {
         return cacheQueryState
     }
     

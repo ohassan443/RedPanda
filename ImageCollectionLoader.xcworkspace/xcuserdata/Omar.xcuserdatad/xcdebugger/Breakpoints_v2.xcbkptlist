@@ -17,22 +17,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "761D9863-9C24-48F6-90CD-03AD4B1A01DF"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "UnitTests/ImageCollectionLoaderTestsClass.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "600"
-            endingLineNumber = "600"
-            landmarkName = "testSpam()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "D64EEA67-A93D-426B-A0FA-A8043BD70113"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -49,54 +33,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "227004DC-CCBB-4995-BA1C-6FCC1B48D953"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Test111/ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "227004DC-CCBB-4995-BA1C-6FCC1B48D953 - 76af58686a6fbb37"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.UIImage, Foundation.IndexPath, Foundation.Date) -&gt; () in Test111.ViewController.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
-                  moduleName = "Test111"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/omarhassanmohamed/Desktop/pod/ImageCollectionLoader/Test111/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "98"
-                  endingLineNumber = "98"
-                  offsetFromSymbolStart = "146">
-               </Location>
-               <Location
-                  uuid = "227004DC-CCBB-4995-BA1C-6FCC1B48D953 - e9632abd2977a36d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.UIImage, Foundation.IndexPath, Foundation.Date) -&gt; () in UnitTests.ViewController.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
-                  moduleName = "UnitTests"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/omarhassanmohamed/Desktop/pod/ImageCollectionLoader/Test111/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "98"
-                  endingLineNumber = "98"
-                  offsetFromSymbolStart = "146">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "89E784A6-5DE1-4AF7-ADF5-7A15200090FC"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -104,8 +40,8 @@
             filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageCollectionLoader/ImageCollectionLoader.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
             landmarkName = "requestImage(requestDate:url:indexPath:tag:successHandler:failedHandler:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -241,32 +177,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "69CB179D-09AD-4A20-A692-748D0D3356CD"
+            uuid = "3E6F03ED-AE18-493D-B2A0-AE7194D38E4B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/ImageLoader/ImageLoaderServer/ImageLoader.swift"
+            filePath = "UnitTests/ImageCollectionLoaderTestsClass.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "queryRamCacheFor(url:)"
+            startingLineNumber = "603"
+            endingLineNumber = "603"
+            landmarkName = "testSpam()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CA3139DB-8E80-4483-8D5F-B84B999778F8"
+            uuid = "71D22210-E70B-45A1-BE8B-F069679B664B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ImageCollectionLoader/ImageCollectionLoaderModule/CacheImage/RamCacheImage/RamSharedImageCache.swift"
+            filePath = "UnitTests/ImageCollectionLoaderTestsClass.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "getImageFor(url:)"
+            startingLineNumber = "591"
+            endingLineNumber = "591"
+            landmarkName = "testSpam()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

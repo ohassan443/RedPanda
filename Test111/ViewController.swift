@@ -53,13 +53,13 @@ class ViewController: UIViewController {
         //        }.resume()
         
         
-        let response : LocallServer.wrappedResponse = {
-            params,callBack in
-            
-            
-                let data = UIImage(named: "testImage1")!.pngData()
-                    callBack(LocallServer.LocalServerCallBack(statusCode: .s200, headers: [], body: data!))
-        }
+//        let response : LocallServer.wrappedResponse = {
+//            params,callBack in
+//            
+//            
+//                let data = UIImage(named: "testImage1")!.pngData()
+//                    callBack(LocallServer.LocalServerCallBack(statusCode: .s200, headers: [], body: data!))
+//        }
         
      
         
@@ -77,8 +77,8 @@ class ViewController: UIViewController {
         
         
         for i in 0...1000 {
-            //dataSource.append("https://picsum.photos/id/\(i)/200/200")
-            dataSource.append(getTempAmazonUrlfrom(url: "\(i)"))
+            dataSource.append("https://picsum.photos/id/\(i)/200/200")
+           // dataSource.append(getTempAmazonUrlfrom(url: "\(i)"))
         }
     }
     

@@ -586,6 +586,9 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
                     image,indexPath,date in
                     image
                     expectations[index].fulfill()
+                },failedHandler: {
+                    request , image in
+                    print("failed")
                 })
                 
                 XCTAssert(queryResult == .processing)

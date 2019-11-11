@@ -68,7 +68,7 @@ public protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
             * cached
             * notAvaliable
      */
-     func cacheQueryState(url:String) -> (state:imageRequest.RequestState,image:UIImage?)
+    func cacheQueryState(url:String) -> (state:imageRequest.RequestState.SynchronousCheck,image:UIImage?)
   
     
     /// - parameter interval : the interval after which a retry request will be made in case an internet connectivity error occurs with an avaliable network
@@ -89,7 +89,7 @@ public protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
     ,tag:String
         ,successHandler:@escaping (_ successImage:UIImage,_ successIndexPath:IndexPath,_ successRequestDate:Date)->()
     ,failedHandler: ((_ failedRequest:imageRequest,_ image:UIImage?)->())?
-        )-> imageRequest.RequestState
+     )-> imageRequest.RequestState.AsynchronousCallBack
     
  }
 

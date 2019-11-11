@@ -11,11 +11,23 @@ import UIKit
 public struct imageRequest : Hashable {
     public typealias cacheQueryResponse = (state:imageRequest.RequestState,image:UIImage?)
     public enum RequestState {
-        case currentlyLoading
-        case invalid
-        case processing
-        case cached
-        case notAvaliable
+        
+        case RamCache (SynchronousCheck)
+        case NetworkOrDiskCache(AsynchronousCallBack)
+        
+        
+        public enum AsynchronousCallBack {
+            case currentlyLoading
+            case invalid
+            case processing
+        }
+        
+        public enum SynchronousCheck {
+            case cached
+            case invalid
+            case notAvaliable
+        }
+
     }
     
     
