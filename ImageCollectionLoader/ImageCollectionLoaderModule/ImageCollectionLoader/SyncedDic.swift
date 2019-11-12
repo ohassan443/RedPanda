@@ -26,7 +26,7 @@ class SyncedDic<T: Hashable>{
     func syncedInsert(element: T,completion:  @escaping (()->())  ) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = element
-            self.completionQueue.async {
+            self.completionQueue.asyncAfter(deadline: .now() + 0.01) {
                  completion()
             }
         })
@@ -37,7 +37,7 @@ class SyncedDic<T: Hashable>{
     func syncedRemove(element:T,completion: @escaping (()->())) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = nil
-            self.completionQueue.async {
+            self.completionQueue.asyncAfter(deadline: .now() + 0.01) {
                  completion()
             }
         })
@@ -47,7 +47,7 @@ class SyncedDic<T: Hashable>{
     func syncedUpdate(element:T,completion: @escaping (()->())) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = element
-            self.completionQueue.async {
+            self.completionQueue.asyncAfter(deadline: .now() + 0.01) {
                  completion()
             }
         })
