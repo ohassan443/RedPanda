@@ -13,26 +13,32 @@ import UIKit
 
 class RamSharedImageCache: RamCacheImageObj {
     
-    static private var globalImageRam : SyncedDic<ImageUrlWrapper> = SyncedDic<ImageUrlWrapper>()
-    private let queue = DispatchQueue(label: "sharedRamCacheQueue \(Date().timeIntervalSince1970)", qos: .userInitiated)
+    private var globalImageRam : SyncedDic<ImageUrlWrapper> = SyncedDic<ImageUrlWrapper>()
+    
     
     func cache(image: UIImage, url: String) -> Bool {
-        var inserted = false
-        queue.sync {
-            let queryUrl = PersistentUrl.amazonCheck(url: url)
-            RamSharedImageCache.globalImageRam.syncedInsert(element: ImageUrlWrapper(url: queryUrl, image: image), completion: {})
-            inserted = true
-        }
-        return inserted
+        
+        let queryUrl = PersistentUrl.amazonCheck(url: url)
+        globalImageRam.syncedInsert(element: ImageUrlWrapper(url: queryUrl, image: image), completion: {[weak self] in
+            guard let ramCache = self else {return}
+            if ramCache.globalImageRam.values.count >= 100  {
+                ramCache.globalImageRam.updateTimeStamp()
+                ramCache.globalImageRam.values = [:]
+            }
+        })
+        
+        
+        
+        
+        return true
     }
     
     func getImageFor(url: String) -> UIImage? {
         var resultImage : UIImage? = nil
-        queue.sync {
             let queryUrl = PersistentUrl.amazonCheck(url: url)
-            let obj = RamSharedImageCache.globalImageRam.syncedRead(targetElementHashValue: queryUrl.hashValue)
+            let obj = globalImageRam.syncedRead(targetElementHashValue: queryUrl.hashValue)
             resultImage = obj?.image
-        }
+        
         return resultImage
     }
 }

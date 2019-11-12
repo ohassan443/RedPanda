@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-  let fileSystemQueue = DispatchQueue(label: "fileSystemQueue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInitiated))
+  let fileSystemQueue = DispatchQueue(label: "fileSystemQueue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInteractive))
 
 class FileSystemImageCache: FileSystemImageCacheObj {
    
@@ -17,7 +17,7 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     
     
     private var directory : URL
-   
+    private var retryingAfterCreateFolder = false
    
     
     
@@ -27,7 +27,6 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     
     
     func writeToFile(image: UIImage, url: String, completion: @escaping (Bool) -> ()) {
-        //createImagesDirectoryIfNoneExists()
         fileSystemQueue.async (flags:.barrier){[weak self] in
             guard let filesSystem = self else {return}
             let fileURL = filesSystem.directory.appendingPathComponent(url)
@@ -45,7 +44,18 @@ class FileSystemImageCache: FileSystemImageCacheObj {
                 return
             } catch {
                 //print("error saving file:", error)
-                completion(false)
+                guard filesSystem.retryingAfterCreateFolder == false else {
+                    completion(false)
+                    return
+                }
+                if  (error as! NSError).code == NSFileNoSuchFileError {
+                    filesSystem.createImagesDirectoryIfNoneExists()
+                    fileSystemQueue.asyncAfter(deadline: .now() + 1, execute: {
+                        filesSystem.writeToFile(image: image, url: url, completion: completion)
+                    })
+                }else {
+                       completion(false)
+                }
             }
         }
     }
@@ -75,7 +85,7 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     
     
     func deleteFromFile(url: String, completion: @escaping (Bool) -> ()) {
-        fileSystemQueue.async {[weak self] in
+        fileSystemQueue.async(flags:.barrier) {[weak self] in
             guard let filesSystem = self else {return}
             let fileToDelete = filesSystem.directory.appendingPathComponent(url)
             let delete : ()? = try? FileManager.default.removeItem(at: fileToDelete)
@@ -102,15 +112,18 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     
     
     func createImagesDirectoryIfNoneExists() {
-        let imagesPath = directory
+      
+            let imagesPath = directory
+            
+            
+            do{
+                try FileManager.default.createDirectory(atPath: imagesPath.path, withIntermediateDirectories: true, attributes: nil)
+            } catch let error as NSError {
+                NSLog("Unable to create directory \(error.debugDescription)")
+            }
         
-        
-        do{
-            try FileManager.default.createDirectory(atPath: imagesPath.path, withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            NSLog("Unable to create directory \(error.debugDescription)")
-        }
     }
+    
     
     
     
