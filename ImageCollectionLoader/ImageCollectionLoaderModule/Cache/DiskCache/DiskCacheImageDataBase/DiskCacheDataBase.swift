@@ -55,8 +55,8 @@ class DiskCacheDataBase  {
 }
 extension DiskCacheDataBase : DiskCacheDataBaseProtocol {
  
-    /// save a PersistentUrl obj to the database that corresponds to a certain url
-    /// the obj to save contains the url and the file system and the current date as the last access date of the object
+    /// - save a PersistentUrl obj to the database that corresponds to a certain url
+    /// - the obj to save contains the url and the file system and the current date as the last access date of the object
     func cache(url: String,completion: @escaping (_ result : Bool)->()) -> Void{
         databaseQueue.async(flags:.barrier){ [weak self] in
             guard let database = self else {return}
@@ -174,8 +174,8 @@ extension DiskCacheDataBase : DiskCacheDataBaseProtocol {
     
     
     
-    /// delete objects from the database that were last accessed before the passed date
-    /// returns success only if all the matching urls were deleted
+    /// - delete objects from the database that were last accessed before the passed date
+    /// - returns success only if all the matching urls were deleted
     func deleteWith(minLastAccessDate:Date,completion:@escaping(_ result:Bool)->()) ->Void {
         
         databaseQueue.async( flags: .barrier, execute: {

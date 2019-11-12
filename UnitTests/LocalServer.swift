@@ -12,7 +12,7 @@ import Foundation
 import Embassy
 
 
-class LocallServer {
+class LocalServer {
     enum statusCode : String {
         case s100 = "100 Continue"
         case s101 = "101 Switching Protocols"
@@ -70,19 +70,7 @@ class LocallServer {
     }
     
     typealias requestParams = (String,String?, body:[String:Any]?)//path,queryString,body
-    typealias startResponse = (statusCode, header : [(String,String)]?)//statusCode,header
-    typealias sendBody = (_ data:Data)->()
-    typealias stubbedresponse = (LocallServer.requestParams)->(LocallServer.startResponse?,Data?)
     
-    static func response(statusCode:statusCode,headers : [(String,String)] = [],data:Data?) -> (LocallServer.startResponse?,Data?) {
-        return (startResponse(statusCode,headers),data)
-    }
-    
-    typealias serverResponse = (request:requestParams,
-    startResponse: startResponse,
-    sendBody : sendBody
-    )
-
     class LocalServerCallBack {
         let stautsCode 	: statusCode
         let headers  	: [(String,String)]
@@ -96,9 +84,9 @@ class LocallServer {
     typealias wrappedResponse  =  ( (   requestParams, @escaping (LocalServerCallBack) -> Void ) -> Void )
     static func getInstance (response :  @escaping wrappedResponse)-> HTTPServer{
         
-            
         
-            
+        
+        
         let loop = try! SelectorEventLoop(selector: try! KqueueSelector())
         let server = DefaultHTTPServer(eventLoop: loop, port: 8080){
             (
@@ -112,11 +100,11 @@ class LocallServer {
             let queryStrings = environ["QUERY_STRING"] as? String
             
             
-             let params = requestParams(path,queryStrings,nil)
+            let params = requestParams(path,queryStrings,nil)
             let startResponseMapper : (LocalServerCallBack) -> Void = {
                 arg in
                 
-                if arg.stautsCode == LocallServer.statusCode.redirectToServer{
+                if arg.stautsCode == LocalServer.statusCode.redirectToServer{
                     return
                 }
                 
@@ -141,6 +129,6 @@ class LocallServer {
         return server
     }
     
-   
+    
     
 }

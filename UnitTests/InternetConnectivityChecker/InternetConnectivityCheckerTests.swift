@@ -15,35 +15,40 @@ class InternetConnectivityCheckerTests: XCTestCase {
     //this test bings google and will fail if no internet is avaliable on the machine running this test
     func testFunctionality() {
         
-        let successExp = expectation(description: "pingedServer and retuned success")
-        let failedExp = expectation(description: "pingedServer and returned fail")
+        let expSuccess = expectation(description: "pinged Server and retuned success")
+        let expFail = expectation(description: "pinged Server and returned fail")
         
-        
-        var locaclServerChangingResponse  = LocallServer.LocalServerCallBack(statusCode: .s500, headers: [], body: nil)
-        let response : LocallServer.wrappedResponse = {
+        /// setup local server and internet checker concrete instance
+        var locaclServerChangingResponse  = LocalServer.LocalServerCallBack(statusCode: .s500, headers: [], body: nil)
+        let response : LocalServer.wrappedResponse = {
      	params,callBack in
             callBack(locaclServerChangingResponse)
         }
-    	 let server = LocallServer.getInstance(response: response)
+        let server = LocalServer.getInstance(response: response)
         
         let internetChecker = InternetConnectivityCheckerBuilder().concrete(url: UITestsConstants.baseUrl)
-        locaclServerChangingResponse = LocallServer.LocalServerCallBack(statusCode: .s200, headers: [], body: Data())
+        locaclServerChangingResponse = LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: Data())
         
+        
+        
+        /// verify success is returned
         internetChecker.check(completionHandler: {
             result in
             XCTAssertTrue(result)
-            successExp.fulfill()
+            expSuccess.fulfill()
         })
-        wait(for: [successExp], timeout: 10)
+        wait(for: [expSuccess], timeout: 10)
         
-        locaclServerChangingResponse = LocallServer.LocalServerCallBack(statusCode: .s500, headers: [], body: nil)
+        
+        /// change server response and verify fail was returned
+        locaclServerChangingResponse = LocalServer.LocalServerCallBack(statusCode: .s500, headers: [], body: nil)
         internetChecker.check(completionHandler: {
             result in
             XCTAssertFalse(result)
-            failedExp.fulfill()
+            expFail.fulfill()
         })
         
-        wait(for: [failedExp], timeout: 10)
+        wait(for: [expFail], timeout: 10)
         
         addTeardownBlock {
             server.stop()

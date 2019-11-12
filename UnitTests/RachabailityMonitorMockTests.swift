@@ -11,7 +11,7 @@ import XCTest
 
 class RachabailityMonitorMockTests: XCTestCase {
 
-    
+    /// dummy delegate class to test with
     class monitor: ReachabilityMonitorDelegateProtocol {
        
         var connected: Bool
@@ -25,27 +25,34 @@ class RachabailityMonitorMockTests: XCTestCase {
         }
     }
     
-    func testReachabilityMock() {
+    
+    
+    
+    func testDelegateBeingNotifiedOnChange() {
+        /// create mock to test and the dummy stub delegate
+        let reachabilityMonitorMock = ReachabailityMonitorMock(conncection: .none)
+        let reachabilityMonitorDelegate = monitor(connected: false)
         
-        let mock = ReachabailityMonitorMock(conncection: .none)
-        let ReachabilityMonitor = monitor(connected: false)
+        XCTAssertFalse(reachabilityMonitorDelegate.connected)
         
-        XCTAssertFalse(ReachabilityMonitor.connected)
         
-        mock.set(delegate: ReachabilityMonitor)
-       
-        mock.changeConnectionState(newState: .cellular)
+        
+        /// assign delegate to mock , change the mock state to cellular, verify that delegate was notified
+        reachabilityMonitorMock.set(delegate: reachabilityMonitorDelegate)
+        reachabilityMonitorMock.changeConnectionState(newState: .cellular)
          
-        XCTAssertEqual(ReachabilityMonitor.connected, true)
-        
-        mock.changeConnectionState(newState: .none)
-         XCTAssertEqual(ReachabilityMonitor.connected, false)
+        XCTAssertEqual(reachabilityMonitorDelegate.connected, true)
         
         
         
-        mock.changeConnectionState(newState: .wifi)
-         XCTAssertEqual(ReachabilityMonitor.connected, true)
+        /// modify mock state to none , verify delegate was notified
+        reachabilityMonitorMock.changeConnectionState(newState: .none)
+         XCTAssertEqual(reachabilityMonitorDelegate.connected, false)
         
+        
+        /// modify mock state to wifi , verify delegate was notified
+        reachabilityMonitorMock.changeConnectionState(newState: .wifi)
+         XCTAssertEqual(reachabilityMonitorDelegate.connected, true)
         
     }
 

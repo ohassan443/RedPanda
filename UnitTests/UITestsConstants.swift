@@ -8,15 +8,11 @@
 
 import Foundation
 class UITestsConstants {
-    enum testingState {
-        case testUI
-        case viewAppRunning
-    }
+
     
     static let baseUrl = "http://[::1]:8080/"
     static let baseUrlKey = "base_url"
     static let port = 8080
-    static let testRunState : testingState = .testUI
 }
 
 

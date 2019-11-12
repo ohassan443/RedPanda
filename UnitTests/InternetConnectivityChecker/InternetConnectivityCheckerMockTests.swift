@@ -16,21 +16,27 @@ class InternetConnectivityCheckerMockTests: XCTestCase {
     
     // test checkMock returning response on correctThread
     func testCorrectBehaviour() {
+        
+        
+        /// returned success on the main thread
         let MainTrueMock = InternetConnectivityCheckerBuilder()
             .with(returnQueue: .Main)
             .with(successResponse: true)
             .Mock()
-        let mainTrueExp = expectation(description: "MainTrue")
+        let expMainSuccess = expectation(description: "MainTrue")
         MainTrueMock.check(completionHandler: {
             result in
             XCTAssertTrue(Thread.isMainThread)
             XCTAssertTrue(result)
-            mainTrueExp.fulfill()
+            expMainSuccess.fulfill()
         })
         
+        wait(for: [expMainSuccess], timeout: 1)
         
         
-        let mainFalseExp = expectation(description: "MainFalse")
+        
+         /// returned fail on the main thread
+        let expMainFail = expectation(description: "MainFalse")
         let mainFalseMock = InternetConnectivityCheckerBuilder()
             .with(returnQueue: .Main)
             .with(successResponse: false)
@@ -39,12 +45,14 @@ class InternetConnectivityCheckerMockTests: XCTestCase {
             result in
             XCTAssertTrue(Thread.isMainThread)
             XCTAssertFalse(result)
-            mainFalseExp.fulfill()
+            expMainFail.fulfill()
         })
         
+         wait(for: [expMainFail], timeout: 1)
         
         
-        let globalTrueExp = expectation(description: "GlobalTrue")
+         /// returned true on the background thread
+        let expGlobalTrue = expectation(description: "GlobalTrue")
         let globalTrue = InternetConnectivityCheckerBuilder()
             .with(returnQueue: .Global)
             .with(successResponse: true)
@@ -54,12 +62,15 @@ class InternetConnectivityCheckerMockTests: XCTestCase {
             result in
             XCTAssertFalse(Thread.isMainThread)
             XCTAssertTrue(result)
-            globalTrueExp.fulfill()
+            expGlobalTrue.fulfill()
         })
         
+         wait(for: [expGlobalTrue], timeout: 1)
         
         
-        let globalFalseExp = expectation(description: "GlobalFalse")
+        
+        /// returned false on the background thread
+        let expGlobalFalse = expectation(description: "GlobalFalse")
         let globalFalse = InternetConnectivityCheckerBuilder()
             .with(returnQueue: .Global)
             .with(successResponse: false)
@@ -68,29 +79,18 @@ class InternetConnectivityCheckerMockTests: XCTestCase {
             result in
             XCTAssertFalse(Thread.isMainThread)
             XCTAssertFalse(result)
-            globalFalseExp.fulfill()
+            expGlobalFalse.fulfill()
         })
         
+         wait(for: [expGlobalFalse], timeout: 1)
         
-        
-        
-        let failedExp = expectation(description: "failed")
-        let failedTest = InternetConnectivityCheckerBuilder()
-            .with(returnQueue: .Global)
-            .with(successResponse: false)
-            .Mock()
-        failedTest.check(completionHandler: {
-            result in
-            
-            XCTAssertFalse(Thread.isMainThread)
-            XCTAssertNotEqual(result, true)
-            failedExp.fulfill()
-        })
         
         waitForExpectations(timeout: 5, handler: nil)
         
     }
     
+    
+    /// executes callback  after correct  delay
     func testDelay() -> Void {
         let delayExp = expectation(description: "delay")
         let globalFalse = InternetConnectivityCheckerBuilder()

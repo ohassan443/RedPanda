@@ -11,50 +11,47 @@ import XCTest
 
 class ImageLoaderTests: XCTestCase {
     
-    /**
-     - this test downloads an actual image from the internet
-     - if the internet is not connected the test will fail
-     - if the image url is not valid then it should be replaced with a working one
-    
-     
-     ###  loading steps
-     1. check in ramCache   <- this test
-     2. check in diskCache
-     3. requestFromServer
-     
-     */
-    func testGetValidImage() {
-        // this is a static url , if not valid anyMore change it for this test
+ 
+    func testLoadImageFromServer() {
         
-        
-        let url = UITestsConstants.baseUrl + "testImage"
+        /// create local server and stup image to the response
+        let path = "testImage"
+        let url = UITestsConstants.baseUrl + path
         let testImage = testImage1
-        let server = LocallServer.getInstance { (params, callBack) in
-            callBack(LocallServer.LocalServerCallBack(statusCode: .s200, headers: [], body: testImage1.pngData()))
+               let expCalledLocalServer         = expectation(description: " image loader did call local server   ")
+        let server = LocalServer.getInstance { (params, callBack) in
+            callBack(LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: testImage1.pngData()))
+            
+            let requestedPath = params.0
+          XCTAssertTrue(  requestedPath.contains(path))
+            expCalledLocalServer.fulfill()
         }
         
         
+        /// create ram and disk caches that always return nil
         let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
-       
         let emptyRamCache = RamCacheBuilder().unResponsiveMock()
         
+        /// create image loader
         let imageLoader  = ImageLoaderBuilder()
             .with(diskCache: emptyDiskCache)
             .with(ramCache: emptyRamCache)
             .customConcrete()
         
-        let successExp = expectation(description: "calling image from placeholder server")
+        let expLoadedImageSuccessfully   = expectation(description: " calling image from placeholder server")
+ 
         
+        /// request Image and verify the loaded Image
         imageLoader.getImageFrom(urlString: url, completion: {
             image in
-            successExp.fulfill()
+            expLoadedImageSuccessfully.fulfill()
         }, fail: {
             failedUrl,error in
             XCTFail()
         })
         
         
-        waitForExpectations(timeout: 20, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
         addTeardownBlock {
             server.stop()
         }
@@ -68,11 +65,11 @@ class ImageLoaderTests: XCTestCase {
      */
     func testInvalidUrl() {
         
+        /// create invalid format url , ram and disk caches that always return nil
         let staticUrl = "invalidUrl"
-        
         let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
-      
         let unResponsiveRamCache = RamCacheBuilder().unResponsiveMock()
+        
         
         let imageLoader  = ImageLoaderBuilder()
             .with(diskCache: emptyDiskCache)
@@ -94,7 +91,7 @@ class ImageLoaderTests: XCTestCase {
         })
         
         
-        waitForExpectations(timeout: 20, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
     
     
@@ -102,20 +99,18 @@ class ImageLoaderTests: XCTestCase {
     
     
     /**
-     - this image url holds an invalid image (expired url) which returns
-     "AccessDeniedRequest has expired2019-01-27T23:55:47Z2019-02-03T17:20:15Z5DBB0AA0D21EAF3BwBUewdfjhcTRsXIHeJfBzBgSc621baitxKWK04tqYS5y/AxFCHqvZNT4t8NAnO6gFbstNOAFEwk="
-     and should be treated as a parsing error
-     
      -  test the returned failedUrl in the completion block is equal to the requested url
      */
     func testFiledParsingResponse() {
-        // this is a static url , if not valid anyMore change it for this test
      
      	let url = UITestsConstants.baseUrl
         
         let testImage = testImage1
-        let server = LocallServer.getInstance { (params, callBack) in
-            callBack(LocallServer.LocalServerCallBack(statusCode: .s200, headers: [], body: Data()))
+        
+        var localServerCallBack = LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: Data())
+        
+        let server = LocalServer.getInstance { (params, callBack) in
+            callBack(localServerCallBack)
         }
         
         
@@ -129,7 +124,8 @@ class ImageLoaderTests: XCTestCase {
             .customConcrete()
         
         
-        let failExp = expectation(description: "call should fail to load image as the response is not an image - text in the case of the above url")
+        let expFailedDuToParsingImage = expectation(description: "call should fail to load image as the response is not parsable to an image")
+        
         
         imageLoader.getImageFrom(urlString: url, completion: {
             image in
@@ -142,12 +138,34 @@ class ImageLoaderTests: XCTestCase {
             
             switch error {
             case imageLoadingError.imageParsingFailed :
-                failExp.fulfill()
+                expFailedDuToParsingImage.fulfill()
             default :
                 XCTFail()
             }
         })
-        waitForExpectations(timeout: 20, handler: nil)
+        
+        wait(for: [expFailedDuToParsingImage], timeout: 2)
+         let expFailedDueToNilData = expectation(description: "call should fail to load image as the response is nil data")
+        localServerCallBack = LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: nil)
+        
+        imageLoader.getImageFrom(urlString: url, completion: {
+                   image in
+                   XCTFail()
+               }, fail: {
+                   failedUrl,error in
+                   
+                   
+                   XCTAssertEqual(failedUrl, url)
+                   
+                   switch error {
+                   case imageLoadingError.imageParsingFailed :
+                       expFailedDueToNilData.fulfill()
+                   default :
+                       XCTFail()
+                   }
+               })
+        
+        waitForExpectations(timeout: 2, handler: nil)
         addTeardownBlock {
             server.stop()
         }
@@ -156,21 +174,17 @@ class ImageLoaderTests: XCTestCase {
     
     
     
-    /**
-     ###  loading steps
-     1. check in ramCache    <- this test
-     2. check in diskCache
-     3. requestFromServer
-     */
-    func testLoadingFromRamCache() -> Void {
+   
+    func testLoadImageFromRamCache() -> Void {
+        /// used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
         let testImage =  testImage1
-        let testUrl = "testUrl" // used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
+        let testUrl = "testUrl"
         
-
+        /// create image list to pass to the ram cache and create disk cache that always returns nil
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
-        
         let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
        
+        /// create ram cache that will look in its collection and store in its collection
         let ramCache = RamCacheBuilder()
             .with(imageSet: imageSet)
             .mock(storePolicy: .store, queryPolicy: .checkInSet)
@@ -183,32 +197,28 @@ class ImageLoaderTests: XCTestCase {
         
         let ramCachedImage = imageLoader.queryRamCacheFor(url: testUrl)
        
+        /// verify image was retrieved successfully
         XCTAssertNotNil(ramCachedImage)
         XCTAssertEqual(ramCachedImage!.pngData(), testImage.pngData())
     }
     
-    /**
-     ###  loading steps
-     1. check in ramCache
-     2. check in diskCache   <- this test
-     3. requestFromServer
-     
-     
-     -- added very small timeout to make sure the image was loaded from the cache and not from the network
-     */
+ 
     func testLoadingFromDiskCache() -> Void {
         
+        // used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
         let testImage = testImage1
-        let testUrl = "testUrl" // used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
+        let testUrl = "testUrl"
         
-        
+        /// create image list to pass to the ram cache and create ram cache that always returns nil
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
+        let emptyRamCache = RamCacheBuilder().unResponsiveMock()
         
+        /// create disk cache that will look in its collection and store in its collection
         let diskCache = DiskCacheBuilder()
             .with(images: imageSet)
             .mock(storePolicy: .store, queryPolicy: .checkInSet)
         
-        let emptyRamCache = RamCacheBuilder().unResponsiveMock()
+        
         
         let imageLoader  = ImageLoaderBuilder()
             .with(diskCache: diskCache)
@@ -228,7 +238,7 @@ class ImageLoaderTests: XCTestCase {
             faildUrl,error in
             XCTFail("failed to load image from disk cache")
         })
-         waitForExpectations(timeout: 0.05, handler: nil)
+         waitForExpectations(timeout: 1, handler: nil)
         
     }
     
@@ -236,10 +246,11 @@ class ImageLoaderTests: XCTestCase {
      - images loaded from disk are cached into ram
      */
     func testDiskLoadedImagesAreCachedIntoRam() {
+        /// used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
         let testImage = testImage1
-        let testUrl = "testUrl" // used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
+        let testUrl = "testUrl"
         
-        
+        /// create responsive ram and disk cache mocks and itinalize the disk cache with an image
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
         
         let diskCache = DiskCacheBuilder()
@@ -260,6 +271,9 @@ class ImageLoaderTests: XCTestCase {
         let diskCacheExp = expectation(description: "loaded image successfullt from disk cache")
         let ramCacheExp  = expectation(description: "image was loaded from disk cache into ram cache")
         
+        
+        
+        /// load the image , should be returned from the disk cache and then look it up in the ram cache 
         imageLoader.getImageFrom(urlString: testUrl, completion: {
             diskCacheImage in
             XCTAssertEqual(testImage.pngData(), diskCacheImage.pngData())

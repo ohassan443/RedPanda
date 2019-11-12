@@ -53,12 +53,12 @@ class ViewController: UIViewController {
         //        }.resume()
         
         
-//        let response : LocallServer.wrappedResponse = {
+//        let response : LocalServer.wrappedResponse = {
 //            params,callBack in
 //            
 //            
 //                let data = UIImage(named: "testImage1")!.pngData()
-//                    callBack(LocallServer.LocalServerCallBack(statusCode: .s200, headers: [], body: data!))
+//                    callBack(LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: data!))
 //        }
         
      
