@@ -15,7 +15,7 @@ public class ImageCollectionLoaderBuilder {
     
     public init(){}
     
-    public func defaultImp(ramMaxItemsCount:Int = 100) -> ImageCollectionLoaderProtocol {
+    public func defaultImp(ramMaxItemsCount:Int) -> ImageCollectionLoaderProtocol {
         let imageloader = ImageLoaderBuilder().concrete(ramMaxItemsCount: ramMaxItemsCount)
         let internetChecker = InternetConnectivityCheckerBuilder().concrete()
         let reachability = ReachabailityMonitor()

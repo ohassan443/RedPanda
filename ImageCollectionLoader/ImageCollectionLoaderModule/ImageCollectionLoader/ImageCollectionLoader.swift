@@ -258,7 +258,11 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
     
     
     
-    private func retryFailedRequests()->Void{
+     @objc private func retryFailedRequests()->Void{
+        guard networkFailedRequests.syncCheckEmpty() == false else {
+                   timer?.invalidate()
+                   return
+        }
         networkFailedRequests.updateTimeStamp()
         let requestsToTry = networkFailedRequests
         
@@ -375,7 +379,10 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
     private func addToNetworkFailedRequests(request:imageRequest){
         networkFailedRequests.syncedInsert(element: request, completion: {
             self.processingRequests.syncedRemove(element: request, completion: {
-                self.runTimerCheck()
+                 /// check wether the timer is currently running and if it is running then skip as the failed requests will be tried at the next fire
+                guard self.timer == nil else {return}
+                guard !self.networkFailedRequests.syncCheckEmpty() else {return}
+                self.checkInternet()
             })
         })
     }
@@ -384,21 +391,19 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
     
     
     
-    /// check wether the timer is currently running and if it is running then skip
+   
     /// if ncase the timer is not running then check that there is requests in the failed request list and fire the internet check
     /// if the internet bing succeeds then retry the failed requests , if not then  start the timer
-    private func runTimerCheck() -> Void{
+    private func checkInternet() -> Void{
         
-        guard timer == nil else {return}
         
-        guard !networkFailedRequests.syncCheckEmpty() else {return}
         connectivityChecker.check(completionHandler: {
             [weak self]
             result in
             guard let tableImageLoader = self else {return}
             if result {
                 tableImageLoader.timer?.invalidate()
-                tableImageLoader.runTimedCode()
+                tableImageLoader.retryFailedRequests()
             }else {
                 tableImageLoader.runTimer()
             }
@@ -415,7 +420,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
         self.timer = Timer.scheduledTimer(withTimeInterval: timerDelay, repeats: true, block: {[weak self]
             timer in
             guard let tableImageLoader = self else {return}
-            tableImageLoader.runTimedCode()
+            tableImageLoader.retryFailedRequests()
         })
     }
     
@@ -423,14 +428,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
     
     
     
-    /// checks that there are failed requests and retries them
-    @objc private func runTimedCode(){
-        guard networkFailedRequests.syncCheckEmpty() == false else {
-            timer?.invalidate()
-            return
-        }
-        retryFailedRequests()
-    }
+  
 }
 
 

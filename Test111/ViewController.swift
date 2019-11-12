@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tv2: UITableView!
     
     var dataSource = [String]()
-    let imageCollectionLoader = ImageCollectionLoaderBuilder().defaultImp()
+    let imageCollectionLoader = ImageCollectionLoaderBuilder().defaultImp(ramMaxItemsCount: 60)
     var session : URLSession? = nil
     var server : HTTPServer! = nil
     

@@ -14,11 +14,11 @@ import UIKit
 class RamCache: RamCacheProtocol {
     /// synced dictionary to avoid multiple writes crashes
     private var ram : SyncedAccessHashableCollection<ImageUrlWrapper> = SyncedAccessHashableCollection<ImageUrlWrapper>()
-    private var maxItemsCount = 20
+    private var maxCount = 20
     
     // subscribe to didReceiveMemoryWarningNotification to clear ram if memory is overloaded
     init(maxItemsCount : Int) {
-        self.maxItemsCount = maxItemsCount
+        self.maxCount = maxItemsCount
         NotificationCenter.default.addObserver(self, selector: #selector(freeRam), name: UIApplication.didReceiveMemoryWarningNotification , object: nil)
     }
     deinit {
@@ -35,7 +35,7 @@ class RamCache: RamCacheProtocol {
         let queryUrl = PersistentUrl.amazonCheck(url: url)
         ram.syncedInsert(element: ImageUrlWrapper(url: queryUrl, image: image), completion: {[weak self] in
             guard let ramCache = self else {return}
-            if ramCache.ram.values.count >= ramCache.maxItemsCount  {
+            if ramCache.ram.values.count >= ramCache.maxCount  {
                 ramCache.freeRam()
             }
         })

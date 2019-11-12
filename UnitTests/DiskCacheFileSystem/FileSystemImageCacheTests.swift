@@ -337,6 +337,28 @@ class DiskCacheFileSystemTests: XCTestCase {
     }
    
     
-    
+//    func testCOncurruntRead() {
+//         createTempDirectory()
+//        let queue = DispatchQueue.init(label: "temp", qos: .userInteractive, attributes: .concurrent, autoreleaseFrequency: .workItem, target: DispatchQueue.global(qos: .userInteractive))
+//        let expFinished = expectation(description: "")
+//        for m in 0...20 {
+//
+//            let urls = Array.init(0...1000)
+//            let fileSystemCache = DiskCacheFileSystemBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
+//            for i in urls {
+//                queue.async {
+//                    fileSystemCache.readFromFile(url: "emp url \(i)", completion: {
+//                        result in
+//                        print("result = \(result)   \(i)  \(m)")
+//
+//
+//                        (m == 20 && i == 1000) ? expFinished.fulfill() : ()
+//                    })
+//                }
+//            }
+//        }
+//
+//        waitForExpectations(timeout: 50, handler: nil)
+//    }
 }
 
