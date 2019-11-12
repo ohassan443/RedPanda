@@ -82,7 +82,6 @@ class InternetConnectivityCheckerMockTests: XCTestCase {
             expGlobalFalse.fulfill()
         })
         
-         wait(for: [expGlobalFalse], timeout: 1)
         
         
         waitForExpectations(timeout: 5, handler: nil)
