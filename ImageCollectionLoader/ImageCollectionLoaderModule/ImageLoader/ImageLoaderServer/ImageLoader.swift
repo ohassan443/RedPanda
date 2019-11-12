@@ -37,7 +37,9 @@ class ImageLoader : ImageLoaderObj{
     
     
     
-    
+    /**
+     try to read the image from the ram cache and if not founc check in the disk cache and if not found call the server  then save the loaded image to ram and disk caches for future use
+     */
     func getImageFrom(urlString:String, completion:  @escaping (_ : UIImage)-> (),fail : @escaping (_ url:String,_ error:Error)-> ()) -> Void {
         
 
@@ -76,14 +78,6 @@ class ImageLoader : ImageLoaderObj{
         DispatchQueue.global().async {
             let session = imageLoaderUrlSession.getSession()
             
-            /*
-             // this session is used for testing
-             let config = URLSessionConfiguration.default
-             config.timeoutIntervalForResource = 60
-             config.timeoutIntervalForRequest = 60
-             config.requestCachePolicy = .reloadIgnoringCacheData
-             let tempSession = URLSession(configuration: config)
-             */
             session.dataTask(with: url, completionHandler: { [weak self](data, response, error) -> Void in
                 guard let self = self else {return}
              
@@ -101,7 +95,7 @@ class ImageLoader : ImageLoaderObj{
                         return
                     }
                     
-                    let cacheResult = self.cacheToRam(image: resultImage, url: urlString)
+                    let _ = self.cacheToRam(image: resultImage, url: urlString)
                     self.diskCache.cache(image: resultImage, url: urlString, completion: {_ in})
                 
                 DispatchQueue.main.async { [weak self] in

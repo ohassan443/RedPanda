@@ -15,13 +15,17 @@ let databaseQueue = DispatchQueue(label: "realmClientQueue", qos: .userInitiated
 class DiskCacheImageDataBase  {
     
     enum pathUrl {
+        /// used for app
         case defaultPath
+        
+        /// used for testing the concrete instance in the testing and to delete later at the end of the test
         case custom(path:String)
     }
     
     
-    
+    ///the path of the realm
     private var path : pathUrl = .defaultPath
+    
     private var config: Realm.Configuration {
         switch path {
         case .defaultPath:
@@ -39,6 +43,7 @@ class DiskCacheImageDataBase  {
         self.path = path
     }
   
+    /// acquire a thread safe instance from realm
     private func createRealm() -> Realm {
         if let realm = try? Realm(configuration: config){
             return realm
@@ -50,7 +55,8 @@ class DiskCacheImageDataBase  {
 }
 extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
  
-    
+    /// save a PersistentUrl obj to the database that corresponds to a certain url
+    /// the obj to save contains the url and the file system and the current date as the last access date of the object
     func cache(url: String,completion: @escaping (_ result : Bool)->()) -> Void{
         databaseQueue.async(flags:.barrier){ [weak self] in
             guard let database = self else {return}
@@ -72,7 +78,7 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
     
     
     
-    
+    /// search the data base for an object that has a url matching the passed url and if found return its file system name
     func getFileSystemUrlFor(url:String,completion: @escaping (_ fileSystemUrl : String?)->()) -> Void{
         databaseQueue.async { [weak self] in
             guard let database = self else {return}
@@ -96,7 +102,7 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
     
     
     
-    
+    /// delete an object from the data base the holds a url matching the passed url
     func delete(url: String, completion: @escaping (Bool) -> ()) -> Void{
         databaseQueue.async (flags:.barrier){ [weak self] in
             guard let database = self else {return}
@@ -119,6 +125,8 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
          }
     }
     
+    
+    /// return objects in the data base has been last accessed before the passed date
     func getUrlsWith(minlastAccessDate: Date, completion: @escaping ([String]) -> ()) {
         let database = createRealm()
         let dataBaseItems = (database.objects(PersistentUrl.self).filter("lastAccessDate <= %@", minlastAccessDate))
@@ -132,7 +140,7 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
             
         }
 
-
+/// delete certain objects matching the passed urls from the database and return success only if all the urls were deleted
     func delete(urls: [String], completion: @escaping (Bool) -> ()) {
         
         let dataBaseUrls = urls.map(){PersistentUrl.amazonCheck(url: $0)}
@@ -166,7 +174,8 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
     
     
     
-    
+    /// delete objects from the database that were last accessed before the passed date
+    /// returns success only if all the matching urls were deleted
     func deleteWith(minLastAccessDate:Date,completion:@escaping(_ result:Bool)->()) ->Void {
         
         databaseQueue.async( flags: .barrier, execute: {
@@ -200,7 +209,7 @@ extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
 
     
    
-    
+    /// delete the database by deleting the files on the file system with the extension .lock & .managment & configureation file
     func deleteDataBase() -> Bool {
         let realmUrl = config.fileURL!
         

@@ -355,8 +355,9 @@
 		074290E7235B76440003EB7C /* DiskCacheImage */ = {
 			isa = PBXGroup;
 			children = (
-				074290E8235B76440003EB7C /* FileSystemImageCache */,
 				074290EE235B76440003EB7C /* DiskCacheImageObj */,
+				074290F5235B76440003EB7C /* DiskCacheImageDataBase */,
+				074290E8235B76440003EB7C /* FileSystemImageCache */,
 				074290FA235B76440003EB7C /* DiskCacheImageBuilder.swift */,
 			);
 			path = DiskCacheImage;
@@ -377,7 +378,6 @@
 			children = (
 				074290EF235B76440003EB7C /* DiskCacheImage */,
 				074290F2235B76440003EB7C /* DiskCacheImageMock */,
-				074290F5235B76440003EB7C /* DiskCacheImageDataBase */,
 			);
 			path = DiskCacheImageObj;
 			sourceTree = "<group>";

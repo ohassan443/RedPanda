@@ -78,7 +78,7 @@ class FileSystemImageCacheMock: FileSystemImageCacheObj {
     
     
     
-    func createImagesDirectoryIfNoneExists() {}
+    
     
     func deleteAll() -> Bool {
         cachedImages.removeAll()

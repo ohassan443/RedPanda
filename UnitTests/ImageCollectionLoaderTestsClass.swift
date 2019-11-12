@@ -575,7 +575,7 @@ class ImageCollectionLoaderTestsClass: XCTestCase {
             }
 
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
         let finishDate = Date()
 
         let lapsedTime = finishDate.timeIntervalSince1970 - startDate.timeIntervalSince1970

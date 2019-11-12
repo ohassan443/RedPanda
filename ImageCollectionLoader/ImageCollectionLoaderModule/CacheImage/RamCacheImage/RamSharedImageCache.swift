@@ -12,11 +12,11 @@ import UIKit
 
 
 class RamSharedImageCache: RamCacheImageObj {
+    /// synced dictionary to avoid multiple writes crashes
+    private var ram : SyncedDic<ImageUrlWrapper> = SyncedDic<ImageUrlWrapper>()
     
-    private var globalImageRam : SyncedDic<ImageUrlWrapper> = SyncedDic<ImageUrlWrapper>()
     
-    
-    
+    // subscribe to didReceiveMemoryWarningNotification to clear ram if memory is overloaded
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(freeRam), name: UIApplication.didReceiveMemoryWarningNotification , object: nil)
     }
@@ -28,32 +28,30 @@ class RamSharedImageCache: RamCacheImageObj {
    
     
     
-    
+    /// add image to the synced collection
     func cache(image: UIImage, url: String) -> Bool {
         
         let queryUrl = PersistentUrl.amazonCheck(url: url)
-        globalImageRam.syncedInsert(element: ImageUrlWrapper(url: queryUrl, image: image), completion: {[weak self] in
+        ram.syncedInsert(element: ImageUrlWrapper(url: queryUrl, image: image), completion: {[weak self] in
             guard let ramCache = self else {return}
-            if ramCache.globalImageRam.values.count >= 100  {
+            if ramCache.ram.values.count >= 100  {
                 ramCache.freeRam()
             }
         })
-        
-        
-        
-        
         return true
     }
     
+    /// clear images in ram
      @objc private func freeRam() -> Void {
-        globalImageRam.updateTimeStamp()
-        globalImageRam.values = [:]
+        ram.updateTimeStamp()
+        ram.values = [:]
     }
     
+    /// query the ram collection for an image corresponding to a url
     func getImageFor(url: String) -> UIImage? {
         var resultImage : UIImage? = nil
             let queryUrl = PersistentUrl.amazonCheck(url: url)
-            let obj = globalImageRam.syncedRead(targetElementHashValue: queryUrl.hashValue)
+            let obj = ram.syncedRead(targetElementHashValue: queryUrl.hashValue)
             resultImage = obj?.image
         
         return resultImage

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+/// the queue is global for all instances of the file system so that if multiple instances are accessing the same file (all instances of this class will refere to the same file)
   let fileSystemQueue = DispatchQueue(label: "fileSystemQueue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInteractive))
 
 class FileSystemImageCache: FileSystemImageCacheObj {
@@ -25,12 +26,14 @@ class FileSystemImageCache: FileSystemImageCacheObj {
         self.directory = directory
     }
     
-    
+    /**
+     write the image as data in the filder and if the folder doesnot exist (first run) then create it and write the image
+     */
     func writeToFile(image: UIImage, url: String, completion: @escaping (Bool) -> ()) {
         fileSystemQueue.async (flags:.barrier){[weak self] in
             guard let filesSystem = self else {return}
             let fileURL = filesSystem.directory.appendingPathComponent(url)
-            // get your UIImage jpeg data representation and check if the destination file url already exists
+            // get your UIImage jpeg data representation
             guard let data = image.pngData() else {
                 completion(false)
                 return
@@ -65,7 +68,7 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     
     
     
-    
+    /// read data from file if found and parse it to an image
     func readFromFile(url: String, completion: @escaping (UIImage?) -> ()) {
         fileSystemQueue.async {[weak self] in
             guard let filesSystem = self else {return}
@@ -83,7 +86,7 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     }
     
     
-    
+    /// delete image data from file
     func deleteFromFile(url: String, completion: @escaping (Bool) -> ()) {
         fileSystemQueue.async(flags:.barrier) {[weak self] in
             guard let filesSystem = self else {return}
@@ -95,6 +98,7 @@ class FileSystemImageCache: FileSystemImageCacheObj {
         }
     }
     
+    /// delete images data from file matching the passed names
     func deleteFilesWith(urls: [String], completion: @escaping (Bool) -> ()) {
         fileSystemQueue.async (flags:.barrier){
             var deletedAll = true
@@ -110,7 +114,7 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     }
     
     
-    
+    /// create the image directory
     func createImagesDirectoryIfNoneExists() {
       
             let imagesPath = directory
@@ -128,7 +132,7 @@ class FileSystemImageCache: FileSystemImageCacheObj {
     
     
     
-    
+    /// delete the directory with all of its contained images
     func deleteAll() -> Bool {
         let deleteFilesResult : ()? = try? FileManager.default.removeItem(at: directory)
         return deleteFilesResult != nil

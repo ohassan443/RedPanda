@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+/**
+ mocks internet checking with executing a completionHandler after certain delay on a certain queue (main / global)
+ */
 class InternetConnectivityCheckerMock: InternetConnectivityCheckerObj {
     
     
@@ -15,9 +17,9 @@ class InternetConnectivityCheckerMock: InternetConnectivityCheckerObj {
         case Main
         case Global
     }
-    var success : Bool
-    var delay : TimeInterval
-    var queue : ReturnQueue
+    private var success : Bool
+    private var delay : TimeInterval
+    private var queue : ReturnQueue
     
     init(success:Bool,delay:TimeInterval,returnQueue:ReturnQueue) {
         self.success = success

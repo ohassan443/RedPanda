@@ -34,17 +34,18 @@ class DiskCacheImageMock: DiskCahceImageObj {
     }
     
     
-    
+    /// change the behaviour for quering the mock for an image for certain url
     func changeQuery(Policy:QueryPolicy) -> Void {
         self.queryPolicy = Policy
     }
+    /// change the storing behaviour of the mock
     func changeStore(Policy:StorePolicy) -> Void {
         self.storePolicy = Policy
     }
     
     
     
-    
+    /// fetch and image from the mock list if avaliable depending on the query policy
     func getImageFor(url: String, completion: (UIImage?) -> ()) {
      
         switch queryPolicy {
@@ -62,7 +63,7 @@ class DiskCacheImageMock: DiskCahceImageObj {
     
     
     
-    
+    /// cache and image & url to the mock list depending on the store policy
     func cache(image: UIImage, url: String, completion: (Bool) -> ()) {
         
         switch storePolicy{
@@ -80,7 +81,7 @@ class DiskCacheImageMock: DiskCahceImageObj {
     
     
     
-    
+    /// delete specific url from the list if found
     func delete(url: String, completion: (Bool) -> ()) {
         guard let element = ImageUrlWrapper.setContaints(set: list, url: url)else {
             completion(false)
@@ -89,13 +90,17 @@ class DiskCacheImageMock: DiskCahceImageObj {
         list.remove(element)
         completion(true)
     }
-    func createImagesDirectoryIfNoneExists() {}
     
+    /**
+     delete all images
+     */
     func deleteAll() -> Bool {
         list.removeAll()
         return true
     }
-    
+    /**
+        delete images that were last accessed before  a certain data
+        */
     func deleteWith(minLastAccessDate: Date, completion: @escaping (Bool) -> ()) {
         let urlsToDelete = list.filter(){
             return $0.getLastAccessDate() < minLastAccessDate

@@ -9,7 +9,7 @@
 import Foundation
 import Reachability
 
-
+/// monitor reachability status and notify the delegate on change 
 class ReachabailityMonitor: ReachabilityMOnitorObj {
    
     

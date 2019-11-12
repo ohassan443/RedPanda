@@ -16,28 +16,41 @@ public struct imageRequest : Hashable {
         case NetworkOrDiskCache(AsynchronousCallBack)
         
         
+        /// states for async requesting of an image
         public enum AsynchronousCallBack {
+            
+            /// another request with the same indexpath - tag - url was requested and is loading now
             case currentlyLoading
+            
+            /// the requested url was loaded before and the parsing of the image failed
             case invalid
+            
+            /// the request is being processed
             case processing
         }
         
         public enum SynchronousCheck {
+            /// the requested image for the url is cached in the ram cache
             case cached
+             /// the requested url was loaded before and the parsing of the image failed
             case invalid
+            /// the requested image for the  url is not avaliable in the ram cache
             case notAvaliable
         }
-
     }
     
     
-    private var image : UIImage?
+    
     private var url : String
     private var loading : Bool
     private var dateRequestedAt : Date
     private var cellIndexPath : IndexPath
     private var completion : ImageCollectionLoaderRequestCompletionHandler? = nil
+    
+    /// number of times the request was tried and failed
     private var failedCount = 0
+    
+    /// max number of failed attempts
     private var maxAttemptCount = 0
     private var tag : String
     
@@ -63,6 +76,7 @@ public struct imageRequest : Hashable {
         return self.cellIndexPath
     }
     
+    /// string to differentiate between same urls for the same indexpath ,,,, for example a card and a logo
     var requestTag : String {
         return self.tag
     }
@@ -74,8 +88,7 @@ public struct imageRequest : Hashable {
         hasher.combine(keyValue)
     }
    
-    init(image:UIImage?,url:String,loading:Bool,dateRequestedAt : Date,cellIndexPath : IndexPath,tag:String,completion: ImageCollectionLoaderRequestCompletionHandler? = nil) {
-        self.image = image
+    init(url:String,loading:Bool,dateRequestedAt : Date,cellIndexPath : IndexPath,tag:String,completion: ImageCollectionLoaderRequestCompletionHandler? = nil) {
         self.url = url
         self.loading = loading
         self.failedCount = 0
@@ -90,20 +103,25 @@ public struct imageRequest : Hashable {
         
     }
     
+    
     public static func == (lhs: imageRequest, rhs: imageRequest) -> Bool {
         return lhs.url == rhs.url && lhs.cellIndexPath == rhs.cellIndexPath && lhs.tag == rhs.tag
     }
   
     
-    
+    /// reset the failed count of the request ,, will be used before the request is retried
     mutating public func reset(){
         self.failedCount  = 0
         self.loading = false
     }
+    
+    /// adds failed attempt to the count
     mutating public func addFailedAttemp(){
         self.failedCount += 1
         self.loading = false
     }
+    
+    /// change max number of the failed attempts
     mutating public func set(maxAttemptCount:Int){
         self.maxAttemptCount = maxAttemptCount
     }
@@ -116,11 +134,12 @@ public struct imageRequest : Hashable {
     }
 }
 
+/// convenience wrapper for reading a request in a synced collection by its url & indexPath & tag 
 extension SyncedDic where T == imageRequest {
     func specialSyncedRead(url:String,indexPath:IndexPath,tag:String) -> imageRequest? {
        
         
-        let targetHashValue = imageRequest(image: nil, url: url, loading: false, dateRequestedAt: Date(), cellIndexPath: indexPath, tag: tag).hashValue
+        let targetHashValue = imageRequest( url: url, loading: false, dateRequestedAt: Date(), cellIndexPath: indexPath, tag: tag).hashValue
         
         let result = syncedRead(targetElementHashValue: targetHashValue)
         

@@ -10,14 +10,23 @@ import Foundation
 import RealmSwift
 import UIKit
 
+
+
+/**
+ Container object for an image in the database
+ */
 @objcMembers class PersistentUrl: Object {
+    /// the server url  stripped of time stamp
     dynamic var url : String = ""
+    /// the name of the image on the file system folder
     @objc private dynamic var fileSystemName: String? = nil
+    /// the last date this image was fetched
     @objc private dynamic  var lastAccessDate : Date? = nil
     
     
     convenience init (url:String){
         self.init()
+        /// remove the time stamp from the url 
         let modifiedUrl = PersistentUrl.amazonCheck(url: url)
         
         self.url = modifiedUrl

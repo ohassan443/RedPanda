@@ -115,9 +115,6 @@ internal  protocol FileSystemImageCacheObj {
     /// delete certain images related to the passed urls from the file system
     func deleteFilesWith(urls:[String],completion: @escaping (_ result : Bool)->())-> Void
     
-    /// create the image directory container file on the file system if it does not exist
-    func createImagesDirectoryIfNoneExists() -> Void
-    
     /// delete all cached images
     func deleteAll() -> Bool
 }
@@ -148,9 +145,6 @@ internal protocol DiskCahceImageObj {
     
     /// deletes the image from disk if avaliable and then deletes it from the database if avaliable
     func delete(url:String , completion : @escaping (_ result : Bool)->()) -> Void
-    
-    
-    func createImagesDirectoryIfNoneExists() -> Void
      
     ///- deletes all the saved images  (database / file system)
     func deleteAll() -> Bool

@@ -123,7 +123,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         
         /// the request execution completionHandler
-        let request = imageRequest(image: nil, url: url, loading: false, dateRequestedAt: requestDate, cellIndexPath: indexPath, tag: tag, completion: {[weak self]
+        let request = imageRequest( url: url, loading: false, dateRequestedAt: requestDate, cellIndexPath: indexPath, tag: tag, completion: {[weak self]
             result  in
             
             /// check that the instance is not deallocated - guard aganist slow network calls and memory leaks

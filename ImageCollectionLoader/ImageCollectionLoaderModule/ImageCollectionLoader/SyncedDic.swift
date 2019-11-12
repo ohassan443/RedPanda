@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+/// synced collection to avoid multiple writes crashing
 class SyncedDic<T: Hashable>{
     var values : [Int:T] = [:]
     private var timeStamp = Date()
@@ -19,6 +21,8 @@ class SyncedDic<T: Hashable>{
         timeStamp = Date()
     }
     
+    
+    /// insert an intem in the collection
     func syncedInsert(element: T,completion:  @escaping (()->())  ) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = element
@@ -27,6 +31,9 @@ class SyncedDic<T: Hashable>{
             }
         })
     }
+    
+    
+    /// remove and item from the collection
     func syncedRemove(element:T,completion: @escaping (()->())) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = nil
@@ -35,6 +42,8 @@ class SyncedDic<T: Hashable>{
             }
         })
     }
+    
+    /// update the value of an item in the collection
     func syncedUpdate(element:T,completion: @escaping (()->())) -> Void {
         asyncOperation(operation: {
             self.values[element.hashValue] = element
@@ -47,18 +56,22 @@ class SyncedDic<T: Hashable>{
     }
     
     
-    
+    /// read the element in the collection with the hash valaue passed
     func syncedRead(targetElementHashValue:Int) -> T? {
         let operation : (() -> (T?)) = {
             return self.values[targetElementHashValue]
         }
         return self.syncOperation(operation: operation)
     }
+    
+    /// check wether an element is avaliable in the collection with the passed hash value
     func syncCheckContaines(elementHashValue:Int) -> Bool {
         return syncOperation(operation: {
             return self.values[elementHashValue] != nil
         })
     }
+    
+    /// check wether the collection is empty
     func syncCheckEmpty() -> Bool {
         return syncOperation(operation: {
             return self.values.isEmpty
@@ -74,7 +87,7 @@ class SyncedDic<T: Hashable>{
     
     
     
-    
+    /// run the operation synchronously on the queue
     private func syncOperation<T>(operation: ()->(T)) -> T {
         var result : T! = nil
         syncQueue.sync {
@@ -83,6 +96,7 @@ class SyncedDic<T: Hashable>{
         return result
     }
     
+    /// run the operation Asynchronously with a barrier flag to avoid memory crashes 
     private func asyncOperation(operation : @escaping ()->()) -> Void {
         let requestDate = timeStamp
         syncQueue.async(flags : .barrier) { [weak self] in

@@ -185,11 +185,6 @@ extension DiskCacheImageDataBaseMock : DiskCacheImageDataBaseObj {
         
         
     }
-    
-    
-    
-    
-    func createImagesDirectoryIfNoneExists() {}
   
     
     

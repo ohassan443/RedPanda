@@ -9,6 +9,12 @@
 import Foundation
 import UIKit
 
+
+
+
+/**
+ object to use as container in the mocks
+ */
 struct ImageUrlWrapper : Hashable {
     var image : UIImage?
     var url : String

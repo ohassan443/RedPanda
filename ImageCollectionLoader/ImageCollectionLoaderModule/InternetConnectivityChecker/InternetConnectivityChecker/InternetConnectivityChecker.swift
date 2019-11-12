@@ -16,12 +16,13 @@ class  InternetConnectivityChecker : InternetConnectivityCheckerObj  {
         self.url = url
     }
     
-  
+  /**
+     ping a url and return success if the response is 200
+     */
     func check(completionHandler: @escaping (Bool) -> Void) ->(){
         guard let url = URL(string: url) else {
             completionHandler(false)
             //print("could not create url from: \(webAddress)")
-            completionHandler(false)
             return
         }
         

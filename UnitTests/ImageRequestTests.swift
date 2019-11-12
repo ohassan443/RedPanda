@@ -11,8 +11,8 @@ import XCTest
 
 class ImageRequestTests: XCTestCase {
     
-    let request = imageRequest(image: nil, url: "1", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "1")
-    let duplicatedRequest = imageRequest(image: UIImage(), url: "1", loading: true, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "1")
+    let request = imageRequest( url: "1", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "1")
+    let duplicatedRequest = imageRequest( url: "1", loading: true, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "1")
     
     /**
      - imageRequest is hashed by url + indexpath row + indexPath section + tag
@@ -28,19 +28,19 @@ class ImageRequestTests: XCTestCase {
         XCTAssertEqual(r1, r2)
         
         // change url & requests should fail equality
-        let r3 = imageRequest(image: nil, url: "2", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "1")
+        let r3 = imageRequest( url: "2", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "1")
         XCTAssertNotEqual(r3, r1)
         
         // change IndexPath row & requests should fail equality
-        let r4 = imageRequest(image: nil, url: "1", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 1, section: 0), tag: "1")
+        let r4 = imageRequest( url: "1", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 1, section: 0), tag: "1")
         XCTAssertNotEqual(r4, r1)
         
         // change IndexPath section & requests should fail equality
-        let r5 = imageRequest(image: nil, url: "1", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 1), tag: "1")
+        let r5 = imageRequest( url: "1", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 1), tag: "1")
         XCTAssertNotEqual(r5, r1)
         
         // change  tag & requests should fail equality
-        let r6 = imageRequest(image: nil, url: "1", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "2")
+        let r6 = imageRequest( url: "1", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "2")
         XCTAssertNotEqual(r6, r1)
     }
     
@@ -78,7 +78,7 @@ class ImageRequestTests: XCTestCase {
        
         
         
-        let r2 = imageRequest(image: nil, url: "newUrl", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "newTag")
+        let r2 = imageRequest( url: "newUrl", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "newTag")
         
         let searchR2 = set.contains(r2)
         XCTAssertFalse(searchR2)
@@ -88,7 +88,7 @@ class ImageRequestTests: XCTestCase {
     
     // excceding max attempts count sets the failed flag to true
     func testExccedingMaxAttemptCountFails() {
-        var r1 = imageRequest(image: nil, url: "", loading: true, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "")
+        var r1 = imageRequest(url: "", loading: true, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "")
         
         r1.set(maxAttemptCount: 3)
         XCTAssertEqual(r1.failed, false)
@@ -103,7 +103,7 @@ class ImageRequestTests: XCTestCase {
     
     // test failed flag after reaching max attempt count then failing
     func testReset() {
-        var r1 = imageRequest(image: nil, url: "", loading: true, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "")
+        var r1 = imageRequest( url: "", loading: true, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "")
         
         r1.set(maxAttemptCount: 3)
         XCTAssertEqual(r1.failed, false)

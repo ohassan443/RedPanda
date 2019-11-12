@@ -18,10 +18,12 @@ class RamCacheImageMock: RamCacheImageObj {
      flag added for check on retreive only to mock having an empty cache / full resonsive cache
      */
     
+    // how the mock responses in case its 'cache' method is called
     enum StorePolicy {
         case store
         case skip
     }
+    /// how the mock responses in case it is queried for an image matching a certain url
     enum QueryPolicy {
         case checkInSet
         case returnNil

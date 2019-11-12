@@ -52,7 +52,7 @@ class ImageCollectionLoaderMock: ImageCollectionLoaderObj {
             })
             
         case .none :
-            let placeHolderRequest = imageRequest(image: nil, url: "", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "")
+            let placeHolderRequest = imageRequest( url: "", loading: false, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "")
             failedHandler?(placeHolderRequest,nil,.invalid)
         }
     }

@@ -10,10 +10,15 @@ import Foundation
 import UIKit
 
  
-
+/**
+#  - This type is a concrete facade over the database and the fileSystem
+#  - Remark : the database is used as a mid step as the file system look ups are slow and to perform queries such as  images that were saved after a certain url and get their file system name and delete them
+*/
 class DiskCacheImage : DiskCahceImageObj {
-    
+    /// the database to hold the url and its associated name on the file system
     private var database : DiskCacheImageDataBaseObj
+    
+    /// an object to store / retreieve images from the disk
     private var fileSystem : FileSystemImageCacheObj
     
     init(DisckCacheImageDatabase:DiskCacheImageDataBaseObj,fileSystemImacheCache:FileSystemImageCacheObj) {
@@ -23,7 +28,10 @@ class DiskCacheImage : DiskCahceImageObj {
     
     
     
-    
+    /**
+     - check wether the image is in the database first and get its file system name if avaliable and then loaded it from the file system
+     - the data is store on the file system instead inside the database as  data to avoid bloating app size
+     */
     func getImageFor(url: String, completion: @escaping (UIImage?) -> ()) -> Void{
         
         database.getFileSystemUrlFor(url: url, completion: {[weak self]
@@ -44,8 +52,8 @@ class DiskCacheImage : DiskCahceImageObj {
     
     
     /**
-     - wtire to file system then if successfull writes to database
-     - captures strong self in the fileSystem completion handler to make sure that files on systme have matching entry in database
+     - wtire the image as data to file system then if successfull writes the url & the image file name on the disk to database
+     - captures strong self in the fileSystem completion handler to make sure that files on systme have matching entry in database to avoid writing to the filesystem and not updating the database if the object is deallocated
      */
     func cache(image: UIImage, url: String, completion: @escaping (Bool) -> ())-> Void {
         let objToSave = PersistentUrl(url: url)
@@ -69,7 +77,8 @@ class DiskCacheImage : DiskCahceImageObj {
     
     
     /**
-     getting fileSystemUrl captures weak self , but once its completed deleting from fileUrl & database captures strong self
+     - get the name of the image on the file system and then delete it from the disk and if successfull delete it from the database
+     - getting fileSystemUrl captures weak self , but once its completed deleting from fileUrl & database captures strong self
      */
     
     func delete(url: String, completion: @escaping (Bool) -> ()) -> Void {
@@ -98,11 +107,9 @@ class DiskCacheImage : DiskCahceImageObj {
         })
     }
     
-    func createImagesDirectoryIfNoneExists() {
-        fileSystem.createImagesDirectoryIfNoneExists()
-    }
-    
-    
+    /**
+     delete images that were last accessed before  a certain data
+     */
     func deleteWith(minLastAccessDate: Date, completion: @escaping (Bool) -> ()) {
         database.getUrlsWith(minlastAccessDate: minLastAccessDate, completion: {
             urls in
@@ -117,7 +124,7 @@ class DiskCacheImage : DiskCahceImageObj {
         })
      }
     
-    
+    /// delete all images
     func deleteAll() -> Bool {
         let databaseDelete =  database.deleteDataBase()
         let fileSystemDelete = fileSystem.deleteAll()
