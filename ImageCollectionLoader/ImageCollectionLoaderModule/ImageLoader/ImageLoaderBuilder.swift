@@ -24,8 +24,8 @@ class ImageLoaderBuilder  {
     }
     
     
-    func concrete() -> ImageLoader {
-        let serverLoader = ImageLoader(diskCache: DiskCacheBuilder().concrete(), ramCache: RamCacheBuilder().concrete())
+    func concrete(ramMaxItemsCount:Int) -> ImageLoader {
+        let serverLoader = ImageLoader(diskCache: DiskCacheBuilder().concrete(), ramCache: RamCacheBuilder().concrete(maxItemsCount: ramMaxItemsCount))
         return serverLoader
     }
     

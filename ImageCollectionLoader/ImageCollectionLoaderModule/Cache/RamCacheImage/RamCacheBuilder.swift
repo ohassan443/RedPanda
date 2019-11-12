@@ -10,8 +10,8 @@ import Foundation
 class RamCacheBuilder  {
     private var imageSet : Set<ImageUrlWrapper> = []
     
-    func concrete() -> RamCache {
-        return RamCache()
+    func concrete(maxItemsCount:Int) -> RamCache {
+        return RamCache(maxItemsCount: maxItemsCount)
     }
     
     /**
