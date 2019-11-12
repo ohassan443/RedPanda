@@ -25,7 +25,7 @@ class ImageLoaderBuilder  {
     
     
     func concrete() -> ImageLoader {
-        let serverLoader = ImageLoader(diskCache: DiskCacheBuilder().concrete(), ramCache: RamCacheBuilder().sharedConcrete())
+        let serverLoader = ImageLoader(diskCache: DiskCacheBuilder().concrete(), ramCache: RamCacheBuilder().concrete())
         return serverLoader
     }
     

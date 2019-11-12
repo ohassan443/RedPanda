@@ -23,7 +23,7 @@ class DiskCacheFileSystemTests: XCTestCase {
     
     
     /**
-     - this method is called before each test
+     - this method is called before each test to create a temp directory for this test
      */
     func createTempDirectory() -> Void {
         do{
@@ -37,7 +37,7 @@ class DiskCacheFileSystemTests: XCTestCase {
    
     
     /**
-     - this function is called after each test
+     - this function is called after each test to dlete the temp directory that was created for this test
      */
      func deleteTempDirectory() {
         do{
@@ -49,11 +49,9 @@ class DiskCacheFileSystemTests: XCTestCase {
     }
     
     
-    
+    /// verify that the image is avaliable
     func fileSystemContainsUrlForImage(fileSystemCache:DiskCacheFileSystemProtocol,url:String,expectedImage:UIImage,expectationToFullfill:XCTestExpectation) -> Void {
-        
-        
-        fileSystemCache.readFromFile(url: url, completion: {
+       fileSystemCache.readFromFile(url: url, completion: {
             resultImage in
             XCTAssertNotNil(resultImage!)
             expectationToFullfill.fulfill()
@@ -61,16 +59,14 @@ class DiskCacheFileSystemTests: XCTestCase {
     
     }
     
+    /// verify that the image is not in the file
     func fileSystemDoesnotContaintUrl(fileSystemCache:DiskCacheFileSystemProtocol,url:String,expectationToFullfill:XCTestExpectation) -> Void {
-        
-        
         fileSystemCache.readFromFile(url: url, completion: {
             deletedImage in
             XCTAssertNil(deletedImage)
             expectationToFullfill.fulfill()
         })
-  
-    }
+  }
     
     
     
@@ -119,7 +115,7 @@ class DiskCacheFileSystemTests: XCTestCase {
         let cleanUpExp          = expectation(description: "clean up saved data after test")
         let cleanUpReadExp      = expectation(description: "verify data is deleted by querying it")
         
-        
+        /// write to file and verify success
         fileSystemCache.writeToFile(image: testImage, url: url, completion: {
             result in
             XCTAssertEqual(result, true)
@@ -128,15 +124,16 @@ class DiskCacheFileSystemTests: XCTestCase {
        
         wait(for: [writeToFileExp], timeout: 10)
         
-        
+        /// read from file to verify write
         fileSystemCache.readFromFile(url: url, completion: {
             cachedImage in
+            XCTAssertNotNil(cachedImage)
             //XCTAssertNotNil(XCTAssertEqual(UIImageJPEGRepresentation(cachedImage!, 1.0), UIImageJPEGRepresentation(self.testImage, 1.0))
             readFromFileExp.fulfill()
         })
         wait(for: [readFromFileExp], timeout: 10)
         
-        // clean up after test
+        // delete image from file
         fileSystemCache.deleteFromFile(url: url, completion: {
             deleteResult in
             XCTAssertEqual(deleteResult, true)

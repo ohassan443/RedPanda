@@ -206,7 +206,7 @@ class DiskCacheFileSystemMockTests: XCTestCase {
         waitForExpectations(timeout: 20, handler: nil)
     }
     
-    
+    /// add three images to disk , delete first two and verify that they are deleted and vierfy that the third is not deleted
     func testDeleteUrlCollection() {
         let url1 = "testUrl--1"
         let url2 = "testUrl--2"
@@ -249,7 +249,7 @@ class DiskCacheFileSystemMockTests: XCTestCase {
         wait(for: [secondtWriteResultExp], timeout: 10)
         
         
-        
+        /// write third url and image to file
         fileSystemCacheMock.writeToFile(image: tempTestImage, url: url3, completion: {
             secondWriteResult in
             XCTAssertEqual(secondWriteResult, true)
@@ -258,6 +258,7 @@ class DiskCacheFileSystemMockTests: XCTestCase {
       
         wait(for: [thirdWriteResultExp], timeout: 10)
         
+        /// delete first and second images and verify that the third is not deleted
         let urlsToDelete = [url1,url2]
         fileSystemCacheMock.deleteFilesWith(urls: urlsToDelete, completion: {
             deleteResult in
@@ -269,6 +270,7 @@ class DiskCacheFileSystemMockTests: XCTestCase {
             // verify second item deletion
             self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCacheMock, url: url2, expectationToFullfill: secondtDeleteResultExp)
             
+            /// verify third item not deleted
             self.fileSystemContainsUrlForImage(fileSystemCache: fileSystemCacheMock, url: url3, expectedImage: tempTestImage, expectationToFullfill: thirdPersistanceResultExp)
             
             

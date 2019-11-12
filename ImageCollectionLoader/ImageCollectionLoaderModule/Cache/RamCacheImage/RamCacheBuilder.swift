@@ -10,7 +10,7 @@ import Foundation
 class RamCacheBuilder  {
     private var imageSet : Set<ImageUrlWrapper> = []
     
-    func sharedConcrete() -> RamCache {
+    func concrete() -> RamCache {
         return RamCache()
     }
     

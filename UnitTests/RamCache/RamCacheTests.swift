@@ -22,7 +22,7 @@ class RamCacheTests: XCTestCase {
     }
     func testCacheAndQueryFor(url:String) -> Void {
         let testImage = testImage1
-         let sharedRamCache = RamCacheBuilder().sharedConcrete()
+         let sharedRamCache = RamCacheBuilder().concrete()
         
         
         
