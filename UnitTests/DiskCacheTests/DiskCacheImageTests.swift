@@ -12,7 +12,7 @@ import XCTest
  - this cache is persisted in ram  for testing
  - uses realm's memory identifier to create actual realm object but just in memory and is deleted later
  */
-class DiskCacheImageTests: XCTestCase {
+class DiskCacheTests: XCTestCase {
     
     let image = testImage1
 
@@ -75,13 +75,13 @@ class DiskCacheImageTests: XCTestCase {
     
         
         
-        let mockFileSystemImageCache = FileSystemImageCacheBuilder()
+        let mockFileSystemImageCache = DiskCacheFileSystemBuilder()
             .with(images: [])
             .mock()
         
-        let mockDataBase    =  DiskCacheImageDataBaseBuilder().concreteForTesting()
+        let mockDataBase    =  DiskCacheDataBaseBuilder().concreteForTesting()
         
-        let diskCache = DiskCacheImageBuilder().concreteForTesting(DisckCacheImageDatabase: mockDataBase, fileSystemImacheCache: mockFileSystemImageCache)
+        let diskCache = DiskCacheBuilder().concreteForTesting(DisckCacheImageDatabase: mockDataBase, fileSystemImacheCache: mockFileSystemImageCache)
         
         
         // insert image into Cache
@@ -125,15 +125,15 @@ class DiskCacheImageTests: XCTestCase {
     
     
     func testDeleteUnAvaliableImage(url:String) {
-        let mockFileSystemImageCache = FileSystemImageCacheBuilder()
+        let mockFileSystemImageCache = DiskCacheFileSystemBuilder()
             .with(images: [])
             .mock()
         
       
         
-        let mockDataBase =  DiskCacheImageDataBaseBuilder().concreteForTesting()
+        let mockDataBase =  DiskCacheDataBaseBuilder().concreteForTesting()
         
-        let diskCache = DiskCacheImageBuilder().concreteForTesting(DisckCacheImageDatabase: mockDataBase, fileSystemImacheCache: mockFileSystemImageCache)
+        let diskCache = DiskCacheBuilder().concreteForTesting(DisckCacheImageDatabase: mockDataBase, fileSystemImacheCache: mockFileSystemImageCache)
         
         let deleteExp = expectation(description: "deleteUnAvaliableImage")
         
@@ -181,13 +181,13 @@ class DiskCacheImageTests: XCTestCase {
         let readVerifyExp = expectation(description: "verify not deletion  by reading ")
         let imageWrapper = ImageUrlWrapper(url: url, image: image)
         
-        let mockFileSystemImageCache = FileSystemImageCacheBuilder()
+        let mockFileSystemImageCache = DiskCacheFileSystemBuilder()
             .with(images: [imageWrapper])
             .mock()
         
-        let mockDataBase =  DiskCacheImageDataBaseBuilder().concreteForTesting()
+        let mockDataBase =  DiskCacheDataBaseBuilder().concreteForTesting()
         
-         let diskCache = DiskCacheImageBuilder().concreteForTesting(DisckCacheImageDatabase: mockDataBase, fileSystemImacheCache: mockFileSystemImageCache)
+         let diskCache = DiskCacheBuilder().concreteForTesting(DisckCacheImageDatabase: mockDataBase, fileSystemImacheCache: mockFileSystemImageCache)
         
         diskCache.delete(url: url, completion: {
             deleteResult in
@@ -240,13 +240,13 @@ class DiskCacheImageTests: XCTestCase {
     func testFullFunctionalityfor(url:String) {
         
         
-        let mockFileSystemImageCache = FileSystemImageCacheBuilder()
+        let mockFileSystemImageCache = DiskCacheFileSystemBuilder()
             .with(images: [])
             .mock()
         
-        let mockDataBase =  DiskCacheImageDataBaseBuilder().concreteForTesting()
+        let mockDataBase =  DiskCacheDataBaseBuilder().concreteForTesting()
         
-        let diskCache = DiskCacheImageBuilder().concreteForTesting(DisckCacheImageDatabase: mockDataBase, fileSystemImacheCache: mockFileSystemImageCache)
+        let diskCache = DiskCacheBuilder().concreteForTesting(DisckCacheImageDatabase: mockDataBase, fileSystemImacheCache: mockFileSystemImageCache)
         
         guard let fileSystemUrl = PersistentUrl(url: url).getFileSystemName() else {
             XCTFail()

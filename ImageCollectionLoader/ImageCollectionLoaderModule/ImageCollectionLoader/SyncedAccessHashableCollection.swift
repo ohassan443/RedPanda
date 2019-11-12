@@ -10,7 +10,7 @@ import Foundation
 
 
 /// synced collection to avoid multiple writes crashing
-class SyncedDic<T: Hashable>{
+class SyncedAccessHashableCollection<T: Hashable>{
     var values : [Int:T] = [:]
     private var timeStamp = Date()
     

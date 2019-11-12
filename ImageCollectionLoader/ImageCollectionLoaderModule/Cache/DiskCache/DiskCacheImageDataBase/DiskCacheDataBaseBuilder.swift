@@ -8,19 +8,19 @@
 
 import Foundation
 
-class DiskCacheImageDataBaseBuilder {
+class DiskCacheDataBaseBuilder {
     var dataBaseObjs : Set<PersistentUrl> = []
     var delay : TimeInterval = 0
 
     
     
-    func concrete() -> DiskCacheImageDataBase {
-        let database = DiskCacheImageDataBase(path: .defaultPath)
+    func concrete() -> DiskCacheDataBase {
+        let database = DiskCacheDataBase(path: .defaultPath)
         return database
     }
     
-    func concreteForTesting() -> DiskCacheImageDataBase {
-        let database = DiskCacheImageDataBase(path: .custom(path: "\(Date().timeIntervalSince1970)"))
+    func concreteForTesting() -> DiskCacheDataBase {
+        let database = DiskCacheDataBase(path: .custom(path: "\(Date().timeIntervalSince1970)"))
         return database
     }
     
@@ -32,13 +32,13 @@ class DiskCacheImageDataBaseBuilder {
 
     
     
-    func with(dataBaseObjs:Set<PersistentUrl> ) -> DiskCacheImageDataBaseBuilder {
+    func with(dataBaseObjs:Set<PersistentUrl> ) -> DiskCacheDataBaseBuilder {
         self.dataBaseObjs = dataBaseObjs
         return self
     }
     
     
-    func with(delay:TimeInterval) -> DiskCacheImageDataBaseBuilder {
+    func with(delay:TimeInterval) -> DiskCacheDataBaseBuilder {
         self.delay = delay
         return self
     }

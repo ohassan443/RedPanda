@@ -91,14 +91,14 @@ class ImageRequestTests: XCTestCase {
         var r1 = imageRequest(url: "", loading: true, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "")
         
         r1.set(maxAttemptCount: 3)
-        XCTAssertEqual(r1.failed, false)
+        XCTAssertEqual(r1.reachedMaxFailCount, false)
         
         
         for _ in stride(from: 0, through: 4, by: 1) {
             r1.addFailedAttemp()
         }
         
-        XCTAssertEqual(r1.failed, true)
+        XCTAssertEqual(r1.reachedMaxFailCount, true)
     }
     
     // test failed flag after reaching max attempt count then failing
@@ -106,19 +106,19 @@ class ImageRequestTests: XCTestCase {
         var r1 = imageRequest( url: "", loading: true, dateRequestedAt: Date(), cellIndexPath: IndexPath(row: 0, section: 0), tag: "")
         
         r1.set(maxAttemptCount: 3)
-        XCTAssertEqual(r1.failed, false)
+        XCTAssertEqual(r1.reachedMaxFailCount, false)
         
         
         for _ in stride(from: 0, through: 4, by: 1) {
             r1.addFailedAttemp()
         }
         
-        XCTAssertEqual(r1.failed, true)
+        XCTAssertEqual(r1.reachedMaxFailCount, true)
         
         r1.reset()
         
         XCTAssertEqual(r1.currentlyLoading, false)
-        XCTAssertEqual(r1.failed, false)
+        XCTAssertEqual(r1.reachedMaxFailCount, false)
     }
     
     

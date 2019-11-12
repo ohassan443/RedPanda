@@ -9,10 +9,10 @@
 import Foundation
 import Reachability
 
-class ReachabailityMonitorMock:  ReachabilityMOnitorObj{
+class ReachabailityMonitorMock:  ReachabilityMonitorProtocol{
     
     
-    var reachabilityMonitorDelegate: ReachabilityMonitorDelegate?
+    var reachabilityMonitorDelegate: ReachabilityMonitorDelegateProtocol?
     var connectionState : Reachability.Connection?
     
     
@@ -20,7 +20,7 @@ class ReachabailityMonitorMock:  ReachabilityMOnitorObj{
         self.connectionState = conncection
     }
     
-    func set(delegate: ReachabilityMonitorDelegate) {
+    func set(delegate: ReachabilityMonitorDelegateProtocol) {
         weak var weakDelegate = delegate
         self.reachabilityMonitorDelegate = weakDelegate
     }

@@ -12,7 +12,7 @@ import RealmSwift
 
 let databaseQueue = DispatchQueue(label: "realmClientQueue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInteractive))
 
-class DiskCacheImageDataBase  {
+class DiskCacheDataBase  {
     
     enum pathUrl {
         /// used for app
@@ -53,7 +53,7 @@ class DiskCacheImageDataBase  {
         return try! Realm(configuration: config)
     }
 }
-extension DiskCacheImageDataBase : DiskCacheImageDataBaseObj {
+extension DiskCacheDataBase : DiskCacheDataBaseProtocol {
  
     /// save a PersistentUrl obj to the database that corresponds to a certain url
     /// the obj to save contains the url and the file system and the current date as the last access date of the object

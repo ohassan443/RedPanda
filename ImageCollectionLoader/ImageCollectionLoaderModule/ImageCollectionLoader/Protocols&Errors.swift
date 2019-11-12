@@ -12,12 +12,12 @@ import Reachability
 
 
 
-typealias ImageCollectionLoaderRequestCompletionHandler = ( ImageCollectionLoaderRequestResponse ) -> ()
-typealias successparams = ImageCollectionLoaderRequestResponse.SuccessParams
-typealias failparams = ImageCollectionLoaderRequestResponse.FailParams
+typealias ImageCollectionLoaderRequestCompletionHandler = ( RequestResponse ) -> ()
+typealias successparams = RequestResponse.SuccessParams
+typealias failparams = RequestResponse.FailParams
 
 
-enum ImageCollectionLoaderRequestResponse {
+enum RequestResponse {
     struct SuccessParams {
         let image       : UIImage
         let date        : Date
@@ -55,7 +55,7 @@ enum ImageCollectionLoaderRequestResponse {
 
 
  */
-public protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
+public protocol ImageCollectionLoaderProtocol : ReachabilityMonitorDelegateProtocol {
     
     /**
      - parameter url : query the image cache for this url
@@ -101,7 +101,7 @@ public protocol ImageCollectionLoaderObj : ReachabilityMonitorDelegate {
  
  # - Manages deleting certain urls from the file system on the device
  */
-internal  protocol FileSystemImageCacheObj {
+internal  protocol DiskCacheFileSystemProtocol {
     /// write and image to the file system , make its name related to its url
     func writeToFile(image:UIImage,url:String, completion: @escaping (_ result : Bool)->())-> Void
     
@@ -122,7 +122,7 @@ internal  protocol FileSystemImageCacheObj {
 
 
 /// # A ram cache where images that were fetched recently wether from the locacl cache of the network will be stored , it will be faster than fetching them from the filesystem
-internal protocol RamCacheImageObj {
+internal protocol RamCacheProtocol {
     /// check for an image that corresponds the passed url in the ram cache
     /// this is a step before hitting the disk cache with a request
     func getImageFor(url:String) -> UIImage?
@@ -136,7 +136,7 @@ internal protocol RamCacheImageObj {
  #  - This type is a facade over the database and the fileSystem
  #  - Remark : the database is used as a mid step as the file system look ups are slow and to perform queries such as deleting images that were saved after a certain url
  */
-internal protocol DiskCahceImageObj {
+internal protocol DiskCacheProtocol {
      /// - searches the database for the file system name corresponding to the requested url and if found, queries the file system with the name
     func getImageFor(url:String,completion: @escaping (_ image : UIImage?)->()) -> Void
     
@@ -160,7 +160,7 @@ internal protocol DiskCahceImageObj {
 /**
  - fetches file system associated with the passed url if avaliable
  */
-internal protocol DiskCacheImageDataBaseObj {
+internal protocol DiskCacheDataBaseProtocol {
     func getFileSystemUrlFor(url:String,completion: @escaping (_ fileSystemUrl : String?)->()) -> Void
     
     /// adds url the data base and the file system name to the database
@@ -196,22 +196,22 @@ public protocol ImageLoaderObj {
 
 
 /// tracks the changes in the reachability state and notifies its delegate
-internal protocol ReachabilityMOnitorObj {
-    var  reachabilityMonitorDelegate : ReachabilityMonitorDelegate? {get}
-    func set(delegate:ReachabilityMonitorDelegate) -> Void
+internal protocol ReachabilityMonitorProtocol {
+    var  reachabilityMonitorDelegate : ReachabilityMonitorDelegateProtocol? {get}
+    func set(delegate:ReachabilityMonitorDelegateProtocol) -> Void
 }
 
 
 
 /// recieves changes from ReachabilityMOnitorObj after being set as its delegate
-public protocol ReachabilityMonitorDelegate : class {
+public protocol ReachabilityMonitorDelegateProtocol : class {
     func respondToReachabilityChange(reachable:Bool) -> Void
     var connected : Bool {get}
 }
 
 
 /// checks for internet connectivity by binging a server
-internal protocol InternetConnectivityCheckerObj {
+internal protocol InternetCheckerProtocol {
     func check(completionHandler: @escaping (Bool) -> Void) ->()
 }
 
@@ -240,7 +240,7 @@ let ImageLoaderNetworkErrorCodes =  [
 
 public func getTempAmazonUrlfrom(url:String) -> String {
     return "http://[::1]:8080/Folder/subFolder/card" + url +  ".jpg?AWSAccessKeyId=asdasdas12323&Expires=1231231234&Signature=asdasdasd"
-    //return "https://appName.amazonaws.com/Folder/subFolder/card" + url +  ".jpg?AWSAccessKeyId=A!@£$%124123123&Expires=1231231234&Signature=sadfsadfsadfs123@£$%^&^*(*(^*(^*(%3D"
+    //return "https://appName.amazonaws.com/Folder/subFolder/card" + url +  ".jpg?AWSAccessKeyId=asdasdas12323&Expires=1231231234&Signature=asdasdasd"
     
 }
 

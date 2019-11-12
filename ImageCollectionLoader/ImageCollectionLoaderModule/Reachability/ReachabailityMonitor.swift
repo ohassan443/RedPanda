@@ -10,10 +10,10 @@ import Foundation
 import Reachability
 
 /// monitor reachability status and notify the delegate on change 
-class ReachabailityMonitor: ReachabilityMOnitorObj {
+class ReachabailityMonitor: ReachabilityMonitorProtocol {
    
     
-    var reachabilityMonitorDelegate: ReachabilityMonitorDelegate?
+    var reachabilityMonitorDelegate: ReachabilityMonitorDelegateProtocol?
     var reachability = Reachability(hostname: "www.google.com")!
     
     
@@ -26,7 +26,7 @@ class ReachabailityMonitor: ReachabilityMOnitorObj {
         self.reachability.stopNotifier()
         NotificationCenter.default.removeObserver(self)
     }
-    func set(delegate: ReachabilityMonitorDelegate) {
+    func set(delegate: ReachabilityMonitorDelegateProtocol) {
         weak var weakDelegate = delegate
         self.reachabilityMonitorDelegate = weakDelegate
     }

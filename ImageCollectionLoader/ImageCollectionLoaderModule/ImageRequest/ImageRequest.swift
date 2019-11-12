@@ -55,7 +55,7 @@ public struct imageRequest : Hashable {
     private var tag : String
     
     
-    var failed :Bool {
+    var reachedMaxFailCount :Bool {
         return !(failedCount < maxAttemptCount)
     }
     
@@ -129,13 +129,13 @@ public struct imageRequest : Hashable {
     mutating public func setLoading(){
         loading = true
     }
-    func executeCompletionHandler(response : ImageCollectionLoaderRequestResponse) -> Void {
+    func executeCompletionHandler(response : RequestResponse) -> Void {
         completion?(response)
     }
 }
 
 /// convenience wrapper for reading a request in a synced collection by its url & indexPath & tag 
-extension SyncedDic where T == imageRequest {
+extension SyncedAccessHashableCollection where T == imageRequest {
     func specialSyncedRead(url:String,indexPath:IndexPath,tag:String) -> imageRequest? {
        
         

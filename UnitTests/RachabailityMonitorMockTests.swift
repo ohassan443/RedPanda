@@ -12,7 +12,7 @@ import XCTest
 class RachabailityMonitorMockTests: XCTestCase {
 
     
-    class monitor: ReachabilityMonitorDelegate {
+    class monitor: ReachabilityMonitorDelegateProtocol {
        
         var connected: Bool
         init(connected:Bool) {

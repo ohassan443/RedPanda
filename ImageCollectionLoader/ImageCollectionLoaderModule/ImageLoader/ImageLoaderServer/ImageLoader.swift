@@ -12,10 +12,10 @@ import UIKit
 
 class ImageLoader : ImageLoaderObj{
     
-    private var  diskCache: DiskCahceImageObj
-    private var ramCache: RamCacheImageObj
+    private var  diskCache: DiskCacheProtocol
+    private var ramCache: RamCacheProtocol
     
-    init(diskCache:DiskCahceImageObj,ramCache:RamCacheImageObj) {
+    init(diskCache:DiskCacheProtocol,ramCache:RamCacheProtocol) {
         self.ramCache = ramCache
         self.diskCache = diskCache
     }

@@ -13,8 +13,8 @@ import UIKit
 class ImageLoaderBuilder  {
     
     var delay : TimeInterval = 0
-    var diskCache : DiskCahceImageObj = DiskCacheImageBuilder().unResponseiveMock()
-    var RamCacheObj : RamCacheImageObj = RamCacheImageBuilder().unResponsiveMock()
+    var diskCache : DiskCacheProtocol = DiskCacheBuilder().unResponseiveMock()
+    var RamCacheObj : RamCacheProtocol = RamCacheBuilder().unResponsiveMock()
     
     
     
@@ -25,7 +25,7 @@ class ImageLoaderBuilder  {
     
     
     func concrete() -> ImageLoader {
-        let serverLoader = ImageLoader(diskCache: DiskCacheImageBuilder().concrete(), ramCache: RamCacheImageBuilder().sharedConcrete())
+        let serverLoader = ImageLoader(diskCache: DiskCacheBuilder().concrete(), ramCache: RamCacheBuilder().sharedConcrete())
         return serverLoader
     }
     
@@ -57,11 +57,11 @@ class ImageLoaderBuilder  {
         self.delay = delayInterval
         return self
     }
-    func with(ramCache:RamCacheImageObj)->ImageLoaderBuilder{
+    func with(ramCache:RamCacheProtocol)->ImageLoaderBuilder{
         self.RamCacheObj = ramCache
         return self
     }
-    func with(diskCache:DiskCahceImageObj) -> ImageLoaderBuilder {
+    func with(diskCache:DiskCacheProtocol) -> ImageLoaderBuilder {
         self.diskCache = diskCache
         return self
     }

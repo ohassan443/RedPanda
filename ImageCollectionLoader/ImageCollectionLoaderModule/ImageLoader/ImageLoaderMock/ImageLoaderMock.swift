@@ -24,13 +24,13 @@ class ImageLoaderMock: ImageLoaderObj {
         case mockImageUnAvaliable
     }
     
-    var diskCache: DiskCahceImageObj
-    var ramCache : RamCacheImageObj
+    var diskCache: DiskCacheProtocol
+    var ramCache : RamCacheProtocol
     var delay : TimeInterval
     
     var returnType : ReturnResponse
     
-    init(diskCache:DiskCahceImageObj,ramCache:RamCacheImageObj,delay:TimeInterval?,returnResponse:ReturnResponse) {
+    init(diskCache:DiskCacheProtocol,ramCache:RamCacheProtocol,delay:TimeInterval?,returnResponse:ReturnResponse) {
         self.diskCache = diskCache
         self.ramCache = ramCache
         self.delay = delay ?? 0

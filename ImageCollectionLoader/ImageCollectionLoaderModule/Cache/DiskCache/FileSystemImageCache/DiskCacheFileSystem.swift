@@ -12,7 +12,7 @@ import UIKit
 /// the queue is global for all instances of the file system so that if multiple instances are accessing the same file (all instances of this class will refere to the same file)
   let fileSystemQueue = DispatchQueue(label: "fileSystemQueue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInteractive))
 
-class FileSystemImageCache: FileSystemImageCacheObj {
+class DiskCacheFileSystem: DiskCacheFileSystemProtocol {
    
     
     

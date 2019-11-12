@@ -13,7 +13,7 @@ import UIKit
 
 
 
-class RamCacheImageMock: RamCacheImageObj {
+class RamCacheMock: RamCacheProtocol {
     /**
      flag added for check on retreive only to mock having an empty cache / full resonsive cache
      */

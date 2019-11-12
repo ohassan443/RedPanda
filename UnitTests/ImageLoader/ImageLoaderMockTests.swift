@@ -21,9 +21,9 @@ class ImageLoaderMockTests: XCTestCase {
     func testLoadingDirectImage() {
         let testUrl = "testUrl"
         
-        let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
+        let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
         
-        let unresponsiveRamCache = RamCacheImageBuilder().unResponsiveMock()
+        let unresponsiveRamCache = RamCacheBuilder().unResponsiveMock()
         
         
         
@@ -60,9 +60,9 @@ class ImageLoaderMockTests: XCTestCase {
         
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: image)]
         
-        let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
+        let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
         
-        let ramCache = RamCacheImageBuilder()
+        let ramCache = RamCacheBuilder()
             .with(imageSet: imageSet)
             .mock(storePolicy: .store, queryPolicy: .checkInSet)
         
@@ -101,11 +101,11 @@ class ImageLoaderMockTests: XCTestCase {
         
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
         
-        let diskCache = DiskCacheImageBuilder()
+        let diskCache = DiskCacheBuilder()
             .with(images: imageSet)
             .mock(storePolicy: .store, queryPolicy: .checkInSet)
         
-        let emptyRamCache = RamCacheImageBuilder().unResponsiveMock()
+        let emptyRamCache = RamCacheBuilder().unResponsiveMock()
         
         
         let imageLoader  = ImageLoaderBuilder()
@@ -147,9 +147,9 @@ class ImageLoaderMockTests: XCTestCase {
         
         let testUrl = "dummy invalid Url"
         
-        let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
+        let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
         
-        let emptyRamCache = RamCacheImageBuilder().unResponsiveMock()
+        let emptyRamCache = RamCacheBuilder().unResponsiveMock()
         
         
         let imageLoader  = ImageLoaderBuilder()
@@ -187,9 +187,9 @@ class ImageLoaderMockTests: XCTestCase {
         
         let testUrl = "dummy invalid Url"
         
-        let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
+        let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
         
-        let emptyRamCache = RamCacheImageBuilder().unResponsiveMock()
+        let emptyRamCache = RamCacheBuilder().unResponsiveMock()
         
         
         let imageLoader  = ImageLoaderBuilder()
@@ -228,9 +228,9 @@ class ImageLoaderMockTests: XCTestCase {
         
         let testUrl = "dummy invalid Url"
         
-        let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
+        let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
         
-        let emptyRamCache = RamCacheImageBuilder().unResponsiveMock()
+        let emptyRamCache = RamCacheBuilder().unResponsiveMock()
         
         
         let imageLoader  = ImageLoaderBuilder()

@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import ImageCollectionLoader
-class RamCacheImageMockTests: XCTestCase {
+class RamCacheMockTests: XCTestCase {
 
     func testBasicCachingAndQuerying() {
         let normalUrl = "testUrl"
@@ -22,7 +22,7 @@ class RamCacheImageMockTests: XCTestCase {
     func testBasicCachingAndQueryingFor(url:String) -> Void {
         let testImage = testImage1
        
-        let mockRamCache = RamCacheImageBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
+        let mockRamCache = RamCacheBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
         
         
         
@@ -56,7 +56,7 @@ class RamCacheImageMockTests: XCTestCase {
         
      
         
-        let mockRamCache = RamCacheImageBuilder()
+        let mockRamCache = RamCacheBuilder()
             .with(imageSet: [])
             .mock(storePolicy: .skip, queryPolicy: .checkInSet)
         
@@ -91,7 +91,7 @@ class RamCacheImageMockTests: XCTestCase {
         
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: url, image: testImage)]
         
-        let mockRamCache = RamCacheImageBuilder()
+        let mockRamCache = RamCacheBuilder()
             .with(imageSet: imageSet)
             .mock(storePolicy: .skip, queryPolicy: .returnNil)
         

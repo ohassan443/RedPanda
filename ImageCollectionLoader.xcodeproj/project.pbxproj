@@ -7,23 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07216297235C484200692A85 /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07216296235C484200692A85 /* UnitTests.swift */; };
+		07103A3E237AE037003E7D22 /* DiskCacheBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07103A3D237AE037003E7D22 /* DiskCacheBuilder.swift */; };
 		07216299235C484200692A85 /* ImageCollectionLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074290C3235B762F0003EB7C /* ImageCollectionLoader.framework */; };
 		0721629F235C484F00692A85 /* InternetConnectivityCheckerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E1235B76440003EB7C /* InternetConnectivityCheckerTests.swift */; };
 		072162A0235C484F00692A85 /* RachabailityMonitorMockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429113235B76440003EB7C /* RachabailityMonitorMockTests.swift */; };
 		072162A1235C484F00692A85 /* ImageLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742910B235B76440003EB7C /* ImageLoaderTests.swift */; };
 		072162A2235C484F00692A85 /* InternetConnectivityCheckerMockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E3235B76440003EB7C /* InternetConnectivityCheckerMockTests.swift */; };
-		072162A3235C484F00692A85 /* ImageCollectionLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290D1235B762F0003EB7C /* ImageCollectionLoaderTests.swift */; };
 		072162A4235C484F00692A85 /* ImageLoaderMockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742910F235B76440003EB7C /* ImageLoaderMockTests.swift */; };
 		072162A5235C484F00692A85 /* FileSystemImageCacheMockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E9235B76440003EB7C /* FileSystemImageCacheMockTests.swift */; };
 		072162A6235C484F00692A85 /* FileSystemImageCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290EA235B76440003EB7C /* FileSystemImageCacheTests.swift */; };
 		072162A7235C484F00692A85 /* DiskCacheImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F1235B76440003EB7C /* DiskCacheImageTests.swift */; };
 		072162A8235C484F00692A85 /* DiskCacheImageMockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F4235B76440003EB7C /* DiskCacheImageMockTests.swift */; };
-		072162A9235C484F00692A85 /* DiskCacheImagesDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F6235B76440003EB7C /* DiskCacheImagesDatabaseTests.swift */; };
-		072162AA235C484F00692A85 /* RamCacheImageMockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FC235B76440003EB7C /* RamCacheImageMockTests.swift */; };
-		072162AB235C484F00692A85 /* RamSharedImageCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FD235B76440003EB7C /* RamSharedImageCacheTests.swift */; };
+		072162A9235C484F00692A85 /* DIskCacheDataBaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F6235B76440003EB7C /* DIskCacheDataBaseTests.swift */; };
+		072162AA235C484F00692A85 /* RamCacheMockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FC235B76440003EB7C /* RamCacheMockTests.swift */; };
+		072162AB235C484F00692A85 /* RamCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FD235B76440003EB7C /* RamCacheTests.swift */; };
 		072162AC235C484F00692A85 /* ImageRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429102235B76440003EB7C /* ImageRequestTests.swift */; };
-		072162AD235C484F00692A85 /* ImageCollectionLoaderTestsClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429117235B76440003EB7C /* ImageCollectionLoaderTestsClass.swift */; };
+		072162AD235C484F00692A85 /* ImageCollectionLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429117235B76440003EB7C /* ImageCollectionLoaderTests.swift */; };
 		072C89602370466500FBF430 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C895F2370466500FBF430 /* AppDelegate.swift */; };
 		072C89622370466500FBF430 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C89612370466500FBF430 /* ViewController.swift */; };
 		072C89652370466500FBF430 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 072C89632370466500FBF430 /* Main.storyboard */; };
@@ -34,18 +33,17 @@
 		0742911B235B76440003EB7C /* InternetConnectivityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E0235B76440003EB7C /* InternetConnectivityChecker.swift */; };
 		0742911E235B76440003EB7C /* InternetConnectivityCheckerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E4235B76440003EB7C /* InternetConnectivityCheckerMock.swift */; };
 		0742911F235B76440003EB7C /* InternetConnectivityCheckerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E5235B76440003EB7C /* InternetConnectivityCheckerBuilder.swift */; };
-		07429122235B76440003EB7C /* FileSystemImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290EB235B76440003EB7C /* FileSystemImageCache.swift */; };
-		07429123235B76440003EB7C /* FileSystemImageCacheBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290EC235B76440003EB7C /* FileSystemImageCacheBuilder.swift */; };
+		07429122235B76440003EB7C /* DiskCacheFileSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290EB235B76440003EB7C /* DiskCacheFileSystem.swift */; };
+		07429123235B76440003EB7C /* DiskCacheFileSystemBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290EC235B76440003EB7C /* DiskCacheFileSystemBuilder.swift */; };
 		07429124235B76440003EB7C /* FileSystemImageCacheMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290ED235B76440003EB7C /* FileSystemImageCacheMock.swift */; };
 		07429125235B76440003EB7C /* DiskCacheImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F0235B76440003EB7C /* DiskCacheImage.swift */; };
 		07429127235B76440003EB7C /* DiskCacheImageMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F3235B76440003EB7C /* DiskCacheImageMock.swift */; };
-		0742912A235B76440003EB7C /* DiskCacheImageDataBaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F7235B76440003EB7C /* DiskCacheImageDataBaseBuilder.swift */; };
-		0742912B235B76440003EB7C /* DiskCacheImageDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F8235B76440003EB7C /* DiskCacheImageDataBase.swift */; };
+		0742912A235B76440003EB7C /* DiskCacheDataBaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F7235B76440003EB7C /* DiskCacheDataBaseBuilder.swift */; };
+		0742912B235B76440003EB7C /* DiskCacheDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F8235B76440003EB7C /* DiskCacheDataBase.swift */; };
 		0742912C235B76440003EB7C /* DiskCacheImageDatabaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290F9235B76440003EB7C /* DiskCacheImageDatabaseMock.swift */; };
-		0742912D235B76440003EB7C /* DiskCacheImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FA235B76440003EB7C /* DiskCacheImageBuilder.swift */; };
-		07429130235B76440003EB7C /* RamCacheImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FE235B76440003EB7C /* RamCacheImageBuilder.swift */; };
-		07429131235B76440003EB7C /* RamSharedImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FF235B76440003EB7C /* RamSharedImageCache.swift */; };
-		07429132235B76440003EB7C /* RamCacheImageMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429100235B76440003EB7C /* RamCacheImageMock.swift */; };
+		07429130235B76440003EB7C /* RamCacheBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FE235B76440003EB7C /* RamCacheBuilder.swift */; };
+		07429131235B76440003EB7C /* RamCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290FF235B76440003EB7C /* RamCache.swift */; };
+		07429132235B76440003EB7C /* RamCacheMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429100235B76440003EB7C /* RamCacheMock.swift */; };
 		07429134235B76440003EB7C /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429103235B76440003EB7C /* ImageRequest.swift */; };
 		07429135235B76440003EB7C /* ImageLoaderurlSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429105235B76440003EB7C /* ImageLoaderurlSession.swift */; };
 		07429136235B76440003EB7C /* ImageUrlWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429106235B76440003EB7C /* ImageUrlWrapper.swift */; };
@@ -67,7 +65,7 @@
 		07BF9AE62370965800320731 /* cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07BF9AE42370965800320731 /* cell.xib */; };
 		07BF9AEA23709C8A00320731 /* UITestsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE823709C8A00320731 /* UITestsConstants.swift */; };
 		07BF9AEB23709C8A00320731 /* LocalServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE923709C8A00320731 /* LocalServer.swift */; };
-		07E2735323786D140033D427 /* SyncedDic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E2735223786D140033D427 /* SyncedDic.swift */; };
+		07E2735323786D140033D427 /* SyncedAccessHashableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E2735223786D140033D427 /* SyncedAccessHashableCollection.swift */; };
 		07E27354237891880033D427 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C89612370466500FBF430 /* ViewController.swift */; };
 		07E27356237891B70033D427 /* LocalServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE923709C8A00320731 /* LocalServer.swift */; };
 		07E273572378924C0033D427 /* UITestsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9AE823709C8A00320731 /* UITestsConstants.swift */; };
@@ -119,8 +117,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		07103A3D237AE037003E7D22 /* DiskCacheBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheBuilder.swift; sourceTree = "<group>"; };
 		07216294235C484200692A85 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		07216296235C484200692A85 /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
 		07216298235C484200692A85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		072C895D2370466500FBF430 /* Test111.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test111.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		072C895F2370466500FBF430 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -133,7 +131,6 @@
 		074290C3235B762F0003EB7C /* ImageCollectionLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageCollectionLoader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		074290C6235B762F0003EB7C /* ImageCollectionLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCollectionLoader.h; sourceTree = "<group>"; };
 		074290C7235B762F0003EB7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		074290D1235B762F0003EB7C /* ImageCollectionLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionLoaderTests.swift; sourceTree = "<group>"; };
 		074290E0235B76440003EB7C /* InternetConnectivityChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InternetConnectivityChecker.swift; sourceTree = "<group>"; };
 		074290E1235B76440003EB7C /* InternetConnectivityCheckerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InternetConnectivityCheckerTests.swift; sourceTree = "<group>"; };
 		074290E3235B76440003EB7C /* InternetConnectivityCheckerMockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InternetConnectivityCheckerMockTests.swift; sourceTree = "<group>"; };
@@ -141,23 +138,22 @@
 		074290E5235B76440003EB7C /* InternetConnectivityCheckerBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InternetConnectivityCheckerBuilder.swift; sourceTree = "<group>"; };
 		074290E9235B76440003EB7C /* FileSystemImageCacheMockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileSystemImageCacheMockTests.swift; sourceTree = "<group>"; };
 		074290EA235B76440003EB7C /* FileSystemImageCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileSystemImageCacheTests.swift; sourceTree = "<group>"; };
-		074290EB235B76440003EB7C /* FileSystemImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileSystemImageCache.swift; sourceTree = "<group>"; };
-		074290EC235B76440003EB7C /* FileSystemImageCacheBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileSystemImageCacheBuilder.swift; sourceTree = "<group>"; };
+		074290EB235B76440003EB7C /* DiskCacheFileSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheFileSystem.swift; sourceTree = "<group>"; };
+		074290EC235B76440003EB7C /* DiskCacheFileSystemBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheFileSystemBuilder.swift; sourceTree = "<group>"; };
 		074290ED235B76440003EB7C /* FileSystemImageCacheMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileSystemImageCacheMock.swift; sourceTree = "<group>"; };
 		074290F0235B76440003EB7C /* DiskCacheImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheImage.swift; sourceTree = "<group>"; };
 		074290F1235B76440003EB7C /* DiskCacheImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheImageTests.swift; sourceTree = "<group>"; };
 		074290F3235B76440003EB7C /* DiskCacheImageMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheImageMock.swift; sourceTree = "<group>"; };
 		074290F4235B76440003EB7C /* DiskCacheImageMockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheImageMockTests.swift; sourceTree = "<group>"; };
-		074290F6235B76440003EB7C /* DiskCacheImagesDatabaseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheImagesDatabaseTests.swift; sourceTree = "<group>"; };
-		074290F7235B76440003EB7C /* DiskCacheImageDataBaseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheImageDataBaseBuilder.swift; sourceTree = "<group>"; };
-		074290F8235B76440003EB7C /* DiskCacheImageDataBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheImageDataBase.swift; sourceTree = "<group>"; };
+		074290F6235B76440003EB7C /* DIskCacheDataBaseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIskCacheDataBaseTests.swift; sourceTree = "<group>"; };
+		074290F7235B76440003EB7C /* DiskCacheDataBaseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheDataBaseBuilder.swift; sourceTree = "<group>"; };
+		074290F8235B76440003EB7C /* DiskCacheDataBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheDataBase.swift; sourceTree = "<group>"; };
 		074290F9235B76440003EB7C /* DiskCacheImageDatabaseMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheImageDatabaseMock.swift; sourceTree = "<group>"; };
-		074290FA235B76440003EB7C /* DiskCacheImageBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheImageBuilder.swift; sourceTree = "<group>"; };
-		074290FC235B76440003EB7C /* RamCacheImageMockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamCacheImageMockTests.swift; sourceTree = "<group>"; };
-		074290FD235B76440003EB7C /* RamSharedImageCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamSharedImageCacheTests.swift; sourceTree = "<group>"; };
-		074290FE235B76440003EB7C /* RamCacheImageBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamCacheImageBuilder.swift; sourceTree = "<group>"; };
-		074290FF235B76440003EB7C /* RamSharedImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamSharedImageCache.swift; sourceTree = "<group>"; };
-		07429100235B76440003EB7C /* RamCacheImageMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamCacheImageMock.swift; sourceTree = "<group>"; };
+		074290FC235B76440003EB7C /* RamCacheMockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamCacheMockTests.swift; sourceTree = "<group>"; };
+		074290FD235B76440003EB7C /* RamCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamCacheTests.swift; sourceTree = "<group>"; };
+		074290FE235B76440003EB7C /* RamCacheBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamCacheBuilder.swift; sourceTree = "<group>"; };
+		074290FF235B76440003EB7C /* RamCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamCache.swift; sourceTree = "<group>"; };
+		07429100235B76440003EB7C /* RamCacheMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RamCacheMock.swift; sourceTree = "<group>"; };
 		07429102235B76440003EB7C /* ImageRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRequestTests.swift; sourceTree = "<group>"; };
 		07429103235B76440003EB7C /* ImageRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRequest.swift; sourceTree = "<group>"; };
 		07429105235B76440003EB7C /* ImageLoaderurlSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderurlSession.swift; sourceTree = "<group>"; };
@@ -172,7 +168,7 @@
 		07429113235B76440003EB7C /* RachabailityMonitorMockTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RachabailityMonitorMockTests.swift; sourceTree = "<group>"; };
 		07429114235B76440003EB7C /* ReachabailityMonitorMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabailityMonitorMock.swift; sourceTree = "<group>"; };
 		07429116235B76440003EB7C /* ImageCollectionLoaderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionLoaderMock.swift; sourceTree = "<group>"; };
-		07429117235B76440003EB7C /* ImageCollectionLoaderTestsClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionLoaderTestsClass.swift; sourceTree = "<group>"; };
+		07429117235B76440003EB7C /* ImageCollectionLoaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionLoaderTests.swift; sourceTree = "<group>"; };
 		07429118235B76440003EB7C /* Protocols&Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Protocols&Errors.swift"; sourceTree = "<group>"; };
 		07429119235B76440003EB7C /* ImageCollectionLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionLoader.swift; sourceTree = "<group>"; };
 		0742911A235B76440003EB7C /* ImageCollectionLoaderBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionLoaderBuilder.swift; sourceTree = "<group>"; };
@@ -182,7 +178,7 @@
 		07BF9AE42370965800320731 /* cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = cell.xib; sourceTree = "<group>"; };
 		07BF9AE823709C8A00320731 /* UITestsConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestsConstants.swift; sourceTree = "<group>"; };
 		07BF9AE923709C8A00320731 /* LocalServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalServer.swift; sourceTree = "<group>"; };
-		07E2735223786D140033D427 /* SyncedDic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncedDic.swift; sourceTree = "<group>"; };
+		07E2735223786D140033D427 /* SyncedAccessHashableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncedAccessHashableCollection.swift; sourceTree = "<group>"; };
 		07E2735A2378A7430033D427 /* ImageCollectionLoader.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = ImageCollectionLoader.podspec; sourceTree = SOURCE_ROOT; };
 		07E273602378E6060033D427 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		4EA967A27CB419CC3DE4FBA9 /* Pods-ImageCollectionLoader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageCollectionLoader.release.xcconfig"; path = "Target Support Files/Pods-ImageCollectionLoader/Pods-ImageCollectionLoader.release.xcconfig"; sourceTree = "<group>"; };
@@ -226,28 +222,66 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		07216295235C484200692A85 /* UnitTests */ = {
+		07103A38237ADDDC003E7D22 /* InternetConnectivityChecker */ = {
 			isa = PBXGroup;
 			children = (
 				074290E1235B76440003EB7C /* InternetConnectivityCheckerTests.swift */,
-				07429113235B76440003EB7C /* RachabailityMonitorMockTests.swift */,
-				0742910B235B76440003EB7C /* ImageLoaderTests.swift */,
 				074290E3235B76440003EB7C /* InternetConnectivityCheckerMockTests.swift */,
-				074290D1235B762F0003EB7C /* ImageCollectionLoaderTests.swift */,
+			);
+			path = InternetConnectivityChecker;
+			sourceTree = "<group>";
+		};
+		07103A39237ADDF4003E7D22 /* ImageLoader */ = {
+			isa = PBXGroup;
+			children = (
+				0742910B235B76440003EB7C /* ImageLoaderTests.swift */,
 				0742910F235B76440003EB7C /* ImageLoaderMockTests.swift */,
+			);
+			path = ImageLoader;
+			sourceTree = "<group>";
+		};
+		07103A3A237ADE0C003E7D22 /* DiskCacheFileSystem */ = {
+			isa = PBXGroup;
+			children = (
 				074290E9235B76440003EB7C /* FileSystemImageCacheMockTests.swift */,
-				0789943E236870E100AB544F /* Mediax.xcassets */,
 				074290EA235B76440003EB7C /* FileSystemImageCacheTests.swift */,
+			);
+			path = DiskCacheFileSystem;
+			sourceTree = "<group>";
+		};
+		07103A3B237ADE49003E7D22 /* DiskCacheTests */ = {
+			isa = PBXGroup;
+			children = (
 				074290F1235B76440003EB7C /* DiskCacheImageTests.swift */,
 				074290F4235B76440003EB7C /* DiskCacheImageMockTests.swift */,
-				074290F6235B76440003EB7C /* DiskCacheImagesDatabaseTests.swift */,
+			);
+			path = DiskCacheTests;
+			sourceTree = "<group>";
+		};
+		07103A3C237ADE9D003E7D22 /* RamCache */ = {
+			isa = PBXGroup;
+			children = (
+				074290FC235B76440003EB7C /* RamCacheMockTests.swift */,
+				074290FD235B76440003EB7C /* RamCacheTests.swift */,
+			);
+			path = RamCache;
+			sourceTree = "<group>";
+		};
+		07216295235C484200692A85 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
 				07BF9AE923709C8A00320731 /* LocalServer.swift */,
 				07BF9AE823709C8A00320731 /* UITestsConstants.swift */,
-				074290FC235B76440003EB7C /* RamCacheImageMockTests.swift */,
-				074290FD235B76440003EB7C /* RamSharedImageCacheTests.swift */,
+				07429113235B76440003EB7C /* RachabailityMonitorMockTests.swift */,
+				074290F6235B76440003EB7C /* DIskCacheDataBaseTests.swift */,
 				07429102235B76440003EB7C /* ImageRequestTests.swift */,
-				07429117235B76440003EB7C /* ImageCollectionLoaderTestsClass.swift */,
-				07216296235C484200692A85 /* UnitTests.swift */,
+				07429117235B76440003EB7C /* ImageCollectionLoaderTests.swift */,
+				07103A38237ADDDC003E7D22 /* InternetConnectivityChecker */,
+				07103A39237ADDF4003E7D22 /* ImageLoader */,
+				07103A3A237ADE0C003E7D22 /* DiskCacheFileSystem */,
+				0789943E236870E100AB544F /* Mediax.xcassets */,
+				07103A3B237ADE49003E7D22 /* DiskCacheTests */,
+				07103A3C237ADE9D003E7D22 /* RamCache */,
 				07216298235C484200692A85 /* Info.plist */,
 			);
 			path = UnitTests;
@@ -307,7 +341,7 @@
 			isa = PBXGroup;
 			children = (
 				074290DE235B76440003EB7C /* InternetConnectivityChecker */,
-				074290E6235B76440003EB7C /* CacheImage */,
+				074290E6235B76440003EB7C /* Cache */,
 				07429101235B76440003EB7C /* ImageRequest */,
 				07429104235B76440003EB7C /* Resources */,
 				07429108235B76440003EB7C /* ImageLoader */,
@@ -343,43 +377,35 @@
 			path = InternetCheckerMock;
 			sourceTree = "<group>";
 		};
-		074290E6235B76440003EB7C /* CacheImage */ = {
+		074290E6235B76440003EB7C /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				074290E7235B76440003EB7C /* DiskCacheImage */,
+				074290EE235B76440003EB7C /* DiskCache */,
 				074290FB235B76440003EB7C /* RamCacheImage */,
 			);
-			path = CacheImage;
-			sourceTree = "<group>";
-		};
-		074290E7235B76440003EB7C /* DiskCacheImage */ = {
-			isa = PBXGroup;
-			children = (
-				074290EE235B76440003EB7C /* DiskCacheImageObj */,
-				074290F5235B76440003EB7C /* DiskCacheImageDataBase */,
-				074290E8235B76440003EB7C /* FileSystemImageCache */,
-				074290FA235B76440003EB7C /* DiskCacheImageBuilder.swift */,
-			);
-			path = DiskCacheImage;
+			path = Cache;
 			sourceTree = "<group>";
 		};
 		074290E8235B76440003EB7C /* FileSystemImageCache */ = {
 			isa = PBXGroup;
 			children = (
-				074290EB235B76440003EB7C /* FileSystemImageCache.swift */,
-				074290EC235B76440003EB7C /* FileSystemImageCacheBuilder.swift */,
+				074290EB235B76440003EB7C /* DiskCacheFileSystem.swift */,
+				074290EC235B76440003EB7C /* DiskCacheFileSystemBuilder.swift */,
 				074290ED235B76440003EB7C /* FileSystemImageCacheMock.swift */,
 			);
 			path = FileSystemImageCache;
 			sourceTree = "<group>";
 		};
-		074290EE235B76440003EB7C /* DiskCacheImageObj */ = {
+		074290EE235B76440003EB7C /* DiskCache */ = {
 			isa = PBXGroup;
 			children = (
+				074290F5235B76440003EB7C /* DiskCacheImageDataBase */,
+				074290E8235B76440003EB7C /* FileSystemImageCache */,
 				074290EF235B76440003EB7C /* DiskCacheImage */,
-				074290F2235B76440003EB7C /* DiskCacheImageMock */,
+				07103A3D237AE037003E7D22 /* DiskCacheBuilder.swift */,
+				074290F3235B76440003EB7C /* DiskCacheImageMock.swift */,
 			);
-			path = DiskCacheImageObj;
+			path = DiskCache;
 			sourceTree = "<group>";
 		};
 		074290EF235B76440003EB7C /* DiskCacheImage */ = {
@@ -390,19 +416,11 @@
 			path = DiskCacheImage;
 			sourceTree = "<group>";
 		};
-		074290F2235B76440003EB7C /* DiskCacheImageMock */ = {
-			isa = PBXGroup;
-			children = (
-				074290F3235B76440003EB7C /* DiskCacheImageMock.swift */,
-			);
-			path = DiskCacheImageMock;
-			sourceTree = "<group>";
-		};
 		074290F5235B76440003EB7C /* DiskCacheImageDataBase */ = {
 			isa = PBXGroup;
 			children = (
-				074290F7235B76440003EB7C /* DiskCacheImageDataBaseBuilder.swift */,
-				074290F8235B76440003EB7C /* DiskCacheImageDataBase.swift */,
+				074290F7235B76440003EB7C /* DiskCacheDataBaseBuilder.swift */,
+				074290F8235B76440003EB7C /* DiskCacheDataBase.swift */,
 				074290F9235B76440003EB7C /* DiskCacheImageDatabaseMock.swift */,
 			);
 			path = DiskCacheImageDataBase;
@@ -411,9 +429,9 @@
 		074290FB235B76440003EB7C /* RamCacheImage */ = {
 			isa = PBXGroup;
 			children = (
-				074290FE235B76440003EB7C /* RamCacheImageBuilder.swift */,
-				074290FF235B76440003EB7C /* RamSharedImageCache.swift */,
-				07429100235B76440003EB7C /* RamCacheImageMock.swift */,
+				074290FE235B76440003EB7C /* RamCacheBuilder.swift */,
+				074290FF235B76440003EB7C /* RamCache.swift */,
+				07429100235B76440003EB7C /* RamCacheMock.swift */,
 			);
 			path = RamCacheImage;
 			sourceTree = "<group>";
@@ -485,7 +503,7 @@
 			children = (
 				07429116235B76440003EB7C /* ImageCollectionLoaderMock.swift */,
 				07429118235B76440003EB7C /* Protocols&Errors.swift */,
-				07E2735223786D140033D427 /* SyncedDic.swift */,
+				07E2735223786D140033D427 /* SyncedAccessHashableCollection.swift */,
 				07429119235B76440003EB7C /* ImageCollectionLoader.swift */,
 				0742911A235B76440003EB7C /* ImageCollectionLoaderBuilder.swift */,
 			);
@@ -773,26 +791,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				072162AA235C484F00692A85 /* RamCacheImageMockTests.swift in Sources */,
+				072162AA235C484F00692A85 /* RamCacheMockTests.swift in Sources */,
 				07E27354237891880033D427 /* ViewController.swift in Sources */,
 				072162A0235C484F00692A85 /* RachabailityMonitorMockTests.swift in Sources */,
 				072162AC235C484F00692A85 /* ImageRequestTests.swift in Sources */,
-				07216297235C484200692A85 /* UnitTests.swift in Sources */,
-				072162A9235C484F00692A85 /* DiskCacheImagesDatabaseTests.swift in Sources */,
+				072162A9235C484F00692A85 /* DIskCacheDataBaseTests.swift in Sources */,
 				072162A1235C484F00692A85 /* ImageLoaderTests.swift in Sources */,
 				072162A8235C484F00692A85 /* DiskCacheImageMockTests.swift in Sources */,
-				072162AB235C484F00692A85 /* RamSharedImageCacheTests.swift in Sources */,
+				072162AB235C484F00692A85 /* RamCacheTests.swift in Sources */,
 				07BF9AEA23709C8A00320731 /* UITestsConstants.swift in Sources */,
 				0721629F235C484F00692A85 /* InternetConnectivityCheckerTests.swift in Sources */,
 				072162A6235C484F00692A85 /* FileSystemImageCacheTests.swift in Sources */,
 				072162A4235C484F00692A85 /* ImageLoaderMockTests.swift in Sources */,
 				07E27358237899020033D427 /* cell.swift in Sources */,
-				072162A3235C484F00692A85 /* ImageCollectionLoaderTests.swift in Sources */,
 				072162A7235C484F00692A85 /* DiskCacheImageTests.swift in Sources */,
 				07BF9AEB23709C8A00320731 /* LocalServer.swift in Sources */,
 				072162A2235C484F00692A85 /* InternetConnectivityCheckerMockTests.swift in Sources */,
 				072162A5235C484F00692A85 /* FileSystemImageCacheMockTests.swift in Sources */,
-				072162AD235C484F00692A85 /* ImageCollectionLoaderTestsClass.swift in Sources */,
+				072162AD235C484F00692A85 /* ImageCollectionLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -813,18 +829,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				07429135235B76440003EB7C /* ImageLoaderurlSession.swift in Sources */,
-				07429123235B76440003EB7C /* FileSystemImageCacheBuilder.swift in Sources */,
-				07E2735323786D140033D427 /* SyncedDic.swift in Sources */,
+				07429123235B76440003EB7C /* DiskCacheFileSystemBuilder.swift in Sources */,
+				07E2735323786D140033D427 /* SyncedAccessHashableCollection.swift in Sources */,
 				0742913F235B76440003EB7C /* ReachabailityMonitorMock.swift in Sources */,
 				0742913B235B76440003EB7C /* ImageLoaderMock.swift in Sources */,
 				07429138235B76440003EB7C /* ImageLoader.swift in Sources */,
 				07429154235B79920003EB7C /* Constants.swift in Sources */,
 				0742911B235B76440003EB7C /* InternetConnectivityChecker.swift in Sources */,
-				07429131235B76440003EB7C /* RamSharedImageCache.swift in Sources */,
+				07429131235B76440003EB7C /* RamCache.swift in Sources */,
 				07429143235B76440003EB7C /* ImageCollectionLoader.swift in Sources */,
-				07429132235B76440003EB7C /* RamCacheImageMock.swift in Sources */,
-				07429122235B76440003EB7C /* FileSystemImageCache.swift in Sources */,
-				0742912D235B76440003EB7C /* DiskCacheImageBuilder.swift in Sources */,
+				07429132235B76440003EB7C /* RamCacheMock.swift in Sources */,
+				07429122235B76440003EB7C /* DiskCacheFileSystem.swift in Sources */,
 				0742911F235B76440003EB7C /* InternetConnectivityCheckerBuilder.swift in Sources */,
 				07429127235B76440003EB7C /* DiskCacheImageMock.swift in Sources */,
 				07429124235B76440003EB7C /* FileSystemImageCacheMock.swift in Sources */,
@@ -832,14 +847,15 @@
 				0742913D235B76440003EB7C /* ReachabailityMonitor.swift in Sources */,
 				0742912C235B76440003EB7C /* DiskCacheImageDatabaseMock.swift in Sources */,
 				0742913A235B76440003EB7C /* ImageLoaderBuilder.swift in Sources */,
+				07103A3E237AE037003E7D22 /* DiskCacheBuilder.swift in Sources */,
 				07429142235B76440003EB7C /* Protocols&Errors.swift in Sources */,
-				0742912A235B76440003EB7C /* DiskCacheImageDataBaseBuilder.swift in Sources */,
+				0742912A235B76440003EB7C /* DiskCacheDataBaseBuilder.swift in Sources */,
 				0742911E235B76440003EB7C /* InternetConnectivityCheckerMock.swift in Sources */,
 				07429125235B76440003EB7C /* DiskCacheImage.swift in Sources */,
 				07429134235B76440003EB7C /* ImageRequest.swift in Sources */,
-				0742912B235B76440003EB7C /* DiskCacheImageDataBase.swift in Sources */,
+				0742912B235B76440003EB7C /* DiskCacheDataBase.swift in Sources */,
 				07429144235B76440003EB7C /* ImageCollectionLoaderBuilder.swift in Sources */,
-				07429130235B76440003EB7C /* RamCacheImageBuilder.swift in Sources */,
+				07429130235B76440003EB7C /* RamCacheBuilder.swift in Sources */,
 				07429136235B76440003EB7C /* ImageUrlWrapper.swift in Sources */,
 				07429137235B76440003EB7C /* PersistenetImage.swift in Sources */,
 			);

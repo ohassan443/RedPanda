@@ -23,7 +23,7 @@ class DiskCacheImageDataBaseMock  {
     
 }
 
-extension DiskCacheImageDataBaseMock : DiskCacheImageDataBaseObj {
+extension DiskCacheImageDataBaseMock : DiskCacheDataBaseProtocol {
    
    
     func cache(url: String,completion: @escaping (_ result : Bool)->()) -> Void{

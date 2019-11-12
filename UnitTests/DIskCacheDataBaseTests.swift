@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import ImageCollectionLoader
-class DiskCacheImagesDatabaseTests: XCTestCase {
+class DIskCacheDataBaseTests: XCTestCase {
 
     /**
      let dateUrl = "\(Date().timeIntervalSince1970)"
@@ -34,7 +34,7 @@ class DiskCacheImagesDatabaseTests: XCTestCase {
      - using a persistentImage getFileSystemName to retreieve from fileSystme will fail , file system urls must be retreieved from the database only
      */
     func testCacheAndRetrieve(url:String) {
-        let database = DiskCacheImageDataBaseBuilder().concreteForTesting()
+        let database = DiskCacheDataBaseBuilder().concreteForTesting()
         
         
         let dataBaseObj = PersistentUrl(url: url)
@@ -90,7 +90,7 @@ class DiskCacheImagesDatabaseTests: XCTestCase {
         let thirdFileSystemUrl = PersistentUrl(url: thirdUrl).getFileSystemName()!
         
         var minDate = Date()
-        let database = DiskCacheImageDataBaseBuilder().concreteForTesting()
+        let database = DiskCacheDataBaseBuilder().concreteForTesting()
         
         
         

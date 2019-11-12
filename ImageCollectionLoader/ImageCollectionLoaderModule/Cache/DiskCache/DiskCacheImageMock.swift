@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class DiskCacheImageMock: DiskCahceImageObj {
+class DiskCacheImageMock: DiskCacheProtocol {
    
     enum StorePolicy {
         case store

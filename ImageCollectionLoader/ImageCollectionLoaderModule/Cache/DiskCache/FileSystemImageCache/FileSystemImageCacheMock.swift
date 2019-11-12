@@ -12,7 +12,7 @@ import UIKit
 
 
 
-class FileSystemImageCacheMock: FileSystemImageCacheObj {
+class FileSystemImageCacheMock: DiskCacheFileSystemProtocol {
    
     
     var cachedImages : Set<ImageUrlWrapper> = []

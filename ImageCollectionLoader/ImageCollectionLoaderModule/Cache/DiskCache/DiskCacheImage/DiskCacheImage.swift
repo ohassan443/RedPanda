@@ -14,14 +14,14 @@ import UIKit
 #  - This type is a concrete facade over the database and the fileSystem
 #  - Remark : the database is used as a mid step as the file system look ups are slow and to perform queries such as  images that were saved after a certain url and get their file system name and delete them
 */
-class DiskCacheImage : DiskCahceImageObj {
+class DiskCacheImage : DiskCacheProtocol {
     /// the database to hold the url and its associated name on the file system
-    private var database : DiskCacheImageDataBaseObj
+    private var database : DiskCacheDataBaseProtocol
     
     /// an object to store / retreieve images from the disk
-    private var fileSystem : FileSystemImageCacheObj
+    private var fileSystem : DiskCacheFileSystemProtocol
     
-    init(DisckCacheImageDatabase:DiskCacheImageDataBaseObj,fileSystemImacheCache:FileSystemImageCacheObj) {
+    init(DisckCacheImageDatabase:DiskCacheDataBaseProtocol,fileSystemImacheCache:DiskCacheFileSystemProtocol) {
         self.database = DisckCacheImageDatabase
         self.fileSystem = fileSystemImacheCache
     }

@@ -10,7 +10,7 @@ import Foundation
 /**
  mocks internet checking with executing a completionHandler after certain delay on a certain queue (main / global)
  */
-class InternetConnectivityCheckerMock: InternetConnectivityCheckerObj {
+class InternetConnectivityCheckerMock: InternetCheckerProtocol {
     
     
     enum ReturnQueue {

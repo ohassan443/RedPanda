@@ -11,16 +11,16 @@ import UIKit
 
 
 
-public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
+public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
     
     /// requests to be processed
-    private var processingRequests 			 	: SyncedDic<imageRequest> =  SyncedDic<imageRequest>.init()
+    private var processingRequests 			 	: SyncedAccessHashableCollection<imageRequest> =  SyncedAccessHashableCollection<imageRequest>.init()
     
     /// requests that failed due to network error / internet error ,,, kept in this list to be retried when network state change or when internet connectivity reutrnes
-    private var networkFailedRequests   : SyncedDic<imageRequest> =  SyncedDic<imageRequest>.init()
+    private var networkFailedRequests   : SyncedAccessHashableCollection<imageRequest> =  SyncedAccessHashableCollection<imageRequest>.init()
     
     /// requests that returned invalid data / failed to parse data to an image , kept in this list to avoid requesteing them again
-    private var invalidRequests 		: SyncedDic<String> = SyncedDic<String>.init() // failed image parsing - failed data
+    private var invalidRequests 		: SyncedAccessHashableCollection<String> = SyncedAccessHashableCollection<String>.init() // failed image parsing - failed data
     
     /// timer used to retry requests that failed due to netwok error
     private var timer : Timer?
@@ -39,16 +39,16 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
     private var imageLoader : ImageLoaderObj
     
     /// monitors reachability changes (Wifi / cellular / none)
-    private var reachability : ReachabilityMOnitorObj
+    private var reachability : ReachabilityMonitorProtocol
     
     /// bings the server to check for internet avaliablity
-    private var connectivityChecker : InternetConnectivityCheckerObj
+    private var connectivityChecker : InternetCheckerProtocol
         
     private var requestCheckingQueue = DispatchQueue(label: "queuex", qos: .userInitiated,attributes: .concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInteractive))
     
     
     /// init
-    init(imageLoader:ImageLoaderObj, reachability:ReachabilityMOnitorObj,connectivityChecker:InternetConnectivityCheckerObj) {
+    init(imageLoader:ImageLoaderObj, reachability:ReachabilityMonitorProtocol,connectivityChecker:InternetCheckerProtocol) {
         self.imageLoader = imageLoader
         self.reachability = reachability
         self.connectivityChecker = connectivityChecker
@@ -262,7 +262,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         networkFailedRequests.updateTimeStamp()
         let requestsToTry = networkFailedRequests
         
-        networkFailedRequests =  SyncedDic<imageRequest>.init()
+        networkFailedRequests =  SyncedAccessHashableCollection<imageRequest>.init()
         
         let requestsToRetry = requestsToTry.values
         requestsToRetry.forEach(){
@@ -282,7 +282,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
      execute the completion block & and add image to the (url:String,image:UIImage) list if its not added
      */
     private func loadImageSuccessHandler(request:imageRequest,loadedImage:UIImage) -> Void {
-        let response = ImageCollectionLoaderRequestResponse.success(params: successparams(image: loadedImage, date: request.date, indexPath: request.indexPath))
+        let response = RequestResponse.success(params: successparams(image: loadedImage, date: request.date, indexPath: request.indexPath))
         
         
         request.executeCompletionHandler(response: response)
@@ -320,7 +320,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
                 self.invalidRequests.syncedInsert(element: failedRequest.requestUrl, completion: {
                     self.processingRequests.syncedRemove(element: failedRequest, completion: {
                         
-                        let parameters =  ImageCollectionLoaderRequestResponse.fail( params: failparams(error: error as! imageLoadingError, request: failedRequest))
+                        let parameters =  RequestResponse.fail( params: failparams(error: error as! imageLoadingError, request: failedRequest))
                         request.executeCompletionHandler(response: parameters)
                     })
                 })
@@ -337,7 +337,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
                  - requesting while in bad network and network keeps droping
                  */
                
-                let parameters =  ImageCollectionLoaderRequestResponse.fail( params: failparams(error: imageLoadingError.networkError, request: failedRequest))
+                let parameters =  RequestResponse.fail( params: failparams(error: imageLoadingError.networkError, request: failedRequest))
                 request.executeCompletionHandler(response: parameters)
                 
                 self.addToNetworkFailedRequests(request: failedRequest)
@@ -353,7 +353,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
                 failedRequest.addFailedAttemp()
                 self.processingRequests.syncedUpdate(element: failedRequest, completion: {
                     //if request did not reach max attepmt count then reexecute it again
-                                  guard  failedRequest.failed == true else {
+                                  guard  failedRequest.reachedMaxFailCount == true else {
                                       self.retry(request: failedRequest, afterInterval: 1)
                                       return
                                   }
@@ -438,7 +438,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
 
 
 
-extension ImageCollectionLoader : ReachabilityMonitorDelegate {
+extension ImageCollectionLoader : ReachabilityMonitorDelegateProtocol {
     ///
     public func respondToReachabilityChange(reachable: Bool) {
         reachable ? (retryFailedRequests()) : ()

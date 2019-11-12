@@ -10,7 +10,7 @@ import XCTest
 
 @testable import ImageCollectionLoader
 
-class FileSystemImageCacheMockTests: XCTestCase {
+class DiskCacheFileSystemMockTests: XCTestCase {
 
     let testImage = testImage1
    
@@ -19,7 +19,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
     
     
     
-    func fileSystemContainsUrlForImage(fileSystemCache:FileSystemImageCacheObj,url:String,expectedImage:UIImage,expectationToFullfill:XCTestExpectation) -> Void {
+    func fileSystemContainsUrlForImage(fileSystemCache:DiskCacheFileSystemProtocol,url:String,expectedImage:UIImage,expectationToFullfill:XCTestExpectation) -> Void {
         
         
         fileSystemCache.readFromFile(url: url, completion: {
@@ -31,7 +31,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
         
     }
     
-    func fileSystemDoesnotContaintUrl(fileSystemCache:FileSystemImageCacheObj,url:String,expectationToFullfill:XCTestExpectation) -> Void {
+    func fileSystemDoesnotContaintUrl(fileSystemCache:DiskCacheFileSystemProtocol,url:String,expectationToFullfill:XCTestExpectation) -> Void {
         
         
         fileSystemCache.readFromFile(url: url, completion: {
@@ -51,7 +51,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
         let url = "testUrl"
         
         
-        let fileSystemCacheMock = FileSystemImageCacheBuilder()
+        let fileSystemCacheMock = DiskCacheFileSystemBuilder()
             .with(images: [])
             .mock()
         
@@ -75,7 +75,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
         let url = "testUrl"
         
         
-        let fileSystemCacheMock = FileSystemImageCacheBuilder()
+        let fileSystemCacheMock = DiskCacheFileSystemBuilder()
             .with(images: [])
             .mock()
         
@@ -105,7 +105,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
         let url = "testUrl"
         
         
-        let fileSystemCacheMock = FileSystemImageCacheBuilder()
+        let fileSystemCacheMock = DiskCacheFileSystemBuilder()
             .with(images: [])
             .mock()
         
@@ -159,7 +159,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
         let url1 = "testUrl--1"
         let url2 = "testUrl--2"
         
-        let fileSystemCacheMock = FileSystemImageCacheBuilder()
+        let fileSystemCacheMock = DiskCacheFileSystemBuilder()
             .with(images: [])
             .mock()
         
@@ -214,7 +214,7 @@ class FileSystemImageCacheMockTests: XCTestCase {
         
         let tempTestImage = testImage1
         
-        let fileSystemCacheMock = FileSystemImageCacheBuilder()
+        let fileSystemCacheMock = DiskCacheFileSystemBuilder()
             .with(images: [])
             .mock()
         

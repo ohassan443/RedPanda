@@ -10,7 +10,7 @@ import XCTest
 
 @testable import ImageCollectionLoader
 
-class RamSharedImageCacheTests: XCTestCase {
+class RamCacheTests: XCTestCase {
 
     func testCachingAndQuerying() {
         let normalUrl = "testUrl"
@@ -22,7 +22,7 @@ class RamSharedImageCacheTests: XCTestCase {
     }
     func testCacheAndQueryFor(url:String) -> Void {
         let testImage = testImage1
-         let sharedRamCache = RamCacheImageBuilder().sharedConcrete()
+         let sharedRamCache = RamCacheBuilder().sharedConcrete()
         
         
         

@@ -11,9 +11,9 @@ import UIKit
 
 
 
-class RamSharedImageCache: RamCacheImageObj {
+class RamCache: RamCacheProtocol {
     /// synced dictionary to avoid multiple writes crashes
-    private var ram : SyncedDic<ImageUrlWrapper> = SyncedDic<ImageUrlWrapper>()
+    private var ram : SyncedAccessHashableCollection<ImageUrlWrapper> = SyncedAccessHashableCollection<ImageUrlWrapper>()
     
     
     // subscribe to didReceiveMemoryWarningNotification to clear ram if memory is overloaded

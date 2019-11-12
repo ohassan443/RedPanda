@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-class ImageCollectionLoaderMock: ImageCollectionLoaderObj {
+class ImageCollectionLoaderMock: ImageCollectionLoaderProtocol {
   
 
     

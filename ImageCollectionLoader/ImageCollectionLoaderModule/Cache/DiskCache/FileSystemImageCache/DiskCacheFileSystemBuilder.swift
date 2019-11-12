@@ -8,19 +8,19 @@
 
 import Foundation
 
-class FileSystemImageCacheBuilder {
+class DiskCacheFileSystemBuilder {
     var cachedImages : Set<ImageUrlWrapper> = []
     var delay : TimeInterval = 0
     
     
     
-    func concrete() -> FileSystemImageCache {
+    func concrete() -> DiskCacheFileSystem {
          let directoryInCache =  FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent(Constants.imagesSubDirectoryInCache)
-        return FileSystemImageCache(directory: directoryInCache)
+        return DiskCacheFileSystem(directory: directoryInCache)
     }
-    func concreteForTestingWithDifferentDirectory(directory:URL) -> FileSystemImageCache {
+    func concreteForTestingWithDifferentDirectory(directory:URL) -> DiskCacheFileSystem {
         
-        return FileSystemImageCache(directory: directory)
+        return DiskCacheFileSystem(directory: directory)
         
     }
     
@@ -30,11 +30,11 @@ class FileSystemImageCacheBuilder {
     
   
     
-    func with(images:Set<ImageUrlWrapper>) -> FileSystemImageCacheBuilder {
+    func with(images:Set<ImageUrlWrapper>) -> DiskCacheFileSystemBuilder {
         self.cachedImages = images
         return self
     }
-    func with(delay:TimeInterval)->FileSystemImageCacheBuilder{
+    func with(delay:TimeInterval)->DiskCacheFileSystemBuilder{
         self.delay = delay
         return self
     }

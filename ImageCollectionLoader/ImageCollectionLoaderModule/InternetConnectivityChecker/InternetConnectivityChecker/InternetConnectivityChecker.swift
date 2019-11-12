@@ -9,7 +9,7 @@
 import Foundation
 
 
-class  InternetConnectivityChecker : InternetConnectivityCheckerObj  {
+class  InternetConnectivityChecker : InternetCheckerProtocol  {
 
     private var url : String
     init(url:String) {

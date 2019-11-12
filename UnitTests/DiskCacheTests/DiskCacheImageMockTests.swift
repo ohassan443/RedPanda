@@ -12,7 +12,7 @@ import XCTest
 /**
  -  This cache is just a Set of ImageUrlWrapper
  */
-class DiskCacheImageMockTests: XCTestCase {
+class DiskCacheMockTests: XCTestCase {
     
     let image = testImage1
     
@@ -22,7 +22,7 @@ class DiskCacheImageMockTests: XCTestCase {
     
     
     
-    func verifyUrlAndImageInCache(cache:DiskCahceImageObj,url:String,expectedImage:UIImage,expectationToFullFill:XCTestExpectation) -> Void {
+    func verifyUrlAndImageInCache(cache:DiskCacheProtocol,url:String,expectedImage:UIImage,expectationToFullFill:XCTestExpectation) -> Void {
         cache.getImageFor(url: url, completion: {
             resultImage in
             
@@ -32,7 +32,7 @@ class DiskCacheImageMockTests: XCTestCase {
         })
     }
     
-    func cacheDoesNotContainUrl(cache:DiskCahceImageObj,url:String,expectedImage:UIImage,expectationToFullFill:XCTestExpectation) -> Void {
+    func cacheDoesNotContainUrl(cache:DiskCacheProtocol,url:String,expectedImage:UIImage,expectationToFullFill:XCTestExpectation) -> Void {
         cache.getImageFor(url: url, completion: {
             resultImage in
             
@@ -47,7 +47,7 @@ class DiskCacheImageMockTests: XCTestCase {
         let url = dateUrl
         
         
-        let mockDiskCache = DiskCacheImageBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
+        let mockDiskCache = DiskCacheBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
         
         
         
@@ -74,7 +74,7 @@ class DiskCacheImageMockTests: XCTestCase {
         let dateUrl = "\(Date().timeIntervalSince1970)"
         let url = dateUrl
         
-        let mockDiskCache = DiskCacheImageBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
+        let mockDiskCache = DiskCacheBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
         
         
         let verifyEmptyCache = expectation(description: "verify that deleted return true if url is not included")
@@ -109,7 +109,7 @@ class DiskCacheImageMockTests: XCTestCase {
         
         
         
-        let mockDiskCache = DiskCacheImageBuilder().mock(storePolicy: .skip, queryPolicy: .checkInSet)
+        let mockDiskCache = DiskCacheBuilder().mock(storePolicy: .skip, queryPolicy: .checkInSet)
         
         
         let skipsCachingExp = expectation(description: "cache does not cache ")
@@ -173,7 +173,7 @@ class DiskCacheImageMockTests: XCTestCase {
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: url, image: testImage)]
         
      
-        let mockDiskCache = DiskCacheImageBuilder()
+        let mockDiskCache = DiskCacheBuilder()
             .with(images: imageSet)
             .mock(storePolicy: .skip, queryPolicy: .returnNil)
        
@@ -208,7 +208,7 @@ class DiskCacheImageMockTests: XCTestCase {
         let url3 = "testURL--3"
         
         
-        let mockDiskCache = DiskCacheImageBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
+        let mockDiskCache = DiskCacheBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
         
         
         
@@ -284,7 +284,7 @@ class DiskCacheImageMockTests: XCTestCase {
         let url3 = "testURL--3"
         
         
-        let mockDiskCache = DiskCacheImageBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
+        let mockDiskCache = DiskCacheBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
         
         
         

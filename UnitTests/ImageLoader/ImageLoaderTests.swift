@@ -34,9 +34,9 @@ class ImageLoaderTests: XCTestCase {
         }
         
         
-        let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
+        let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
        
-        let emptyRamCache = RamCacheImageBuilder().unResponsiveMock()
+        let emptyRamCache = RamCacheBuilder().unResponsiveMock()
         
         let imageLoader  = ImageLoaderBuilder()
             .with(diskCache: emptyDiskCache)
@@ -70,9 +70,9 @@ class ImageLoaderTests: XCTestCase {
         
         let staticUrl = "invalidUrl"
         
-        let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
+        let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
       
-        let unResponsiveRamCache = RamCacheImageBuilder().unResponsiveMock()
+        let unResponsiveRamCache = RamCacheBuilder().unResponsiveMock()
         
         let imageLoader  = ImageLoaderBuilder()
             .with(diskCache: emptyDiskCache)
@@ -119,9 +119,9 @@ class ImageLoaderTests: XCTestCase {
         }
         
         
-        let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
+        let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
         
-        let emptyRamCache = RamCacheImageBuilder().unResponsiveMock()
+        let emptyRamCache = RamCacheBuilder().unResponsiveMock()
         
         let imageLoader  = ImageLoaderBuilder()
             .with(diskCache: emptyDiskCache)
@@ -169,9 +169,9 @@ class ImageLoaderTests: XCTestCase {
 
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
         
-        let emptyDiskCache = DiskCacheImageBuilder().unResponseiveMock()
+        let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
        
-        let ramCache = RamCacheImageBuilder()
+        let ramCache = RamCacheBuilder()
             .with(imageSet: imageSet)
             .mock(storePolicy: .store, queryPolicy: .checkInSet)
         
@@ -204,11 +204,11 @@ class ImageLoaderTests: XCTestCase {
         
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
         
-        let diskCache = DiskCacheImageBuilder()
+        let diskCache = DiskCacheBuilder()
             .with(images: imageSet)
             .mock(storePolicy: .store, queryPolicy: .checkInSet)
         
-        let emptyRamCache = RamCacheImageBuilder().unResponsiveMock()
+        let emptyRamCache = RamCacheBuilder().unResponsiveMock()
         
         let imageLoader  = ImageLoaderBuilder()
             .with(diskCache: diskCache)
@@ -242,12 +242,12 @@ class ImageLoaderTests: XCTestCase {
         
         let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
         
-        let diskCache = DiskCacheImageBuilder()
+        let diskCache = DiskCacheBuilder()
             .with(images: imageSet)
             .mock(storePolicy: .store, queryPolicy: .checkInSet)
         
         // ram cache should allow retreive
-        let initiallyEmptyRamCache = RamCacheImageBuilder()
+        let initiallyEmptyRamCache = RamCacheBuilder()
             .with(imageSet: [])
             .mock(storePolicy: .store, queryPolicy: .checkInSet)
         

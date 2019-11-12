@@ -10,7 +10,7 @@ import XCTest
 
 @testable import ImageCollectionLoader
 
-class FileSystemImageCacheTests: XCTestCase {
+class DiskCacheFileSystemTests: XCTestCase {
     
     
     let testImage = testImage1
@@ -50,7 +50,7 @@ class FileSystemImageCacheTests: XCTestCase {
     
     
     
-    func fileSystemContainsUrlForImage(fileSystemCache:FileSystemImageCacheObj,url:String,expectedImage:UIImage,expectationToFullfill:XCTestExpectation) -> Void {
+    func fileSystemContainsUrlForImage(fileSystemCache:DiskCacheFileSystemProtocol,url:String,expectedImage:UIImage,expectationToFullfill:XCTestExpectation) -> Void {
         
         
         fileSystemCache.readFromFile(url: url, completion: {
@@ -61,7 +61,7 @@ class FileSystemImageCacheTests: XCTestCase {
     
     }
     
-    func fileSystemDoesnotContaintUrl(fileSystemCache:FileSystemImageCacheObj,url:String,expectationToFullfill:XCTestExpectation) -> Void {
+    func fileSystemDoesnotContaintUrl(fileSystemCache:DiskCacheFileSystemProtocol,url:String,expectationToFullfill:XCTestExpectation) -> Void {
         
         
         fileSystemCache.readFromFile(url: url, completion: {
@@ -81,7 +81,7 @@ class FileSystemImageCacheTests: XCTestCase {
         let url = "testUrl"
         
         createTempDirectory()
-        let fileSystemCache = FileSystemImageCacheBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
+        let fileSystemCache = DiskCacheFileSystemBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
         
         
         
@@ -111,7 +111,7 @@ class FileSystemImageCacheTests: XCTestCase {
         let url = "wtiteReadUrl" + currentDateText
         
         createTempDirectory()
-        let fileSystemCache = FileSystemImageCacheBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
+        let fileSystemCache = DiskCacheFileSystemBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
         
         
         let writeToFileExp      = expectation(description: "successfully wrote to file")
@@ -167,7 +167,7 @@ class FileSystemImageCacheTests: XCTestCase {
         let url = "WriteReadDeleteUrl" + currentDateText
         
         createTempDirectory()
-        let fileSystemCache = FileSystemImageCacheBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
+        let fileSystemCache = DiskCacheFileSystemBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
         
         
         let writeToFileExp      = expectation(description: "successfully wrote to file")
@@ -221,7 +221,7 @@ class FileSystemImageCacheTests: XCTestCase {
         let url2 = "testUrl--2"
         
         createTempDirectory()
-        let fileSystemCache = FileSystemImageCacheBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
+        let fileSystemCache = DiskCacheFileSystemBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
         
         
         let firstWriteResultExp         = expectation(description: "successfully wrote first url & imaged")
@@ -276,7 +276,7 @@ class FileSystemImageCacheTests: XCTestCase {
         
         let tempTestImage = testImage1
         createTempDirectory()
-        let fileSystemCache = FileSystemImageCacheBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
+        let fileSystemCache = DiskCacheFileSystemBuilder().concreteForTestingWithDifferentDirectory(directory:tempDirectory)
         
         
         let firstWriteResultExp         = expectation(description: "successfully wrote first url & image")
