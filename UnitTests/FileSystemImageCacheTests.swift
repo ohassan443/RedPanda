@@ -91,7 +91,9 @@ class FileSystemImageCacheTests: XCTestCase {
         fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url, expectationToFullfill: readFromFileExp)
       
         waitForExpectations(timeout: 60, handler: nil)
-        deleteTempDirectory()
+        addTeardownBlock {
+            self.deleteTempDirectory()
+        }
     }
     
     
@@ -146,7 +148,9 @@ class FileSystemImageCacheTests: XCTestCase {
         })
         
         waitForExpectations(timeout: 60, handler: nil)
-        deleteTempDirectory()
+        addTeardownBlock {
+            self.deleteTempDirectory()
+        }
         
     }
     
@@ -202,7 +206,9 @@ class FileSystemImageCacheTests: XCTestCase {
         })
         
         waitForExpectations(timeout: 60, handler: nil)
-        deleteTempDirectory()
+        addTeardownBlock {
+            self.deleteTempDirectory()
+        }
     }
     
     
@@ -257,7 +263,9 @@ class FileSystemImageCacheTests: XCTestCase {
         self.fileSystemDoesnotContaintUrl(fileSystemCache: fileSystemCache, url: url2, expectationToFullfill: verifySecondUrlDeletedExp)
         
         waitForExpectations(timeout: 60, handler: nil)
-        deleteTempDirectory()
+        addTeardownBlock {
+            self.deleteTempDirectory()
+        }
     }
     
     
@@ -326,7 +334,9 @@ class FileSystemImageCacheTests: XCTestCase {
         })
         
         waitForExpectations(timeout: 60, handler: nil)
-        deleteTempDirectory()
+        addTeardownBlock {
+            self.deleteTempDirectory()
+        }
     }
    
     

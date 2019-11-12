@@ -96,7 +96,9 @@ class DiskCacheImageTests: XCTestCase {
         
         
         waitForExpectations(timeout: 20, handler: nil)
-        let _ =  mockDataBase.deleteDataBase()
+        addTeardownBlock {
+            let _ =  mockDataBase.deleteDataBase()
+        }
     }
     
     
@@ -142,7 +144,9 @@ class DiskCacheImageTests: XCTestCase {
             deleteExp.fulfill()
         })
         waitForExpectations(timeout: 2 , handler: nil)
-        let _ =  mockDataBase.deleteDataBase()
+        addTeardownBlock {
+            let _ =  mockDataBase.deleteDataBase()
+        }
     }
     
     
@@ -200,7 +204,9 @@ class DiskCacheImageTests: XCTestCase {
         })
         
         waitForExpectations(timeout: 2 * 60, handler: nil)
-        let _ =  mockDataBase.deleteDataBase()
+        addTeardownBlock {
+            let _ =  mockDataBase.deleteDataBase()
+        }
     }
     
     
@@ -328,7 +334,11 @@ class DiskCacheImageTests: XCTestCase {
         
         
         waitForExpectations(timeout: 20, handler: nil)
-        let _ =  mockDataBase.deleteDataBase()
+        addTeardownBlock {
+            let _ =  mockDataBase.deleteDataBase()
+        }
+        
+        
     }
 }
 

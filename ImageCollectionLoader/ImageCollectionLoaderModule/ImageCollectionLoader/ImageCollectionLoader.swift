@@ -170,7 +170,6 @@ public class ImageCollectionLoader  : ImageCollectionLoaderObj  {
         
         self.addToProcessingRequests(request: request)
         
-        DispatchQueue.global(qos: .userInteractive)
         self.execute(request: request, alreadyExecutingHandler: {
             failedHandler?(request,nil,.currentlyLoading)
         })
