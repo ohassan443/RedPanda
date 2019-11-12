@@ -16,14 +16,26 @@ class RamSharedImageCache: RamCacheImageObj {
     private var globalImageRam : SyncedDic<ImageUrlWrapper> = SyncedDic<ImageUrlWrapper>()
     
     
+    
+    init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(freeRam), name: UIApplication.didReceiveMemoryWarningNotification , object: nil)
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    
+   
+    
+    
+    
     func cache(image: UIImage, url: String) -> Bool {
         
         let queryUrl = PersistentUrl.amazonCheck(url: url)
         globalImageRam.syncedInsert(element: ImageUrlWrapper(url: queryUrl, image: image), completion: {[weak self] in
             guard let ramCache = self else {return}
             if ramCache.globalImageRam.values.count >= 100  {
-                ramCache.globalImageRam.updateTimeStamp()
-                ramCache.globalImageRam.values = [:]
+                ramCache.freeRam()
             }
         })
         
@@ -31,6 +43,11 @@ class RamSharedImageCache: RamCacheImageObj {
         
         
         return true
+    }
+    
+     @objc private func freeRam() -> Void {
+        globalImageRam.updateTimeStamp()
+        globalImageRam.values = [:]
     }
     
     func getImageFor(url: String) -> UIImage? {
