@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07103A3E237AE037003E7D22 /* DiskCacheBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07103A3D237AE037003E7D22 /* DiskCacheBuilder.swift */; };
 		07216299235C484200692A85 /* ImageCollectionLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074290C3235B762F0003EB7C /* ImageCollectionLoader.framework */; };
 		0721629F235C484F00692A85 /* InternetConnectivityCheckerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E1235B76440003EB7C /* InternetConnectivityCheckerTests.swift */; };
 		072162A0235C484F00692A85 /* RachabailityMonitorMockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07429113235B76440003EB7C /* RachabailityMonitorMockTests.swift */; };
@@ -28,6 +27,7 @@
 		072C89652370466500FBF430 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 072C89632370466500FBF430 /* Main.storyboard */; };
 		072C89672370466600FBF430 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 072C89662370466600FBF430 /* Assets.xcassets */; };
 		072C896A2370466600FBF430 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 072C89682370466600FBF430 /* LaunchScreen.storyboard */; };
+		0737DC20237C040E00A7DF2D /* DiskCacheBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0737DC1F237C040E00A7DF2D /* DiskCacheBuilder.swift */; };
 		073F23A023604A2A00F7DFFB /* ImageCollectionLoaderAssetsTestingg.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 073F239F23604A2A00F7DFFB /* ImageCollectionLoaderAssetsTestingg.xcassets */; };
 		074290D4235B762F0003EB7C /* ImageCollectionLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 074290C6235B762F0003EB7C /* ImageCollectionLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0742911B235B76440003EB7C /* InternetConnectivityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290E0235B76440003EB7C /* InternetConnectivityChecker.swift */; };
@@ -117,7 +117,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		07103A3D237AE037003E7D22 /* DiskCacheBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCacheBuilder.swift; sourceTree = "<group>"; };
 		07216294235C484200692A85 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		07216298235C484200692A85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		072C895D2370466500FBF430 /* Test111.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test111.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +126,7 @@
 		072C89662370466600FBF430 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		072C89692370466600FBF430 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		072C896B2370466600FBF430 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0737DC1F237C040E00A7DF2D /* DiskCacheBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskCacheBuilder.swift; sourceTree = "<group>"; };
 		073F239F23604A2A00F7DFFB /* ImageCollectionLoaderAssetsTestingg.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ImageCollectionLoaderAssetsTestingg.xcassets; sourceTree = "<group>"; };
 		074290C3235B762F0003EB7C /* ImageCollectionLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageCollectionLoader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		074290C6235B762F0003EB7C /* ImageCollectionLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCollectionLoader.h; sourceTree = "<group>"; };
@@ -402,8 +402,8 @@
 				074290F5235B76440003EB7C /* DiskCacheImageDataBase */,
 				074290E8235B76440003EB7C /* FileSystemImageCache */,
 				074290EF235B76440003EB7C /* DiskCacheImage */,
-				07103A3D237AE037003E7D22 /* DiskCacheBuilder.swift */,
 				074290F3235B76440003EB7C /* DiskCacheImageMock.swift */,
+				0737DC1F237C040E00A7DF2D /* DiskCacheBuilder.swift */,
 			);
 			path = DiskCache;
 			sourceTree = "<group>";
@@ -847,7 +847,7 @@
 				0742913D235B76440003EB7C /* ReachabailityMonitor.swift in Sources */,
 				0742912C235B76440003EB7C /* DiskCacheImageDatabaseMock.swift in Sources */,
 				0742913A235B76440003EB7C /* ImageLoaderBuilder.swift in Sources */,
-				07103A3E237AE037003E7D22 /* DiskCacheBuilder.swift in Sources */,
+				0737DC20237C040E00A7DF2D /* DiskCacheBuilder.swift in Sources */,
 				07429142235B76440003EB7C /* Protocols&Errors.swift in Sources */,
 				0742912A235B76440003EB7C /* DiskCacheDataBaseBuilder.swift in Sources */,
 				0742911E235B76440003EB7C /* InternetConnectivityCheckerMock.swift in Sources */,
