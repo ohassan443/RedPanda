@@ -29,8 +29,11 @@ struct ImageUrlWrapper : Hashable {
 //    func hash(into hasher: inout Hasher) {
 //        hasher.combine(url)
 //    }
-    var hashValue: Int {
-       return self.url.hashValue
+//    var hashValue: Int {
+//       return self.url.hashValue
+//    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(url)
     }
     
     static func == (lhs: ImageUrlWrapper, rhs: ImageUrlWrapper) -> Bool {
