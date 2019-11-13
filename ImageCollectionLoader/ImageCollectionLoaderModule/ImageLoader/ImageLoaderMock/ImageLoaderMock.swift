@@ -12,6 +12,10 @@ import UIKit
 
 
 class ImageLoaderMock: ImageLoaderObj {
+  
+    
+ 
+    
     
     enum ReturnResponse {
         case ramCache
@@ -41,14 +45,14 @@ class ImageLoaderMock: ImageLoaderObj {
         self.returnType = returnResponse
     }
     
-    func queryRamCacheFor(url:String) -> UIImage? {
-        let image = ramCache.getImageFor(url: url)
-        return image
-    }
+    func queryRamCacheFor(url: String, result: @escaping (UIImage?) -> ()) {
+        ramCache.getImageFor(url: url, result: result)
+      }
+    
     
     private func cacheToRam(image:UIImage,url:String){
         let urlToCache = PersistentUrl.amazonCheck(url: url)
-        _ = ramCache.cache(image: image, url: urlToCache)
+        _ = ramCache.cache(image: image, url: urlToCache, result: {_ in})
     }
     
     
@@ -76,16 +80,14 @@ class ImageLoaderMock: ImageLoaderObj {
                 
             case.ramCache :
                 
-                if let cachedImage = imageLoader.ramCache.getImageFor(url: urlString) {
-                    completion(cachedImage)
-                    return
-                }else {
-                    fail(urlString,MockError.mockImageUnAvaliable)
-                    return
-                }
-                
-                
-                
+                imageLoader.ramCache.getImageFor(url: urlString, result: {
+                    image in
+                    guard let image = image else {
+                        fail(urlString,MockError.mockImageUnAvaliable)
+                                          return
+                    }
+                      completion(image)
+                })
                 
             case .diskCache:
                 

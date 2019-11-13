@@ -14,7 +14,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var tv1: UITableView!
     @IBOutlet weak var tv2: UITableView!
-    
+
+    var failed : [Int] = []
     var dataSource = [String]()
     let imageCollectionLoader = ImageCollectionLoaderBuilder().defaultImp(ramMaxItemsCount: 60)
     var session : URLSession? = nil
@@ -52,16 +53,17 @@ class ViewController: UIViewController {
         //            }
         //        }.resume()
         
+         let data = UIImage(named: "testImage1")!.pngData()
+        var variableResponse = LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: data)
+        let response : LocalServer.wrappedResponse = {
+            params,callBack in
+            
+            
+               
+                    callBack(variableResponse)
+        }
         
-//        let response : LocalServer.wrappedResponse = {
-//            params,callBack in
-//            
-//            
-//                let data = UIImage(named: "testImage1")!.pngData()
-//                    callBack(LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: data!))
-//        }
-        
-     
+        server = LocalServer.getInstance(response: response)
         
         
         let tvs = [tv1]
@@ -78,6 +80,7 @@ class ViewController: UIViewController {
         
         for i in 0...1000 {
            dataSource.append("https://picsum.photos/id/\(i)/200/200")
+           // dataSource.append(UITestsConstants.baseUrl + "\(i)")
            // dataSource.append(getTempAmazonUrlfrom(url: "\(i)"))
         }
     }
@@ -93,11 +96,16 @@ extension ViewController: UITableViewDelegate,UITableViewDataSource {
 //        if let card = imageCollectionLoader.cacheQueryState(url: element).image{
 //           cell.iv.image = card
 //        }else {
+         let x = indexPath
             imageCollectionLoader.requestImage(requestDate: Date(), url: element, indexPath: indexPath, tag: "card", successHandler: {
                 image , index , date in
                 guard let visibleCell = tableView.cellForRow(at: index) as? cell else {return}
                 visibleCell.iv.image = image
-            }, failedHandler: nil)
+            }, failedHandler: {
+                _,_,_ in
+               
+                self.failed.append(x.row)
+            })
         ///}
         
         
@@ -109,6 +117,9 @@ extension ViewController: UITableViewDelegate,UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("selected")
     }
     
 }

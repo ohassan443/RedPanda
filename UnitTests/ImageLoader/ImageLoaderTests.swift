@@ -181,7 +181,7 @@ class ImageLoaderTests: XCTestCase {
         let testUrl = "testUrl"
         
         /// create image list to pass to the ram cache and create disk cache that always returns nil
-        let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
+        let imageSet = SyncedAccessHashableCollection<ImageUrlWrapper>.init(array: [ImageUrlWrapper(url: testUrl, image: testImage)])
         let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
        
         /// create ram cache that will look in its collection and store in its collection
@@ -195,11 +195,21 @@ class ImageLoaderTests: XCTestCase {
             .customConcrete()
         
         
-        let ramCachedImage = imageLoader.queryRamCacheFor(url: testUrl)
+        let expLoadedFromRam = expectation(description: "loaded image from ram ")
+        let ramCachedImage = imageLoader.getImageFrom(urlString: testUrl, completion: {
+            ramCachedImage in
+            
+            /// verify image was retrieved successfully
+            XCTAssertNotNil(ramCachedImage)
+            XCTAssertEqual(ramCachedImage.pngData(), testImage.pngData())
+            expLoadedFromRam.fulfill()
+
+        }, fail: {_,_ in
+            XCTFail()
+        })
        
-        /// verify image was retrieved successfully
-        XCTAssertNotNil(ramCachedImage)
-        XCTAssertEqual(ramCachedImage!.pngData(), testImage.pngData())
+        
+        wait(for: [expLoadedFromRam], timeout: 1)
     }
     
  
@@ -259,7 +269,7 @@ class ImageLoaderTests: XCTestCase {
         
         // ram cache should allow retreive
         let initiallyEmptyRamCache = RamCacheBuilder()
-            .with(imageSet: [])
+            .with(imageSet: SyncedAccessHashableCollection<ImageUrlWrapper>.init(array: []))
             .mock(storePolicy: .store, queryPolicy: .checkInSet)
         
         let imageLoader  = ImageLoaderBuilder()
@@ -281,11 +291,14 @@ class ImageLoaderTests: XCTestCase {
             
             
             //check for image in ramCache that was passed in empty
-            let ramCachedImage = initiallyEmptyRamCache.getImageFor(url: testUrl)
-            XCTAssertNotNil(ramCachedImage)
-            XCTAssertEqual(ramCachedImage!.pngData(), testImage.pngData())
+             initiallyEmptyRamCache.getImageFor(url: testUrl, result: {
+            ramCachedImage in
+                XCTAssertNotNil(ramCachedImage)
+                XCTAssertEqual(ramCachedImage!.pngData(), testImage.pngData())
+                
+                ramCacheExp.fulfill()
+            })
             
-            ramCacheExp.fulfill()
             
             
         }, fail: {

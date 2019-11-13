@@ -136,13 +136,13 @@ public struct imageRequest : Hashable {
 
 /// convenience wrapper for reading a request in a synced collection by its url & indexPath & tag 
 extension SyncedAccessHashableCollection where T == imageRequest {
-    func specialSyncedRead(url:String,indexPath:IndexPath,tag:String) -> imageRequest? {
+    func specialSyncedRead(url:String,indexPath:IndexPath,tag:String,result : @escaping (_ avaliableRequest : imageRequest?)->()) -> Void {
        
         
         let targetHashValue = imageRequest( url: url, loading: false, dateRequestedAt: Date(), cellIndexPath: indexPath, tag: tag).hashValue
         
-        let result = syncedRead(targetElementHashValue: targetHashValue)
-        
-        return result
+         syncedRead(targetElementHashValue: targetHashValue, result: {request in
+            result(request)
+         })
     }
 }

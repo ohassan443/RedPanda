@@ -11,6 +11,8 @@ import UIKit
 
 
 class ImageLoader : ImageLoaderObj{
+ 
+    
     
     private var  diskCache: DiskCacheProtocol
     private var ramCache: RamCacheProtocol
@@ -21,18 +23,14 @@ class ImageLoader : ImageLoaderObj{
     }
     
     
-    func queryRamCacheFor(url:String) -> UIImage? {
-        let image = ramCache.getImageFor(url: url)
-        return image
-    }
+    func queryRamCacheFor(url: String, result: @escaping (UIImage?) -> ()) {
+        ramCache.getImageFor(url: url, result: result)
+     }
     
     
     
-    
-    
-    private func cacheToRam(image:UIImage,url:String)-> Bool{
-        let cacheResult = ramCache.cache(image: image, url: url)
-        return cacheResult
+    private func cacheToRam(image:UIImage,url:String)-> Void{
+        ramCache.cache(image: image, url: url, result: {_ in})
     }
     
     
@@ -42,29 +40,35 @@ class ImageLoader : ImageLoaderObj{
      */
     func getImageFrom(urlString:String, completion:  @escaping (_ : UIImage)-> (),fail : @escaping (_ url:String,_ error:Error)-> ()) -> Void {
         
-
+        
         DispatchQueue.global().async {
             [weak self] in
             guard let imageLoader = self else {return}
             
             
-            if let ramCachedImage = imageLoader.ramCache.getImageFor(url: urlString){
-                completion(ramCachedImage)
-                return
-            }
-            
-            imageLoader.diskCache.getImageFor(url: urlString, completion: {
-                diskCacheImage in
-                
-                if let image = diskCacheImage {
-                  let _ = imageLoader.cacheToRam(image: image, url: urlString)
+            imageLoader.ramCache.getImageFor(url: urlString, result: {
+                ramImage in
+                if let image = ramImage {
                     DispatchQueue.main.async {
                         completion(image)
                     }
                     return
                 }
                 
-                imageLoader.loadFromServer(urlString: urlString, completion: completion, fail: fail)
+                imageLoader.diskCache.getImageFor(url: urlString, completion: {
+                    diskCacheImage in
+                    
+                    if let image = diskCacheImage {
+                        let _ = imageLoader.cacheToRam(image: image, url: urlString)
+                        DispatchQueue.main.async {
+                            completion(image)
+                        }
+                        return
+                    }
+                    
+                    imageLoader.loadFromServer(urlString: urlString, completion: completion, fail: fail)
+                })
+                
             })
         }
     }

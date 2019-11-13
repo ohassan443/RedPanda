@@ -12,8 +12,10 @@ import UIKit
 
 
 class RamCache: RamCacheProtocol {
+  
+    
     /// synced dictionary to avoid multiple writes crashes
-    private var ram : SyncedAccessHashableCollection<ImageUrlWrapper> = SyncedAccessHashableCollection<ImageUrlWrapper>()
+    private var ram : SyncedAccessHashableCollection<ImageUrlWrapper> = SyncedAccessHashableCollection<ImageUrlWrapper>(array: [])
     private var maxCount = 20
     
     // subscribe to didReceiveMemoryWarningNotification to clear ram if memory is overloaded
@@ -27,34 +29,29 @@ class RamCache: RamCacheProtocol {
 
     
    
-    
-    
-    /// add image to the synced collection
-    func cache(image: UIImage, url: String) -> Bool {
-        
-        let queryUrl = PersistentUrl.amazonCheck(url: url)
-        ram.syncedInsert(element: ImageUrlWrapper(url: queryUrl, image: image), completion: {[weak self] in
-            guard let ramCache = self else {return}
-            if ramCache.ram.values.count >= ramCache.maxCount  {
-                ramCache.freeRam()
-            }
+    func getImageFor(url: String, result: @escaping (UIImage?) -> ()) {
+           let queryUrl = PersistentUrl.amazonCheck(url: url)
+        ram.syncedRead(targetElementHashValue: queryUrl.hashValue, result: {
+            result($0?.image)
         })
-        return true
+      }
+    
+    func cache(image: UIImage, url: String, result:  @escaping  (Bool) -> ()) {
+        if ram.getValues().count >= maxCount  {
+            freeRam()
+        }
+        let queryUrl = PersistentUrl.amazonCheck(url: url)
+        let objToCache = ImageUrlWrapper(url: queryUrl, image: image)
+        ram.syncedInsert(element: objToCache, completion:{_ in 
+            result(true)
+        })
+        
     }
     
     /// clear images in ram
      @objc private func freeRam() -> Void {
-        ram.updateTimeStamp()
-        ram.values = [:]
+        ram.refresh()
     }
     
-    /// query the ram collection for an image corresponding to a url
-    func getImageFor(url: String) -> UIImage? {
-        var resultImage : UIImage? = nil
-            let queryUrl = PersistentUrl.amazonCheck(url: url)
-            let obj = ram.syncedRead(targetElementHashValue: queryUrl.hashValue)
-            resultImage = obj?.image
-        
-        return resultImage
-    }
+  
 }

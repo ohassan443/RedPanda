@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// the queue is global for all instances of the file system so that if multiple instances are accessing the same file (all instances of this class will refere to the same file)
-  let fileSystemQueue = DispatchQueue(label: "fileSystemQueue", qos: .userInitiated, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInteractive))
+  let fileSystemQueue = DispatchQueue(label: "fileSystemQueue", qos: .userInteractive, attributes: DispatchQueue.Attributes.concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInteractive))
 
 class DiskCacheFileSystem: DiskCacheFileSystemProtocol {
    
@@ -70,18 +70,25 @@ class DiskCacheFileSystem: DiskCacheFileSystemProtocol {
     
     /// read data from file if found and parse it to an image
     func readFromFile(url: String, completion: @escaping (UIImage?) -> ()) {
-        fileSystemQueue.async {[weak self] in
-            guard let filesSystem = self else {return}
-            let fileToRead = filesSystem.directory.appendingPathComponent(url)
-            
-            
-            guard let imageData = try? Data(contentsOf: fileToRead)
-                ,let image = UIImage(data: imageData)
-                else {
-                    completion(nil)
-                    return
-            }
-            completion(image)
+        do {
+            fileSystemQueue.async {[weak self] in
+                     guard let filesSystem = self else {return}
+                     let fileToRead = filesSystem.directory.appendingPathComponent(url)
+                     
+                     
+                     guard let imageData = try? Data(contentsOf: fileToRead)
+                         ,let image = UIImage(data: imageData)
+                         else {
+                             completion(nil)
+                             return
+                     }
+                     completion(image)
+                 }
+        }catch {
+            print("error is \(error)")
+            let x = 5
+            print(x)
+            completion(nil)
         }
     }
     

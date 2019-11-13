@@ -25,18 +25,41 @@ class RamCacheMockTests: XCTestCase {
         let mockRamCache = RamCacheBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
         
         
-        
-        let preCacheResult = mockRamCache.getImageFor(url: url)
-        XCTAssertNil(preCacheResult)
+        let expVerifiedEmptyRam = expectation(description: "imageNotFound initially")
         
         
-        let cacheResult = mockRamCache .cache(image: testImage, url: url)
-        XCTAssertEqual(cacheResult, true)
+         mockRamCache.getImageFor(url: url, result: {
+            preCacheResult in
+            XCTAssertNil(preCacheResult)
+            expVerifiedEmptyRam.fulfill()
+        })
+        wait(for: [expVerifiedEmptyRam], timeout: 1)
         
         
-        let cachedImage = mockRamCache .getImageFor(url: url)
-        XCTAssertNotNil(cachedImage)
-        XCTAssertEqual(cachedImage!.pngData(), testImage.pngData())
+        let expCachedCorrectly = expectation(description: "cached image successfully")
+        
+        
+         mockRamCache .cache(image: testImage, url: url, result: {
+            cached in
+            XCTAssertTrue(cached)
+            expCachedCorrectly.fulfill()
+        })
+        
+        wait(for: [expCachedCorrectly], timeout: 1)
+        
+        let expRetrieved = expectation(description: "retrieved image from cache")
+        
+        
+        
+        mockRamCache .getImageFor(url: url, result: {
+            retrieved in
+            XCTAssertNotNil(retrieved)
+            XCTAssertEqual(retrieved!.pngData(), testImage.pngData())
+            expRetrieved.fulfill()
+        })
+       
+        waitForExpectations(timeout: 1, handler: nil)
+        
     }
     
     
@@ -54,26 +77,35 @@ class RamCacheMockTests: XCTestCase {
     func testStorePolicyFor(url:String) {
         let testImage = testImage1
         
-     
-        
         let mockRamCache = RamCacheBuilder()
-            .with(imageSet: [])
-            .mock(storePolicy: .skip, queryPolicy: .checkInSet)
+            .with(imageSet: SyncedAccessHashableCollection<ImageUrlWrapper>(array: [ImageUrlWrapper(url: url, image: testImage)]))
+            .mock(storePolicy: .skip, queryPolicy: .returnNil)
         
-        let cacheResult = mockRamCache.cache(image: testImage, url: url)
-        XCTAssertEqual(cacheResult, false)
+        let expFinishedTest = expectation(description: "finished")
         
-        let cachedImage = mockRamCache.getImageFor(url: url)
-        XCTAssertNil(cachedImage)
-        
-        mockRamCache.changeStore(Policy: .store)
-        
-        let secondcacheResult = mockRamCache.cache(image: testImage, url: url)
-        XCTAssertEqual(secondcacheResult, true)
-        
-        let secondCachedImage = mockRamCache.getImageFor(url: url)
-        XCTAssertNotNil(secondCachedImage)
-      
+        mockRamCache.cache(image: testImage, url: url, result: {
+            cacheResult in
+            XCTAssertFalse(cacheResult)
+            
+            mockRamCache.getImageFor(url: url, result: {
+                cachedImage in
+                XCTAssertNil(cachedImage)
+                
+                mockRamCache.changeStore(Policy: .store)
+                mockRamCache.cache(image: testImage, url: url, result: {
+                    secondcacheResult in
+                    XCTAssertTrue(secondcacheResult)
+                    
+                    mockRamCache.changeQuery(Policy: .checkInSet)
+                    mockRamCache.getImageFor(url: url, result: {
+                        secondCachedImage in
+                        XCTAssertNotNil(secondCachedImage)
+                        expFinishedTest.fulfill()
+                    })
+                })
+            })
+        })
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     
@@ -89,24 +121,31 @@ class RamCacheMockTests: XCTestCase {
     func testReadPolicyFor(url:String) {
         let testImage = testImage1
         
-        let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: url, image: testImage)]
+        
         
         let mockRamCache = RamCacheBuilder()
-            .with(imageSet: imageSet)
+            .with(imageSet: SyncedAccessHashableCollection<ImageUrlWrapper>(array: [ImageUrlWrapper(url: url, image: testImage)]))
             .mock(storePolicy: .skip, queryPolicy: .returnNil)
         
-        let firstQueryImage = mockRamCache.getImageFor(url: url)
-        XCTAssertNil(firstQueryImage)
+        let expFinishedTest = expectation(description: "finished")
         
+        mockRamCache.getImageFor(url: url, result: {
+            firstQueryImage in
+            XCTAssertNil(firstQueryImage)
+            
+            mockRamCache.changeQuery(Policy: .checkInSet)
+            
+            mockRamCache.getImageFor(url: url, result: {
+                secondQueryImage in
+                XCTAssertNotNil(secondQueryImage)
+                XCTAssertEqual(secondQueryImage!.pngData(), testImage.pngData())
+                expFinishedTest.fulfill()
+            })
+            
+        })
         
-        
-         mockRamCache.changeQuery(Policy: .checkInSet)
-        
-        let secondQueryImage = mockRamCache.getImageFor(url: url)
-        XCTAssertNotNil(secondQueryImage)
-        XCTAssertEqual(secondQueryImage!.pngData(), testImage.pngData())
-    
-    }
+        wait(for: [expFinishedTest], timeout: 1)
+      }
     
     
     

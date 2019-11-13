@@ -25,7 +25,6 @@ class ImageCollectionLoaderMock: ImageCollectionLoaderProtocol {
     }
     
     var response                    : Response = .none
-    var cacheQueryState             : (imageRequest.RequestState.SynchronousCheck,UIImage?) = (.notAvaliable,nil)
     var connected: Bool             = false
     
    func requestImage(requestDate: Date, url: String, indexPath: IndexPath, tag: String, successHandler: @escaping (UIImage, IndexPath, Date) -> (), failedHandler: ((imageRequest?, UIImage?, imageRequest.RequestState.AsynchronousCallBack) -> ())?) {
@@ -61,10 +60,6 @@ class ImageCollectionLoaderMock: ImageCollectionLoaderProtocol {
     
     func changeTimerRetry(interval: TimeInterval) {}
     
-    
-    func cacheQueryState(url: String) -> (state:imageRequest.RequestState.SynchronousCheck,image:UIImage?) {
-        return cacheQueryState
-    }
     
     func respondToReachabilityChange(reachable: Bool) {}
     

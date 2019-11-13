@@ -14,6 +14,7 @@ import UIKit
 
 
 class RamCacheMock: RamCacheProtocol {
+    
     /**
      flag added for check on retreive only to mock having an empty cache / full resonsive cache
      */
@@ -29,13 +30,13 @@ class RamCacheMock: RamCacheProtocol {
         case returnNil
     }
     
-    private var imageSet : Set<ImageUrlWrapper> = []
+    private var imageSet = SyncedAccessHashableCollection<ImageUrlWrapper>.init(array: [])
     private var storePolicy: StorePolicy
     private var queryPolicy : QueryPolicy
     
     
     
-    init(images:Set<ImageUrlWrapper>,storePolicy:StorePolicy,queryPolicy:QueryPolicy) {
+    init(images:SyncedAccessHashableCollection<ImageUrlWrapper>,storePolicy:StorePolicy,queryPolicy:QueryPolicy) {
         self.imageSet = images
         self.storePolicy = storePolicy
         self.queryPolicy = queryPolicy
@@ -52,33 +53,30 @@ class RamCacheMock: RamCacheProtocol {
     
     
     
-    func cache(image: UIImage, url: String) -> Bool {
-
-        switch storePolicy{
-      
-        case .skip :
-            return false
-      
-        case .store:
-            let storageUrl = PersistentUrl.amazonCheck(url: url)
-            let result = imageSet.insert(ImageUrlWrapper(url: storageUrl, image: image))
-            return result.inserted
+    func getImageFor(url: String, result: @escaping (UIImage?) -> ()) {
+        switch queryPolicy {
+        case .returnNil:  result(nil)
+            
+        case .checkInSet :
+            let queryUrl = PersistentUrl.amazonCheck(url: url)
+            imageSet.syncedRead(targetElementHashValue: queryUrl.hashValue, result: {
+                result($0?.image)
+            })
         }
     }
     
-    func getImageFor(url: String) -> UIImage? {
-     
-        switch queryPolicy {
+    func cache(image: UIImage, url: String, result: @escaping (Bool) -> ()) {
+        switch storePolicy{
+        case .skip : result(false)
             
-        case .returnNil:
-            return nil
-        
-        case .checkInSet :
-            let queryUrl = PersistentUrl.amazonCheck(url: url)
-            let obj = imageSet.filter(){
-                $0.url == queryUrl
-                }.first
-            return obj?.image
+        case .store:
+            let storageUrl = PersistentUrl.amazonCheck(url: url)
+            imageSet.syncedInsert(element: ImageUrlWrapper(url: storageUrl, image: image), completion: {_ in 
+                /// synced collection implementation always succeeds , so for now this is always true
+                result(true)
+            })
         }
     }
+    
+    
 }

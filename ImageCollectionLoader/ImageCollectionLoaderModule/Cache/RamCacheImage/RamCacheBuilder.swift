@@ -8,7 +8,7 @@
 
 import Foundation
 class RamCacheBuilder  {
-    private var imageSet : Set<ImageUrlWrapper> = []
+    private var imageSet = SyncedAccessHashableCollection<ImageUrlWrapper>(array: [])
     
     func concrete(maxItemsCount:Int) -> RamCache {
         return RamCache(maxItemsCount: maxItemsCount)
@@ -30,7 +30,7 @@ class RamCacheBuilder  {
          return RamCacheMock(images: imageSet, storePolicy: .skip, queryPolicy: .returnNil)
     }
     
-    func with(imageSet:Set<ImageUrlWrapper>) -> RamCacheBuilder {
+    func with(imageSet:SyncedAccessHashableCollection<ImageUrlWrapper>) -> RamCacheBuilder {
         self.imageSet = imageSet
         return self
     }

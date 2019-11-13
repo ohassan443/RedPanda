@@ -27,7 +27,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         
         let imageWrapper = ImageUrlWrapper(url: testUrl, image: testImage)
         
-        let set : Set<ImageUrlWrapper> = [imageWrapper]
+        let set = SyncedAccessHashableCollection<ImageUrlWrapper>.init(array: [imageWrapper])
         
         
         let oneImageRamCache = RamCacheBuilder()
@@ -41,7 +41,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         let imageLoader = ImageLoaderBuilder()
             .with(ramCache: oneImageRamCache)
             .with(diskCache: emptyDiskCache)
-            .loaderMock(response: .throwError(error: ImageLoaderMock.MockError.mockImageUnAvaliable))
+            .loaderMock(response: .ramCache)
         
         
         let reachability = ReachabailityMonitorMock(conncection: .none)
@@ -50,7 +50,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         let internetChecker = InternetConnectivityCheckerBuilder()
             .with(successResponse: false)
             .Mock()
-    
+        
         
         
         let imageCollectionLoader = ImageCollectionLoaderBuilder()
@@ -59,26 +59,21 @@ class ImageCollectionLoaderTests: XCTestCase {
             .with(internetChecker: internetChecker)
             .TESTCustomConcrete()
         
-        let cachedQueryResult = imageCollectionLoader.cacheQueryState(url: testUrl)
-        let cachedImage = cachedQueryResult.image
+        let expLoadedImage = expectation(description: "loaded Image")
+        imageCollectionLoader.requestImage(requestDate: Date(), url: testUrl, indexPath: IndexPath(row: 0, section: 0), tag: "", successHandler: {
+            cachedQueryResult ,_,_ in
+            
+            
+            XCTAssertNotNil(cachedQueryResult)
+            XCTAssertEqual(  cachedQueryResult.jpegData(compressionQuality: 0.5) , testImage.jpegData(compressionQuality: 0.5))
+            expLoadedImage.fulfill()
+        }, failedHandler: {
+            _,_,_ in
+            XCTFail()
+        })
         
-        XCTAssertEqual(cachedQueryResult.state, .cached)
-        XCTAssertNotNil(cachedImage)
-        XCTAssertEqual(  cachedImage!.jpegData(compressionQuality: 0.5) ,    testImage.jpegData(compressionQuality: 0.5))
         
-        
-    
-
-        
-        
-        let invalidUrl = "not cached url"
-        let invalidQueryResult = imageCollectionLoader.cacheQueryState(url: invalidUrl)
-        
-        let invalidImage = invalidQueryResult.image
-        
-        XCTAssertEqual(invalidQueryResult.state, .notAvaliable)
-        XCTAssertNil(invalidImage)
-    
+        wait(for: [expLoadedImage], timeout: 1)
     }
 
     
@@ -127,9 +122,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         
         
         let exp = expectation(description: "loading image")
-        
-        let invertedExp = expectation(description: "neverEnteredHere")
-        invertedExp.isInverted = true
+
         
         
         
@@ -283,7 +276,7 @@ class ImageCollectionLoaderTests: XCTestCase {
             
             
             
-            let firstRequest = imageCollectionLoader.requestImage(requestDate:firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag
+            imageCollectionLoader.requestImage(requestDate:firstDate, url: testUrl, indexPath: requestIndexPath, tag: tag
                 , successHandler: {
                     _,_ , _ in
                     XCTFail()
@@ -334,7 +327,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         let imageLoader = ImageLoaderBuilder()
             .with(diskCache: unResponsiveDiskCache)
             .with(ramCache: unResponseiveRamCache)
-            .with(delayInterval: 1)
+            .with(delayInterval: 0)
             .loaderMock(response: .responseImage(image: testImage))
         
       
@@ -388,7 +381,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         })
         
         
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
 
@@ -449,7 +442,7 @@ class ImageCollectionLoaderTests: XCTestCase {
         })
        
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
             failedInternetChecker.change(internetIsAvaliable: true)
             imageLoader.change(returnResponse: .responseImage(image: testImage))
             reachability.changeConnectionState(newState: .wifi)
@@ -544,7 +537,7 @@ class ImageCollectionLoaderTests: XCTestCase {
        var images = [String]()
         var expectations = [XCTestExpectation]()
         for i in 0...1000 {
-            images.append("https://picsum.photos/id/\(i)+/200/200")
+            images.append("https://picsum.photos/id/\(i)/200/200")
             expectations.append(expectation(description: "\(i) not loaded"))
         }
 
@@ -583,6 +576,62 @@ class ImageCollectionLoaderTests: XCTestCase {
         print("lapsed time = \(lapsedTime)")
     }
 
+    
+    
+    
+//    func testServerLoad() {
+//        let imageCollectionLoader = ImageCollectionLoaderBuilder()
+//        .with(internetChecker: InternetConnectivityCheckerBuilder().concrete())
+//        .with(reachability: ReachabailityMonitor())
+//        .with(imageLoader: ImageLoaderBuilder().concrete(ramMaxItemsCount: 1000))
+//        .TESTCustomConcrete()
+//
+//
+//
+//
+//        let duplicatedUrls = SyncedAccessHashableCollection<String>.init(array: [])
+//        let calledUrls = SyncedAccessHashableCollection<String>.init(array: [])
+//        var urls = [""]
+//        for i in 0...500 {
+//            urls.append(UITestsConstants.baseUrl + "   ttessst \(i)")
+//        }
+//
+//        let expLoadedLastImage = expectation(description: "returned the call to the last Image")
+//        let localServer = LocalServer.getInstance { (params, callback) in
+//            let path = params.0
+//            calledUrls.syncCheckContaines(elementHashValue: path.hashValue, result: {duplicated in
+//                if duplicated{
+//                    duplicatedUrls.syncedInsert(element: path, completion: {
+//                        print("found duplicate at path \(path)")
+//                    })
+//                }
+//            })
+//
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute:  {
+//                callback(LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: testImage1.png()!))
+//                let capurtedPath = path
+//
+//                if capurtedPath == "1000" {
+//                    expLoadedLastImage.fulfill()
+//                }
+//            })
+//        }
+//
+//        for (index,url) in urls.enumerated() {
+//                imageCollectionLoader.requestImage(requestDate: Date(), url: url, indexPath: IndexPath(row: index, section: 0), tag: "\(index)", successHandler: {
+//                    image,indexPath,_ in
+//                    print("loaded successfully \(indexPath)")
+//                })
+//        }
+//
+//
+//           waitForExpectations(timeout: 50, handler: nil)
+//        addTeardownBlock {
+//            localServer.stop()
+//        }
+//    }
+    
+    
     
     
 }

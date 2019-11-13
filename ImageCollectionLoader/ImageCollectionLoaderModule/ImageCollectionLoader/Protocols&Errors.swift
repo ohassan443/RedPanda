@@ -57,20 +57,7 @@ enum RequestResponse {
  */
 public protocol ImageCollectionLoaderProtocol : ReachabilityMonitorDelegateProtocol {
     
-    /**
-     - parameter url : query the image cache for this url
-     - returns:
-        + image : reslt Image
-        + state : the state of the image corresponding to the url :
-            * currentlyLoading
-            * invalid
-            * processing
-            * cached
-            * notAvaliable
-     */
-    func cacheQueryState(url:String) -> (state:imageRequest.RequestState.SynchronousCheck,image:UIImage?)
   
-    
     /// - parameter interval : the interval after which a retry request will be made in case an internet connectivity error occurs with an avaliable network
      func changeTimerRetry(interval:TimeInterval) -> Void
     
@@ -125,10 +112,10 @@ internal  protocol DiskCacheFileSystemProtocol {
 internal protocol RamCacheProtocol {
     /// check for an image that corresponds the passed url in the ram cache
     /// this is a step before hitting the disk cache with a request
-    func getImageFor(url:String) -> UIImage?
+    func getImageFor(url:String,result :  @escaping  (UIImage?)->()) -> Void
     
     /// after a successfull fetch , wether from the disk cache or the network , this func will be used to save the image to fasten future lookups
-    func cache(image:UIImage,url: String) -> Bool
+    func cache(image:UIImage,url: String,result :  @escaping  (Bool)->()) -> Void
 }
 
 
@@ -187,7 +174,7 @@ internal protocol DiskCacheDataBaseProtocol {
  */
 public protocol ImageLoaderObj {
     /// looks in the ram cache for the image
-    func queryRamCacheFor(url:String) -> UIImage?
+    func queryRamCacheFor(url:String,result : @escaping (_ : UIImage?)->()) -> Void
     
     /// queries the ram cache then the disk cache and if both fails loades it from the server and then saves it to the ram and disk caches
     func getImageFrom(urlString:String, completion:  @escaping (_ : UIImage)-> (),fail : @escaping (_ url:String,_ error:Error)-> ()) -> Void

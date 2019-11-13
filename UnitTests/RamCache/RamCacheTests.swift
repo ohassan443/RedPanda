@@ -25,45 +25,70 @@ class RamCacheTests: XCTestCase {
         let sharedRamCache = RamCacheBuilder().concrete(maxItemsCount: 50)
         
         
-        
-        let preCacheResult = sharedRamCache.getImageFor(url: url)
-        XCTAssertNil(preCacheResult)
-        
-        
-        let cacheResult = sharedRamCache.cache(image: testImage, url: url)
-        XCTAssertEqual(cacheResult, true)
-        
-        
-        let cachedImage = sharedRamCache.getImageFor(url: url)
-        XCTAssertNotNil(cachedImage)
-        XCTAssertEqual(cachedImage!.pngData(), testImage.pngData())
+        let expLoadedSuccessfully = expectation(description: " Loaded Image Successfully after caching it ")
+        sharedRamCache.getImageFor(url: url, result: {
+            preCacheResult in
+            XCTAssertNil(preCacheResult)
+            
+            sharedRamCache.cache(image: testImage, url: url,result: {
+                cacheResult in
+                XCTAssertEqual(cacheResult, true)
+                
+                sharedRamCache.getImageFor(url: url, result: {
+                    cachedImage in
+                    XCTAssertNotNil(cachedImage)
+                    if let cached = cachedImage{
+                        
+                        XCTAssertEqual(cached.pngData(), testImage.pngData())
+                        expLoadedSuccessfully.fulfill()
+                    }
+                    
+                })
+            })
+        })
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     /// when the ram reaches the max count , it deletes all images
     func testRamReachedMaxCount() {
         let testImage = testImage1
         let sharedRamCache = RamCacheBuilder().concrete(maxItemsCount: 50)
-        
+        let expVerifiedResults = expectation(description: "verified first image was deleted and last image was found ")
         
         func geturl(i:Int)-> String{
             return "url = \(i)"
         }
         
         for i in 0...52 {
-            sharedRamCache.cache(image: testImage, url: geturl(i: i))
+            sharedRamCache.cache(image: testImage, url: geturl(i: i), result: {
+                result in
+                XCTAssertTrue(result)
+                
+                guard i == 52 else {return}
+                sharedRamCache.getImageFor(url: geturl(i: 0), result: {
+                    image in
+                    XCTAssertNil(image)
+                    
+                    sharedRamCache.getImageFor(url: geturl(i: 52), result: {
+                        lastImage in
+                        /// at the 50 image the ram was refreshed 
+                        XCTAssertNotNil(lastImage)
+                        expVerifiedResults.fulfill()
+                    })
+                })
+                
+            })
         }
        
         
         
-        let expVerifiedResults = expectation(description: "verified first image was deleted and last image was found ")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-             let image = sharedRamCache.getImageFor(url: geturl(i: 0))
-            XCTAssertNil(image)
+      
+        
+        
             
-            let lastImage = sharedRamCache.getImageFor(url: geturl(i: 51))
-            XCTAssertNil(lastImage)
-            expVerifiedResults.fulfill()
-        })
+          
+          
+        
         
         waitForExpectations(timeout: 3, handler: nil)
         
