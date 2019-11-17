@@ -10,13 +10,14 @@ import Foundation
 import UIKit
 
 
-class ImageLoaderBuilder  {
+public class ImageLoaderBuilder  {
     
     var delay : TimeInterval = 0
     var diskCache : DiskCacheProtocol = DiskCacheBuilder().unResponseiveMock()
     var RamCacheObj : RamCacheProtocol = RamCacheBuilder().unResponsiveMock()
     
-    
+    public init() {
+    }
     
     enum ReturnResponse {
         case success(image:UIImage?)
@@ -24,7 +25,7 @@ class ImageLoaderBuilder  {
     }
     
     
-    func concrete(ramMaxItemsCount:Int) -> ImageLoader {
+    public func concrete(ramMaxItemsCount:Int) -> ImageLoaderProtocol {
         let serverLoader = ImageLoader(diskCache: DiskCacheBuilder().concrete(), ramCache: RamCacheBuilder().concrete(maxItemsCount: ramMaxItemsCount))
         return serverLoader
     }

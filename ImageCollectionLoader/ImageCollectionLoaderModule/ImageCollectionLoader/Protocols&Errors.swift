@@ -109,7 +109,7 @@ internal  protocol DiskCacheFileSystemProtocol {
 
 
 /// # A ram cache where images that were fetched recently wether from the locacl cache of the network will be stored , it will be faster than fetching them from the filesystem
-internal protocol RamCacheProtocol {
+public protocol RamCacheProtocol {
     /// check for an image that corresponds the passed url in the ram cache
     /// this is a step before hitting the disk cache with a request
     func getImageFor(url:String,result :  @escaping  (UIImage?)->()) -> Void
@@ -123,7 +123,7 @@ internal protocol RamCacheProtocol {
  #  - This type is a facade over the database and the fileSystem
  #  - Remark : the database is used as a mid step as the file system look ups are slow and to perform queries such as deleting images that were saved after a certain url
  */
-internal protocol DiskCacheProtocol {
+public protocol DiskCacheProtocol {
      /// - searches the database for the file system name corresponding to the requested url and if found, queries the file system with the name
     func getImageFor(url:String,completion: @escaping (_ image : UIImage?)->()) -> Void
     
@@ -172,7 +172,7 @@ internal protocol DiskCacheDataBaseProtocol {
 /**
  hold a refrence to a ram cache and a disk cache
  */
-public protocol ImageLoaderObj {
+public protocol ImageLoaderProtocol {
     /// looks in the ram cache for the image
     func queryRamCacheFor(url:String,result : @escaping (_ : UIImage?)->()) -> Void
     

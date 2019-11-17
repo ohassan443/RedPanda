@@ -11,7 +11,7 @@ import UIKit
 
 
 
-class ImageLoaderMock: ImageLoaderObj {
+class ImageLoaderMock: ImageLoaderProtocol {
   
     
  

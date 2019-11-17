@@ -41,7 +41,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
     
     
     /// image loader -> has ram cache and disk cache and can load data from server if both return nil
-    private var imageLoader : ImageLoaderObj
+    private var imageLoader : ImageLoaderProtocol
     
     /// monitors reachability changes (Wifi / cellular / none)
     private var reachability : ReachabilityMonitorProtocol
@@ -54,7 +54,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
    
     
     /// init
-    init(imageLoader:ImageLoaderObj, reachability:ReachabilityMonitorProtocol,connectivityChecker:InternetCheckerProtocol) {
+    init(imageLoader:ImageLoaderProtocol, reachability:ReachabilityMonitorProtocol,connectivityChecker:InternetCheckerProtocol) {
         self.imageLoader = imageLoader
         self.reachability = reachability
         self.connectivityChecker = connectivityChecker

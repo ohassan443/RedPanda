@@ -25,6 +25,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        let x = ImageLoaderBuilder().concrete(ramMaxItemsCount: 30)
+         DiskCacheBuilder().concrete().cache(image: UIImage(), url: "asda", completion: {
+            result in 
+        })
+        RamCacheBuilder().concrete(maxItemsCount: 20)
         
         //
         //        var dict = Dictionary<String, Any>()

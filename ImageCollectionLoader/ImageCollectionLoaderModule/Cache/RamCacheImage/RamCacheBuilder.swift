@@ -7,10 +7,13 @@
 //
 
 import Foundation
-class RamCacheBuilder  {
+public class RamCacheBuilder  {
     private var imageSet = SyncedAccessHashableCollection<ImageUrlWrapper>(array: [])
     
-    func concrete(maxItemsCount:Int) -> RamCache {
+    
+    public init() {
+    }
+    public func concrete(maxItemsCount:Int) -> RamCacheProtocol {
         return RamCache(maxItemsCount: maxItemsCount)
     }
     

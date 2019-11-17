@@ -9,11 +9,13 @@
 import Foundation
 
 
-class DiskCacheBuilder {
+public class DiskCacheBuilder {
     var cachedImages : Set<ImageUrlWrapper> = []
     var fileSystemMock : DiskCacheFileSystemProtocol = DiskCacheFileSystemBuilder().mock()
     
-    func concrete() -> DiskCacheImage {
+    
+    public init(){}
+    public func concrete() -> DiskCacheProtocol {
         
         let database = DiskCacheDataBaseBuilder().concrete()
         let realCache = DiskCacheImage(DisckCacheImageDatabase: database, fileSystemImacheCache: DiskCacheFileSystemBuilder().concrete())

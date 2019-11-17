@@ -8,7 +8,7 @@
 
 import Foundation
 public class ImageCollectionLoaderBuilder {
-    var imageLoader : ImageLoaderObj = ImageLoaderBuilder().defaultErrorMock()
+    var imageLoader : ImageLoaderProtocol = ImageLoaderBuilder().defaultErrorMock()
     var internetChecker : InternetCheckerProtocol = InternetConnectivityCheckerBuilder().Mock()
     var reachability : ReachabilityMonitorProtocol = ReachabailityMonitorMock(conncection: .none)
     
@@ -44,7 +44,7 @@ public class ImageCollectionLoaderBuilder {
     
     
     
-    func with(imageLoader:ImageLoaderObj) -> ImageCollectionLoaderBuilder {
+    func with(imageLoader:ImageLoaderProtocol) -> ImageCollectionLoaderBuilder {
         self.imageLoader = imageLoader
         return self
     }
