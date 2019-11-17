@@ -3,12 +3,12 @@ Pod::Spec.new do |s|
 ## 1
 s.platform = :ios
 s.ios.deployment_target = '12.0'
-s.name = "ImageCollectionLoader"
-s.summary = "like loades images"
+s.name = "RedPanda"
+s.summary = "Image loading and caching library"
 s.requires_arc = true
 
 # 2
-s.version = "0.1.13"
+s.version = "0.1.14"
 
 s.summary = <<-DESC 
 description
@@ -22,10 +22,10 @@ s.license = { :type => "MIT", :file => "LICENSE" }
 s.author = { "omar hassan" => "ohassan443@gmail.com" }
 
 # 5 - Replace this URL with your own GitHub page's URL (from the address bar)
-s.homepage = "https://github.com/ohassan443/ImageCollectionLoader"
+s.homepage = "https://github.com/ohassan443/RedPanda"
 
 # 6 - Replace this URL with your own Git URL from "Quick Setup"
-s.source = { :git => "https://github.com/ohassan443/ImageCollectionLoader.git", 
+s.source = { :git => "https://github.com/ohassan443/RedPanda.git", 
              :tag => "#{s.version}" }
 
 # 7
