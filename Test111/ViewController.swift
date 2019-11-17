@@ -31,44 +31,7 @@ class ViewController: UIViewController {
         })
         RamCacheBuilder().concrete(maxItemsCount: 20)
         
-        //
-        //        var dict = Dictionary<String, Any>()
-        //
-        //        dict["username"] = "ohassan@noor.net"
-        //        dict["password"] = "qwerty"
-        //        dict["grant_type"] = "password"
-        //        let body = try! JSONSerialization.data(withJSONObject: dict, options: [])
-        //
-        //
-        //
-        //        var request = URLRequest(url: URL(string: "http://[::1]:8080/token")! as URL)
-        //        request.httpBody = body
-        //        request.httpMethod = "POST"
-        //        request.addValue("application/json",forHTTPHeaderField: "Content-Type")
-        //        request.addValue("application/json",forHTTPHeaderField: "Accept")
-        //
-        //        let firstConfig = URLSessionConfiguration.default
-        //        firstConfig.timeoutIntervalForRequest = 30
-        //        firstConfig.httpAdditionalHeaders = ["Authorization" : "Basic aW9zYXBwOmlvc2FwcF9wYXNzMTIzIQ=="]
-        //        session = URLSession(configuration: firstConfig)
-        //
-        //        session!.dataTask(with: request){data,response,error in
-        //            if let error = error {
-        //                print(error)
-        //            }
-        //        }.resume()
-        
-         let data = UIImage(named: "testImage1")!.pngData()
-        var variableResponse = LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: data)
-        let response : LocalServer.wrappedResponse = {
-            params,callBack in
-            
-            
-               
-                    callBack(variableResponse)
-        }
-        
-        server = LocalServer.getInstance(response: response)
+      
         
         
         let tvs = [tv1]
@@ -89,8 +52,6 @@ class ViewController: UIViewController {
            // dataSource.append(getTempAmazonUrlfrom(url: "\(i)"))
         }
     }
-    
-    
 }
 
 extension ViewController: UITableViewDelegate,UITableViewDataSource {

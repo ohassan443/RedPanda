@@ -84,25 +84,14 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
         ,successHandler:@escaping (_ image:UIImage,_ indexPath:IndexPath,_ requestDate:Date)->()
         ,failedHandler: ((_ failedRequest:imageRequest?,_ image:UIImage?,_ requestState:imageRequest.RequestState.AsynchronousCallBack)->())? = nil )-> Void{
         
-
+        
+        
+        
         self.imageLoader.queryRamCacheFor(url: url, result: { ramImage in
-                                      if let ramImage = ramImage {
-                                          runAtMainAsync{ successHandler(ramImage,indexPath,requestDate)}
-                                          return
-            } })
-        
-        
-        let request = createRequest(requestDate: requestDate, url: url, indexPath: indexPath, tag: tag, successHandler: successHandler,failedHandler: failedHandler)
-        
-          
-        self.preProcessingRequests.syncedInsert(element: request, completion: {
-            inserted in
-            guard inserted else {
-                runAtMainAsync { failedHandler?(nil, self.invalidRequestImage, .currentlyLoading) }
+            if let ramImage = ramImage {
+                runAtMainAsync{ successHandler(ramImage,indexPath,requestDate)}
                 return
             }
-            
-            
             
             
             self.requestsQueue.async { [weak self] in
@@ -111,49 +100,58 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
                 
                 
                 
-                /// check wether there is a request that is currently being processed with the same url & indexPath & tag
-                /// to avoid false negatives here , change the tag to create another request with the same indexpath and url
-                self.processingRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag, result: {
-                    currentlyLoadingRequest in
-                    
-                    switch currentlyLoadingRequest {
-                    case _ where currentlyLoadingRequest != nil && currentlyLoadingRequest!.currentlyLoading == true :
+                let request = self.createRequest(requestDate: requestDate, url: url, indexPath: indexPath, tag: tag, successHandler: successHandler,failedHandler: failedHandler)
+                
+                
+                self.preProcessingRequests.syncedInsert(element: request, completion: {
+                    inserted in
+                    guard inserted else {
                         runAtMainAsync { failedHandler?(nil, self.invalidRequestImage, .currentlyLoading) }
                         return
-                        
-                    default :
-                        
-                          
-                                
-                                /// check that url does not refer to corrupt or expired or removed image
-                                self.invalidRequests.syncCheckContaines(elementHashValue: url.hashValue, result: {
-                                    invalid in
-                                    
-                                    guard !invalid else {
-                                        runAtMainAsync{ failedHandler?(nil, self.invalidRequestImage, .invalid)}
-                                        return
-                                    }
-                                    
-                                    /// if this call was made earlier and failed due to network or internet error then remove if from the 'failed requests list' and execute it now
-                                    /// the requests in the failed requests list will be retried when the ( network connection / internet ) returns
-                                    self.networkFailedRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag, result: {
-                                        failedRequest in
-                                        if let failedRequest = failedRequest {
-                                            self.networkFailedRequests.syncedRemove(element: failedRequest, completion: {
-                                                self.addToProcessingRequests(request: request, failHandler: failedHandler)
-                                            })
-                                        }else {
-                                            self.addToProcessingRequests(request: request, failHandler: failedHandler)
-                                        }
-                                    })
-                                })
                     }
+                    
+                    /// check wether there is a request that is currently being processed with the same url & indexPath & tag
+                    /// to avoid false negatives here , change the tag to create another request with the same indexpath and url
+                    self.processingRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag, result: {
+                        currentlyLoadingRequest in
+                        
+                        switch currentlyLoadingRequest {
+                        case _ where currentlyLoadingRequest != nil && currentlyLoadingRequest!.currentlyLoading == true :
+                            runAtMainAsync { failedHandler?(nil, self.invalidRequestImage, .currentlyLoading) }
+                            return
+                            
+                        default :
+                            
+                            
+                            
+                            /// check that url does not refer to corrupt or expired or removed image
+                            self.invalidRequests.syncCheckContaines(elementHashValue: url.hashValue, result: {
+                                invalid in
+                                
+                                guard !invalid else {
+                                    runAtMainAsync{ failedHandler?(nil, self.invalidRequestImage, .invalid)}
+                                    return
+                                }
+                                
+                                /// if this call was made earlier and failed due to network or internet error then remove if from the 'failed requests list' and execute it now
+                                /// the requests in the failed requests list will be retried when the ( network connection / internet ) returns
+                                self.networkFailedRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag, result: {
+                                    failedRequest in
+                                    if let failedRequest = failedRequest {
+                                        self.networkFailedRequests.syncedRemove(element: failedRequest, completion: {
+                                            self.addToProcessingRequests(request: request, failHandler: failedHandler)
+                                        })
+                                    }else {
+                                        self.addToProcessingRequests(request: request, failHandler: failedHandler)
+                                    }
+                                })
+                            })
+                        }
+                    })
                 })
             }
-            
         })
-        
-   }
+    }
     
     
     private func createRequest(requestDate : Date
