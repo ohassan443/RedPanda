@@ -82,51 +82,56 @@ class LocalServer {
         }
     }
     typealias wrappedResponse  =  ( (   requestParams, @escaping (LocalServerCallBack) -> Void ) -> Void )
-    static func getInstance (response :  @escaping wrappedResponse)-> HTTPServer{
+    static func getInstance (response :  @escaping wrappedResponse)-> HTTPServer?{
         
         
-        
-        
-        let loop = try! SelectorEventLoop(selector: try! KqueueSelector())
-        let server = DefaultHTTPServer(eventLoop: loop, port: 8080){
-            (
-            environ: [String: Any],
-            startResponse: @escaping ((String, [(String, String)]) -> Void),
-            sendBody: @escaping ((Data) -> Void)
-            ) in
-            // Start HTTP response
+        do{
             
-            let path = environ["PATH_INFO"]! as! String
-            let queryStrings = environ["QUERY_STRING"] as? String
-            
-            
-            let params = requestParams(path,queryStrings,nil)
-            let startResponseMapper : (LocalServerCallBack) -> Void = {
-                arg in
-                
-                if arg.stautsCode == LocalServer.statusCode.redirectToServer{
-                    return
-                }
-                
-                
-                
-                startResponse(arg.stautsCode.rawValue,arg.headers)
-                if let data = arg.body {
-                    sendBody(data)
-                }
-                sendBody(Data())
-            }
-            response(params,startResponseMapper)
+                 
+                 let loop = try SelectorEventLoop(selector: try KqueueSelector())
+                 let server = DefaultHTTPServer(eventLoop: loop, port: 8080){
+                     (
+                     environ: [String: Any],
+                     startResponse: @escaping ((String, [(String, String)]) -> Void),
+                     sendBody: @escaping ((Data) -> Void)
+                     ) in
+                     // Start HTTP response
+                     
+                     let path = environ["PATH_INFO"]! as! String
+                     let queryStrings = environ["QUERY_STRING"] as? String
+                     
+                     
+                     let params = requestParams(path,queryStrings,nil)
+                     let startResponseMapper : (LocalServerCallBack) -> Void = {
+                         arg in
+                         
+                         if arg.stautsCode == LocalServer.statusCode.redirectToServer{
+                             return
+                         }
+                         
+                         
+                         
+                         startResponse(arg.stautsCode.rawValue,arg.headers)
+                         if let data = arg.body {
+                             sendBody(data)
+                         }
+                         sendBody(Data())
+                     }
+                     response(params,startResponseMapper)
+                 }
+                 
+                 
+                 try server.start()
+                 
+                 DispatchQueue.global().async {
+                     loop.runForever()
+                 }
+                 
+                 return server
+        }catch {
+            print("failed to start local server \(error)")
         }
-        
-        
-        try! server.start()
-        
-        DispatchQueue.global().async {
-            loop.runForever()
-        }
-        
-        return server
+        return nil
     }
     
     

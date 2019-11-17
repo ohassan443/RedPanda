@@ -25,16 +25,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let x = ImageLoaderBuilder().concrete(ramMaxItemsCount: 30)
-         DiskCacheBuilder().concrete().cache(image: UIImage(), url: "asda", completion: {
-            result in 
-        })
-        RamCacheBuilder().concrete(maxItemsCount: 20)
-        
-      
-        
-        
-        let tvs = [tv1]
+ let tvs = [tv1]
         tvs.forEach({
             $0?.delegate = self
             $0?.dataSource = self
@@ -59,9 +50,7 @@ extension ViewController: UITableViewDelegate,UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! cell
         let element = dataSource[indexPath.row]
         
-//        if let card = imageCollectionLoader.cacheQueryState(url: element).image{
-//           cell.iv.image = card
-//        }else {
+
          let x = indexPath
             imageCollectionLoader.requestImage(requestDate: Date(), url: element, indexPath: indexPath, tag: "card", successHandler: {
                 image , index , date in
@@ -72,7 +61,7 @@ extension ViewController: UITableViewDelegate,UITableViewDataSource {
                
                 self.failed.append(x.row)
             })
-        ///}
+     
         
         
         return cell

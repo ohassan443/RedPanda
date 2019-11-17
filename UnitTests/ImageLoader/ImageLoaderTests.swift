@@ -27,6 +27,7 @@ class ImageLoaderTests: XCTestCase {
             expCalledLocalServer.fulfill()
         }
         
+        guard server != nil else {XCTFail("failed to start local server"); return}
         
         /// create ram and disk caches that always return nil
         let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
@@ -53,7 +54,7 @@ class ImageLoaderTests: XCTestCase {
         
         waitForExpectations(timeout: 2, handler: nil)
         addTeardownBlock {
-            server.stop()
+            server?.stop()
         }
     }
     
@@ -112,7 +113,7 @@ class ImageLoaderTests: XCTestCase {
         let server = LocalServer.getInstance { (params, callBack) in
             callBack(localServerCallBack)
         }
-        
+        guard server != nil else {XCTFail("failed to start local server"); return}
         
         let emptyDiskCache = DiskCacheBuilder().unResponseiveMock()
         
@@ -167,7 +168,7 @@ class ImageLoaderTests: XCTestCase {
         
         waitForExpectations(timeout: 2, handler: nil)
         addTeardownBlock {
-            server.stop()
+            server?.stop()
         }
     }
     

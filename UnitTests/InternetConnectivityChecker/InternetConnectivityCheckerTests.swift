@@ -26,6 +26,8 @@ class InternetConnectivityCheckerTests: XCTestCase {
         }
         let server = LocalServer.getInstance(response: response)
         
+        guard server != nil else {XCTFail("failed to start local server") ; return}
+        
         let internetChecker = InternetConnectivityCheckerBuilder().concrete(url: UITestsConstants.baseUrl)
         locaclServerChangingResponse = LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: Data())
         
@@ -51,7 +53,7 @@ class InternetConnectivityCheckerTests: XCTestCase {
         wait(for: [expFail], timeout: 10)
         
         addTeardownBlock {
-            server.stop()
+            server?.stop()
         }
     }
 }
