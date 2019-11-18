@@ -15,6 +15,8 @@ public class ImageLoaderBuilder  {
     var delay : TimeInterval = 0
     var diskCache : DiskCacheProtocol = DiskCacheBuilder().unResponseiveMock()
     var RamCacheObj : RamCacheProtocol = RamCacheBuilder().unResponsiveMock()
+    var urlSession : UrlSessionWrapperProtocol = UrlSessionWrapperMock(placeHolderCallBack: {_ in  print("default url session called in imageLoader builder")  })
+    
     
     public init() {
     }
@@ -26,7 +28,7 @@ public class ImageLoaderBuilder  {
     
     
     public func concrete(ramMaxItemsCount:Int) -> ImageLoaderProtocol {
-        let serverLoader = ImageLoader(diskCache: DiskCacheBuilder().concrete(), ramCache: RamCacheBuilder().concrete(maxItemsCount: ramMaxItemsCount))
+        let serverLoader = ImageLoader(diskCache: DiskCacheBuilder().concrete(), ramCache: RamCacheBuilder().concrete(maxItemsCount: ramMaxItemsCount), urlSession: UrlSessionWrapper())
         return serverLoader
     }
     
@@ -34,7 +36,7 @@ public class ImageLoaderBuilder  {
      this loader will use the disk and ram cache provided in the builder,but will  use the network to request the image from the internet if not found in the provided caches
      */
     func customConcrete() -> ImageLoader {
-        return ImageLoader(diskCache: self.diskCache, ramCache: self.RamCacheObj)
+        return ImageLoader(diskCache: self.diskCache, ramCache: self.RamCacheObj, urlSession: urlSession)
     }
     
     /**
@@ -64,6 +66,10 @@ public class ImageLoaderBuilder  {
     }
     func with(diskCache:DiskCacheProtocol) -> ImageLoaderBuilder {
         self.diskCache = diskCache
+        return self
+    }
+    func with(urlSession:UrlSessionWrapperProtocol) -> ImageLoaderBuilder {
+        self.urlSession = urlSession
         return self
     }
 }

@@ -37,12 +37,10 @@ class RamCache: RamCacheProtocol {
       }
     
     func cache(image: UIImage, url: String, result:  @escaping  (Bool) -> ()) {
-        if ram.getValues().count >= maxCount  {
-            freeRam()
-        }
+        
         let queryUrl = PersistentUrl.amazonCheck(url: url)
         let objToCache = ImageUrlWrapper(url: queryUrl, image: image)
-        ram.syncedInsert(element: objToCache, completion:{_ in 
+        self.ram.syncedInsert(element: objToCache, maxCountRefresh : maxCount,completion:{_ in
             result(true)
         })
         
@@ -50,7 +48,7 @@ class RamCache: RamCacheProtocol {
     
     /// clear images in ram
      @objc private func freeRam() -> Void {
-        ram.refresh()
+        ram.refreshAnDiscardQueueUpdates()
     }
     
   

@@ -203,6 +203,11 @@ internal protocol InternetCheckerProtocol {
 }
 
 
+protocol UrlSessionWrapperProtocol {
+      func dataTask(withUrl:String,completionHandler : @escaping (Data?,URLResponse?,Error?)->()) -> URLSessionDataTask?
+}
+
+
 ///
 public enum imageLoadingError: Error {
     /// failed to parse server data as image

@@ -21,13 +21,13 @@ class DiskCacheImageMock: DiskCacheProtocol {
     }
     
     
-    private var list : Set<ImageUrlWrapper> = []
+    private var list = SyncedAccessHashableCollection<ImageUrlWrapper>(array: [])
     private var storePolicy: StorePolicy
     private var queryPolicy : QueryPolicy
     
   
     
-    init(cachedImages: Set<ImageUrlWrapper>,storePolicy:StorePolicy,queryPolicy:QueryPolicy) {
+    init(cachedImages: SyncedAccessHashableCollection<ImageUrlWrapper>,storePolicy:StorePolicy,queryPolicy:QueryPolicy) {
         self.list = cachedImages
         self.storePolicy = storePolicy
         self.queryPolicy = queryPolicy
@@ -46,7 +46,7 @@ class DiskCacheImageMock: DiskCacheProtocol {
     
     
     /// fetch and image from the mock list if avaliable depending on the query policy
-    func getImageFor(url: String, completion: (UIImage?) -> ()) {
+    func getImageFor(url: String, completion: @escaping (UIImage?) -> ()) {
      
         switch queryPolicy {
             
@@ -55,8 +55,9 @@ class DiskCacheImageMock: DiskCacheProtocol {
             return
             
         case .checkInSet :
-            let element = ImageUrlWrapper.setContaints(set: list, url: url)
-            completion(element?.image)
+            list.syncedRead(targetElementHashValue: url.hashValue, result: {
+                completion($0?.image)
+            })
         }
  }
     
@@ -64,7 +65,7 @@ class DiskCacheImageMock: DiskCacheProtocol {
     
     
     /// cache and image & url to the mock list depending on the store policy
-    func cache(image: UIImage, url: String, completion: (Bool) -> ()) {
+    func cache(image: UIImage, url: String, completion: @escaping (Bool) -> ()) {
         
         switch storePolicy{
             
@@ -73,45 +74,61 @@ class DiskCacheImageMock: DiskCacheProtocol {
             return
             
         case .store:
-            let insertResult = list.insert(ImageUrlWrapper(url: url, image: image))
-            completion( insertResult.inserted)
-            
+            list.syncedInsert(element: ImageUrlWrapper(url: url, image: image), completion: {
+                result in
+                switch result {
+                case .success:
+                    completion(true)
+                case .fail(currentElement: _) :
+                    completion(false)
+                }
+            })
         }
      }
     
     
     
     /// delete specific url from the list if found
-    func delete(url: String, completion: (Bool) -> ()) {
-        guard let element = ImageUrlWrapper.setContaints(set: list, url: url)else {
-            completion(false)
-            return
-        }
-        list.remove(element)
-        completion(true)
+    func delete(url: String, completion: @escaping (Bool) -> ()) {
+        list.syncedRead(targetElementHashValue: url.hashValue, result: {
+            foundElement in
+            guard foundElement != nil else {
+                completion(false)
+                           return
+            }
+            self.list.syncedRemove(element: ImageUrlWrapper(url: url), completion: {
+                completion(true)
+            })
+            
+        })
     }
     
     /**
      delete all images
      */
     func deleteAll() -> Bool {
-        list.removeAll()
+        list.refreshAnDiscardQueueUpdates()
         return true
     }
     /**
         delete images that were last accessed before  a certain data
         */
     func deleteWith(minLastAccessDate: Date, completion: @escaping (Bool) -> ()) {
-        let urlsToDelete = list.filter(){
-            return $0.getLastAccessDate() < minLastAccessDate
+        
+        let urlsToDelete = list.getValues().filter(){ key,value in
+            return value.getLastAccessDate() < minLastAccessDate
         }
         
+        var deletedCount = 0
         for element in urlsToDelete{
-            list.remove(element)
+            list.syncedRemove(element: element.value, completion: {
+                deletedCount = deletedCount + 1
+                if deletedCount == urlsToDelete.count - 1 {
+                     completion(true)
+                }
+            })
         }
-        
-        completion(true)
-    }
+          }
     
  
  }

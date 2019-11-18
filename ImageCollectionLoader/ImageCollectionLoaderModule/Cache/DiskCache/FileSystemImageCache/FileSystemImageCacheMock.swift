@@ -15,11 +15,11 @@ import UIKit
 class FileSystemImageCacheMock: DiskCacheFileSystemProtocol {
    
     
-    var cachedImages : Set<ImageUrlWrapper> = []
+    var cachedImages = SyncedAccessHashableCollection<ImageUrlWrapper>(array: [])
     var delay : TimeInterval
     
     
-    init(cachedImages : Set<ImageUrlWrapper> ,responseDelay : TimeInterval) {
+    init(cachedImages : SyncedAccessHashableCollection<ImageUrlWrapper> ,responseDelay : TimeInterval) {
         self.cachedImages = cachedImages
         self.delay = responseDelay
     }
@@ -29,8 +29,14 @@ class FileSystemImageCacheMock: DiskCacheFileSystemProtocol {
             
             guard let mock = self else {return}
             let newMember = ImageUrlWrapper(url: url, image: image)
-            let inserted = mock.cachedImages.insert(newMember)
-            completion(inserted.inserted)
+            mock.cachedImages.syncedInsert(element: newMember, completion: {result in
+                switch result {
+                case .success:
+                    completion(true)
+                case .fail(currentElement: _) :
+                    completion(false)
+                }
+            })
         })
     }
     
@@ -45,10 +51,9 @@ class FileSystemImageCacheMock: DiskCacheFileSystemProtocol {
             
             guard let mock = self else {return}
             
-            let result = mock.cachedImages.filter(){
-                return $0.url == url
-                }.first
-            completion(result?.image)
+            mock.cachedImages.syncedRead(targetElementHashValue: url.hashValue, result: {
+                completion($0?.image)
+            })
         })
     }
     
@@ -60,8 +65,9 @@ class FileSystemImageCacheMock: DiskCacheFileSystemProtocol {
             
             guard let mock = self else {return}
             
-            mock.cachedImages.remove(ImageUrlWrapper(url: url))
-            completion(true) // completes with true wether the url was in set or not as it is deleted any way
+            mock.cachedImages.syncedRemove(element: ImageUrlWrapper(url: url), completion: {
+                 completion(true) // completes with true wether the url was in set or not as it is deleted any way
+            })
         })
     }
     
@@ -69,10 +75,16 @@ class FileSystemImageCacheMock: DiskCacheFileSystemProtocol {
     func deleteFilesWith(urls: [String], completion: @escaping (Bool) -> ()) {
         fileSystemQueue.asyncAfter(deadline: .now() + delay, execute: {
             
+            var deletedCount = 0
             urls.forEach(){
-                self.cachedImages.remove(ImageUrlWrapper(url: $0))
+                self.cachedImages.syncedRemove(element: ImageUrlWrapper(url: $0), completion: {
+                     deletedCount = deletedCount + 1
+                    if deletedCount == urls.count - 1 {
+                          completion(true) // completes with true wether the urls were in set or not as it is deleted any way
+                    }
+                })
             }
-            completion(true) // completes with true wether the urls were in set or not as it is deleted any way
+          
         })
     }
     
@@ -81,7 +93,7 @@ class FileSystemImageCacheMock: DiskCacheFileSystemProtocol {
     
     
     func deleteAll() -> Bool {
-        cachedImages.removeAll()
+        cachedImages.refreshAnDiscardQueueUpdates()
         return true
     }
     

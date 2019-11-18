@@ -14,12 +14,14 @@ class ImageLoader : ImageLoaderProtocol{
  
     
     
-    private var  diskCache: DiskCacheProtocol
+    private var diskCache: DiskCacheProtocol
     private var ramCache: RamCacheProtocol
+    private let session : UrlSessionWrapperProtocol
     
-    init(diskCache:DiskCacheProtocol,ramCache:RamCacheProtocol) {
+    init(diskCache:DiskCacheProtocol,ramCache:RamCacheProtocol,urlSession:UrlSessionWrapperProtocol) {
         self.ramCache = ramCache
         self.diskCache = diskCache
+        self.session = urlSession
     }
     
     
@@ -40,14 +42,9 @@ class ImageLoader : ImageLoaderProtocol{
      */
     func getImageFrom(urlString:String, completion:  @escaping (_ : UIImage)-> (),fail : @escaping (_ url:String,_ error:Error)-> ()) -> Void {
         
-        
-        DispatchQueue.global().async {
-            [weak self] in
-            guard let imageLoader = self else {return}
-            
-            
-            imageLoader.ramCache.getImageFor(url: urlString, result: {
+        ramCache.getImageFor(url: urlString, result: {[weak self]
                 ramImage in
+                guard let self = self else {return}
                 if let image = ramImage {
                     DispatchQueue.main.async {
                         completion(image)
@@ -55,22 +52,21 @@ class ImageLoader : ImageLoaderProtocol{
                     return
                 }
                 
-                imageLoader.diskCache.getImageFor(url: urlString, completion: {
+            self.diskCache.getImageFor(url: urlString, completion: {[weak self]
                     diskCacheImage in
-                    
+                    guard let self = self else {return}
                     if let image = diskCacheImage {
-                        let _ = imageLoader.cacheToRam(image: image, url: urlString)
+                        let _ = self.cacheToRam(image: image, url: urlString)
                         DispatchQueue.main.async {
                             completion(image)
                         }
                         return
                     }
                     
-                    imageLoader.loadFromServer(urlString: urlString, completion: completion, fail: fail)
+                    self.loadFromServer(urlString: urlString, completion: completion, fail: fail)
                 })
                 
             })
-        }
     }
     
     
@@ -78,11 +74,7 @@ class ImageLoader : ImageLoaderProtocol{
     
     private func loadFromServer(urlString:String, completion:  @escaping (_ : UIImage)-> (),fail : @escaping (_ url:String,_ error:Error)-> ()) -> Void {
         
-        guard let url = URL(string: urlString) else{return}
-        DispatchQueue.global().async {
-            let session = imageLoaderUrlSession.getSession()
-            
-            session.dataTask(with: url, completionHandler: { [weak self](data, response, error) -> Void in
+        self.session.dataTask(withUrl: urlString, completionHandler: { [weak self](data, response, error) -> Void in
                 guard let self = self else {return}
              
                     guard error == nil  else {
@@ -107,11 +99,11 @@ class ImageLoader : ImageLoaderProtocol{
                     completion(resultImage)
                 }
                 
-            }).resume()
+            })?.resume()
             
         }
         
-    }
+    
     
     
 }

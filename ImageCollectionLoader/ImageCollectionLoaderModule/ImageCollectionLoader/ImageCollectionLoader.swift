@@ -51,7 +51,13 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
         
     private var requestsQueue = DispatchQueue(label: "queuex", qos: .userInteractive,attributes: .concurrent, autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.workItem, target: DispatchQueue.global(qos: .userInteractive))
     
-   
+    private var checkingInternet = false
+    private let internetCheckingLock = DispatchSemaphore(value: 1)
+    
+    
+    private var retryingFailedRequests = false
+    private let retryingFailedRequestsLock = DispatchSemaphore(value: 1)
+    
     
     /// init
     init(imageLoader:ImageLoaderProtocol, reachability:ReachabilityMonitorProtocol,connectivityChecker:InternetCheckerProtocol) {
@@ -103,51 +109,47 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
                 let request = self.createRequest(requestDate: requestDate, url: url, indexPath: indexPath, tag: tag, successHandler: successHandler,failedHandler: failedHandler)
                 
                 
-                self.preProcessingRequests.syncedInsert(element: request, completion: {
+          
+                self.processingRequests.syncedInsert(element: request, completion: {
                     inserted in
-                    guard inserted else {
+                    switch inserted {
+                    case .fail(currentElement: let element) :
+//                        guard element.currentlyLoading else {
+//                            print("should not enter here")
+//                            return
+//                        }
                         runAtMainAsync { failedHandler?(nil, self.invalidRequestImage, .currentlyLoading) }
                         return
-                    }
-                    
-                    /// check wether there is a request that is currently being processed with the same url & indexPath & tag
-                    /// to avoid false negatives here , change the tag to create another request with the same indexpath and url
-                    self.processingRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag, result: {
-                        currentlyLoadingRequest in
                         
-                        switch currentlyLoadingRequest {
-                        case _ where currentlyLoadingRequest != nil && currentlyLoadingRequest!.currentlyLoading == true :
-                            runAtMainAsync { failedHandler?(nil, self.invalidRequestImage, .currentlyLoading) }
-                            return
+                    
+                    case .success :
+                        /// check that url does not refer to corrupt or expired or removed image
+                        self.invalidRequests.syncCheckContaines(elementHashValue: url.hashValue, result: {
+                            invalid in
                             
-                        default :
+                            guard !invalid else {
+                                runAtMainAsync{ failedHandler?(nil, self.invalidRequestImage, .invalid)}
+                                return
+                            }
                             
-                            
-                            
-                            /// check that url does not refer to corrupt or expired or removed image
-                            self.invalidRequests.syncCheckContaines(elementHashValue: url.hashValue, result: {
-                                invalid in
-                                
-                                guard !invalid else {
-                                    runAtMainAsync{ failedHandler?(nil, self.invalidRequestImage, .invalid)}
-                                    return
-                                }
-                                
-                                /// if this call was made earlier and failed due to network or internet error then remove if from the 'failed requests list' and execute it now
-                                /// the requests in the failed requests list will be retried when the ( network connection / internet ) returns
-                                self.networkFailedRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag, result: {
-                                    failedRequest in
-                                    if let failedRequest = failedRequest {
-                                        self.networkFailedRequests.syncedRemove(element: failedRequest, completion: {
-                                            self.addToProcessingRequests(request: request, failHandler: failedHandler)
+                            /// if this call was made earlier and failed due to network or internet error then remove if from the 'failed requests list' and execute it now
+                            /// the requests in the failed requests list will be retried when the ( network connection / internet ) returns
+                            self.networkFailedRequests.specialSyncedRead(url: url, indexPath: indexPath, tag: tag, result: {
+                                failedRequest in
+                                if let failedRequest = failedRequest {
+                                    self.networkFailedRequests.syncedRemove(element: failedRequest, completion: {
+                                        self.execute(request: request, alreadyExecutingHandler: {
+                                          failedHandler?(request, nil, .currentlyLoading)
                                         })
-                                    }else {
-                                        self.addToProcessingRequests(request: request, failHandler: failedHandler)
-                                    }
-                                })
+                                    })
+                                }else{
+                                     self.execute(request: request, alreadyExecutingHandler: {
+                                       failedHandler?(request, nil, .currentlyLoading)
+                                     })
+                                }
                             })
-                        }
-                    })
+                        })
+                    }
                 })
             }
         })
@@ -201,43 +203,6 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
     
     
     
-    
-    /// add the request to currently processing requests
-    private func addToProcessingRequests(request: imageRequest
-        ,failHandler:((_ failedRequest:imageRequest?,_ image:UIImage?,_ requestState:imageRequest.RequestState.AsynchronousCallBack)->())? = nil)-> Void{
-          preProcessingRequests.syncedRemove(element: request, completion: {
-        var newRequest = request
-        newRequest.reset()
-        newRequest.setLoading()
-        
-        /// check wether it is an old or a new request that is not currently processing
-            self.processingRequests.syncedRead(targetElementHashValue: newRequest.hashValue, result: {
-            processingRequest in
-            
-            guard let processingRequest = processingRequest else {
-                // in case it does not exist then insert it
-                self.processingRequests.syncedInsert(element: newRequest, completion: {_ in 
-                    self.execute(request: request, alreadyExecutingHandler: {
-                        failHandler?(request,nil,.currentlyLoading)
-                    })
-                })
-                
-                return
-            }
-            
-            /// if its an old request with the same (indexpath & tag & url ) then update it
-            guard processingRequest.date != request.date else {return}
-            self.processingRequests.syncedUpdate(element: newRequest, completion: {
-                self.execute(request: request, alreadyExecutingHandler: {
-                    failHandler?(request,nil,.currentlyLoading)
-                })
-            })
-        })
-        })
-        
-    }
-    
-    
     /// execute request
     fileprivate func execute(request:imageRequest,alreadyExecutingHandler : @escaping ()->()) -> Void {
             var req = request
@@ -283,24 +248,31 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
     
     
     @objc private func retryFailedRequests()->Void{
+        retryingFailedRequestsLock.wait()
+        guard retryingFailedRequests == false else {
+            retryingFailedRequestsLock.signal()
+            return}
+        retryingFailedRequests = true
+        retryingFailedRequestsLock.signal()
         networkFailedRequests.syncCheckEmpty(result: {[weak self]
             empty in
-            guard let strongSelf = self else {return}
+            guard let self = self else {return}
             guard empty == false else{
-                strongSelf.timer?.invalidate()
+                self.timer?.invalidate()
+                self.retryingFailedRequests = false
                 return
             }
            
-            let requestsToTry = strongSelf.networkFailedRequests.getValues()
-             strongSelf.networkFailedRequests.refresh()
-            strongSelf.networkFailedRequests =  SyncedAccessHashableCollection<imageRequest>.init(array: [])
+            let requestsToTry = self.networkFailedRequests.getValues()
+//             self.networkFailedRequests.refresh()
+//            self.networkFailedRequests =  SyncedAccessHashableCollection<imageRequest>.init(array: [])
             
-            
-            requestsToTry.forEach(){
-                pair in
+            self.retryingFailedRequests = false
+            requestsToTry.enumerated().forEach(){
+                index,pair in
                 let request = pair.value
-                strongSelf.processingRequests.syncedInsert(element: request, completion: {_ in 
-                    strongSelf.execute(request: request, alreadyExecutingHandler: {})
+                self.processingRequests.syncedInsert(element: request, completion: {_ in
+                    self.execute(request: request, alreadyExecutingHandler: {})
                 })
             }
             
@@ -320,6 +292,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
         
         request.executeCompletionHandler(response: response)
         processingRequests.syncedRemove(element: request, completion: {})
+        networkFailedRequests.syncedRemove(element: request, completion: {})
     }
     
     
@@ -414,7 +387,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
                 guard self.timer == nil else {return}
                 self.networkFailedRequests.syncCheckEmpty(result: {
                     empty in
-                    guard !empty else {return}
+                    guard !empty && self.checkingInternet == false else {return}
                     self.checkInternet()
                 })
             })
@@ -425,22 +398,29 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
     
     
     
-   
+
     /// if ncase the timer is not running then check that there is requests in the failed request list and fire the internet check
     /// if the internet bing succeeds then retry the failed requests , if not then  start the timer
     private func checkInternet() -> Void{
-        
-        
+        internetCheckingLock.wait()
+        guard checkingInternet == false else {
+            internetCheckingLock.signal()
+            return
+        }
+        checkingInternet = true
+        internetCheckingLock.signal()
         connectivityChecker.check(completionHandler: {
             [weak self]
             result in
-            guard let tableImageLoader = self else {return}
+            guard let self = self else {return}
+           
             if result {
-                tableImageLoader.timer?.invalidate()
-                tableImageLoader.retryFailedRequests()
+                self.timer?.invalidate()
+                self.retryFailedRequests()
             }else {
-                tableImageLoader.runTimer()
+                self.runTimer()
             }
+             self.checkingInternet = false
         })
     }
     
@@ -473,7 +453,9 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
 extension ImageCollectionLoader : ReachabilityMonitorDelegateProtocol {
     ///
     public func respondToReachabilityChange(reachable: Bool) {
-        reachable ? (retryFailedRequests()) : ()
+        requestsQueue.async {
+            reachable ? (self.retryFailedRequests()) : ()
+        }
         self.connected = reachable
     }
     

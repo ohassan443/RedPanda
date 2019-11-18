@@ -24,14 +24,16 @@ class SyncedAccessHashableCollection<T: Hashable>{
         }
     }
     
-    public func refresh()-> Void{
+     func refreshAnDiscardQueueUpdates(completion:(()->())? = nil)-> Void{
         timeStamp = Date()
-        syncQueue.async(flags : .barrier) {
+        asyncOperation(operation: {
             self.values = [:]
-        }
+        }, onComplete: {
+            completion?()
+        })
     }
     
-    public func getValues()->[Int:T]{
+     func getValues()->[Int:T]{
         var result : [Int:T] = [:]
         syncQueue.sync {
             result = values
@@ -39,15 +41,26 @@ class SyncedAccessHashableCollection<T: Hashable>{
         return result
     }
     
+    enum InsertResult {
+        case success
+        case fail(currentElement:T)
+    }
     /// insert an intem in the collection
-    func syncedInsert(element: T,completion:  @escaping ((_ result : Bool)->())  ) -> Void {
+    func syncedInsert(element: T,maxCountRefresh:Int? = nil,completion:  @escaping ((_ result : InsertResult)->())  ) -> Void {
        asyncOperation(operation: {
-        guard self.values[element.hashValue] == nil else {
-            return false
+        if let maxCount = maxCountRefresh,self.values.count >= maxCount  {
+            self.timeStamp = Date()
+            self.values = [:]
+            print("refreshed at \(element)")
         }
-        self.values[element.hashValue] = element
-        return true
-       }, onComplete: completion)
+        
+        if let currentElement = self.values[element.hashValue]{
+            return .fail(currentElement: self.values[element.hashValue]!)
+        }else {
+            self.values[element.hashValue] = element
+            return .success
+        }
+       }, onComplete: completion,considerTimeStamp: false)
     }
     
     
@@ -73,7 +86,7 @@ class SyncedAccessHashableCollection<T: Hashable>{
     func syncedRead(targetElementHashValue:Int,result :@escaping (T?)->()) -> Void {
         asyncOperation(operation: {
                    return self.values[targetElementHashValue]
-               }, onComplete: result)
+               }, onComplete: result,considerTimeStamp: false)
     }
     
     /// check wether an element is avaliable in the collection with the passed hash value
@@ -92,12 +105,15 @@ class SyncedAccessHashableCollection<T: Hashable>{
     
     
     /// run the operation Asynchronously with a barrier flag to avoid memory crashes 
-    private func asyncOperation<U>(operation : @escaping ()->(U),onComplete:@escaping (U)->()) -> Void {
+    private func asyncOperation<U>(operation : @escaping ()->(U),onComplete:@escaping (U)->(),considerTimeStamp : Bool = true) -> Void {
         let requestDate = timeStamp
         syncQueue.async(flags : .barrier) { [weak self] in
-            guard let container = self , container.timeStamp == requestDate else {return}
+            guard let container = self else {return}
+            if considerTimeStamp && container.timeStamp != requestDate {
+                return
+            }
             let result = operation()
-            container.completionQueue.asyncAfter(deadline: .now() + 0.01 , execute: {
+            container.completionQueue.asyncAfter(deadline: .now()  , execute: {
                  onComplete(result)
             })
         }

@@ -52,7 +52,6 @@ class DiskCacheFileSystemMockTests: XCTestCase {
         
         
         let fileSystemCacheMock = DiskCacheFileSystemBuilder()
-            .with(images: [])
             .mock()
         
         
@@ -76,7 +75,6 @@ class DiskCacheFileSystemMockTests: XCTestCase {
         
         
         let fileSystemCacheMock = DiskCacheFileSystemBuilder()
-            .with(images: [])
             .mock()
         
         
@@ -106,7 +104,6 @@ class DiskCacheFileSystemMockTests: XCTestCase {
         
         
         let fileSystemCacheMock = DiskCacheFileSystemBuilder()
-            .with(images: [])
             .mock()
         
         
@@ -160,7 +157,6 @@ class DiskCacheFileSystemMockTests: XCTestCase {
         let url2 = "testUrl--2"
         
         let fileSystemCacheMock = DiskCacheFileSystemBuilder()
-            .with(images: [])
             .mock()
         
         
@@ -215,7 +211,6 @@ class DiskCacheFileSystemMockTests: XCTestCase {
         let tempTestImage = testImage1
         
         let fileSystemCacheMock = DiskCacheFileSystemBuilder()
-            .with(images: [])
             .mock()
         
         

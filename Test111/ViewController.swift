@@ -17,7 +17,7 @@ class ViewController: UIViewController {
 
     var failed : [Int] = []
     var dataSource = [String]()
-    let imageCollectionLoader = ImageCollectionLoaderBuilder().defaultImp(ramMaxItemsCount: 60)
+    let imageCollectionLoader = ImageCollectionLoaderBuilder().defaultImp(ramMaxItemsCount: 30)
     var session : URLSession? = nil
     var server : HTTPServer! = nil
     
@@ -34,7 +34,11 @@ class ViewController: UIViewController {
             $0?.estimatedRowHeight = 100
         })
         
-        
+        let imageLoader = ImageLoaderBuilder().concrete(ramMaxItemsCount: 50).getImageFrom(urlString: "testUrl", completion: {
+            image in
+        }, fail: {
+            failMessage , error in
+        })
         
         
         for i in 0...1000 {
@@ -51,15 +55,15 @@ extension ViewController: UITableViewDelegate,UITableViewDataSource {
         let element = dataSource[indexPath.row]
         
 
-         let x = indexPath
+        
             imageCollectionLoader.requestImage(requestDate: Date(), url: element, indexPath: indexPath, tag: "card", successHandler: {
                 image , index , date in
                 guard let visibleCell = tableView.cellForRow(at: index) as? cell else {return}
                 visibleCell.iv.image = image
             }, failedHandler: {
-                _,_,_ in
-               
-                self.failed.append(x.row)
+               failedRequest,failedImage,requestState in
+                print("failed request = \(failedRequest) , image = \(failedImage) , requestState = \(requestState)")
+              
             })
      
         
@@ -76,5 +80,5 @@ extension ViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("selected")
     }
-    
+   
 }

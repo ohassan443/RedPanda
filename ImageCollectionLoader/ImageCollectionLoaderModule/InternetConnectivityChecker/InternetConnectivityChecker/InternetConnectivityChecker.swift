@@ -12,14 +12,16 @@ import Foundation
 class  InternetConnectivityChecker : InternetCheckerProtocol  {
 
     private var url : String
+    private var pendingCompletionHandler : [(Bool)->()] = []
     init(url:String) {
         self.url = url
     }
-    
+    private var lock = DispatchSemaphore(value: 1)
   /**
      ping a url and return success if the response is 200
      */
     func check(completionHandler: @escaping (Bool) -> Void) ->(){
+        
         guard let url = URL(string: url) else {
             completionHandler(false)
             //print("could not create url from: \(webAddress)")

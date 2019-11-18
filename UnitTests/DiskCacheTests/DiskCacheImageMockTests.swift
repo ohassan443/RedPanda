@@ -59,7 +59,7 @@ class DiskCacheMockTests: XCTestCase {
             insertResult in
             
             XCTAssertEqual(insertResult, true)
-            verifyUrlAndImageInCache(cache: mockDiskCache, url: url, expectedImage: image, expectationToFullFill: verifyInsertExp)
+            self.verifyUrlAndImageInCache(cache: mockDiskCache, url: url, expectedImage: self.image, expectationToFullFill: verifyInsertExp)
             insertExp.fulfill()
         })
         
@@ -86,7 +86,7 @@ class DiskCacheMockTests: XCTestCase {
         mockDiskCache.delete(url: url, completion: {
             deleteResult in
             XCTAssertEqual(deleteResult, false)
-            cacheDoesNotContainUrl(cache: mockDiskCache, url: url, expectedImage: image, expectationToFullFill: verifyDeleteExp)
+            self.cacheDoesNotContainUrl(cache: mockDiskCache, url: url, expectedImage: self.image, expectationToFullFill: verifyDeleteExp)
             deleteExp.fulfill()
         })
         
@@ -170,7 +170,7 @@ class DiskCacheMockTests: XCTestCase {
     func testReadPolicyFor(url:String) {
         let testImage = testImage1
         
-        let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: url, image: testImage)]
+        let imageSet = SyncedAccessHashableCollection<ImageUrlWrapper>(array: [ImageUrlWrapper(url: url, image: testImage)])
         
      
         let mockDiskCache = DiskCacheBuilder()
@@ -229,7 +229,7 @@ class DiskCacheMockTests: XCTestCase {
             firstInsert in
             
             XCTAssertEqual(firstInsert, true)
-            verifyUrlAndImageInCache(cache: mockDiskCache, url: url1, expectedImage: image, expectationToFullFill: verifyFirstInsertExp)
+            self.verifyUrlAndImageInCache(cache: mockDiskCache, url: url1, expectedImage: self.image, expectationToFullFill: verifyFirstInsertExp)
         })
         
         
@@ -239,7 +239,7 @@ class DiskCacheMockTests: XCTestCase {
             secondInsert in
             
             XCTAssertEqual(secondInsert, true)
-            verifyUrlAndImageInCache(cache: mockDiskCache, url: url2, expectedImage: image, expectationToFullFill: verifySecondInsertExp)
+            self.verifyUrlAndImageInCache(cache: mockDiskCache, url: url2, expectedImage: self.image, expectationToFullFill: verifySecondInsertExp)
         })
         
         
@@ -249,7 +249,7 @@ class DiskCacheMockTests: XCTestCase {
             thirdInsert in
             
             XCTAssertEqual(thirdInsert, true)
-            verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: image, expectationToFullFill: verifyThirdInsertExp)
+            self.verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: self.image, expectationToFullFill: verifyThirdInsertExp)
         })
         
         wait(for: [verifyThirdInsertExp], timeout: 10)
@@ -309,7 +309,7 @@ class DiskCacheMockTests: XCTestCase {
             firstInsert in
             
             XCTAssertEqual(firstInsert, true)
-            verifyUrlAndImageInCache(cache: mockDiskCache, url: url1, expectedImage: image, expectationToFullFill: verifyFirstInsertExp)
+            self.verifyUrlAndImageInCache(cache: mockDiskCache, url: url1, expectedImage: self.image, expectationToFullFill: verifyFirstInsertExp)
        })
        
         wait(for: [verifyFirstInsertExp], timeout: 10)
@@ -318,7 +318,7 @@ class DiskCacheMockTests: XCTestCase {
             secondInsert in
             
             XCTAssertEqual(secondInsert, true)
-            verifyUrlAndImageInCache(cache: mockDiskCache, url: url2, expectedImage: image, expectationToFullFill: verifySecondInsertExp)
+            self.verifyUrlAndImageInCache(cache: mockDiskCache, url: url2, expectedImage: self.image, expectationToFullFill: verifySecondInsertExp)
         })
         
         wait(for: [verifySecondInsertExp], timeout: 10)
@@ -331,7 +331,7 @@ class DiskCacheMockTests: XCTestCase {
             thirdInsert in
             
             XCTAssertEqual(thirdInsert, true)
-            verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: image, expectationToFullFill: verifyThirdInsertExp)
+            self.verifyUrlAndImageInCache(cache: mockDiskCache, url: url3, expectedImage: self.image, expectationToFullFill: verifyThirdInsertExp)
         })
         
         wait(for: [verifyThirdInsertExp], timeout: 10)

@@ -14,7 +14,17 @@ import UIKit
 class ImageLoaderMock: ImageLoaderProtocol {
   
     
- 
+    class Query {
+        var url : String
+        var successHandler : (UIImage) -> ()
+        var failHandler    : (_ url:String,_ error:Error) -> ()
+        init(url:String , successHandler :  @escaping (UIImage) -> () , failHandler :  @escaping (_ url:String,_ error:Error) -> ()) {
+            self.url                = url
+            self.successHandler     = successHandler
+            self.failHandler        = failHandler
+        
+        }
+    }
     
     
     enum ReturnResponse {
@@ -22,6 +32,7 @@ class ImageLoaderMock: ImageLoaderProtocol {
         case diskCache
         case responseImage(image:UIImage)
         case throwError(error:Error)
+        case callBack( (_ urlString: String, _ completion: @escaping (UIImage) -> (),_ fail: @escaping (_ url:String,_ error:Error) -> () )->())
     }
     
     enum MockError : Error {
@@ -69,6 +80,10 @@ class ImageLoaderMock: ImageLoaderProtocol {
             
             
             switch imageLoader.returnType{
+                
+            case .callBack(let callback):
+               callback(urlString,completion,fail)
+          
                 
             case .responseImage(image: let responseImage) :
                 completion(responseImage)

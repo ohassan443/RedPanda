@@ -12,7 +12,6 @@ public struct imageRequest : Hashable {
     public typealias cacheQueryResponse = (state:imageRequest.RequestState,image:UIImage?)
     public enum RequestState {
         
-        case RamCache (SynchronousCheck)
         case NetworkOrDiskCache(AsynchronousCallBack)
         
         
@@ -27,15 +26,6 @@ public struct imageRequest : Hashable {
             
             /// the request is being processed
             case processing
-        }
-        
-        public enum SynchronousCheck {
-            /// the requested image for the url is cached in the ram cache
-            case cached
-             /// the requested url was loaded before and the parsing of the image failed
-            case invalid
-            /// the requested image for the  url is not avaliable in the ram cache
-            case notAvaliable
         }
     }
     

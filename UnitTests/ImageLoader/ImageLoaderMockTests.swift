@@ -100,7 +100,7 @@ class ImageLoaderMockTests: XCTestCase {
         let testUrl = "testUrl" // used invalid url to make sure that the image is never retreieved from server and wether it was retreived from cache or not
         
         
-        let imageSet : Set<ImageUrlWrapper> = [ImageUrlWrapper(url: testUrl, image: testImage)]
+        let imageSet = SyncedAccessHashableCollection<ImageUrlWrapper>(array: [ImageUrlWrapper(url: testUrl, image: testImage)])
         
         let diskCache = DiskCacheBuilder()
             .with(images: imageSet)

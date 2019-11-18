@@ -10,7 +10,7 @@ import Foundation
 
 
 public class DiskCacheBuilder {
-    var cachedImages : Set<ImageUrlWrapper> = []
+    var cachedImages = SyncedAccessHashableCollection<ImageUrlWrapper>(array: [])
     var fileSystemMock : DiskCacheFileSystemProtocol = DiskCacheFileSystemBuilder().mock()
     
     
@@ -30,7 +30,7 @@ public class DiskCacheBuilder {
     
     
     func emptyMock(storePolicy:DiskCacheImageMock.StorePolicy,queryPolicy:DiskCacheImageMock.QueryPolicy) -> DiskCacheImageMock {
-       return DiskCacheImageMock(cachedImages: [], storePolicy: storePolicy, queryPolicy: queryPolicy)
+       return DiskCacheImageMock(cachedImages: SyncedAccessHashableCollection<ImageUrlWrapper>(array: []), storePolicy: storePolicy, queryPolicy: queryPolicy)
     }
     
     
@@ -48,7 +48,7 @@ public class DiskCacheBuilder {
     
     
     
-    func with(images:Set<ImageUrlWrapper>) -> DiskCacheBuilder {
+    func with(images:SyncedAccessHashableCollection<ImageUrlWrapper>) -> DiskCacheBuilder {
         self.cachedImages = images
         return self
     }

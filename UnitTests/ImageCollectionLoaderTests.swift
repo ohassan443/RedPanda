@@ -578,58 +578,112 @@ class ImageCollectionLoaderTests: XCTestCase {
 
     
     
+  
     
-//    func testServerLoad() {
-//        let imageCollectionLoader = ImageCollectionLoaderBuilder()
-//        .with(internetChecker: InternetConnectivityCheckerBuilder().concrete())
-//        .with(reachability: ReachabailityMonitor())
-//        .with(imageLoader: ImageLoaderBuilder().concrete(ramMaxItemsCount: 1000))
-//        .TESTCustomConcrete()
-//
-//
-//
-//
-//        let duplicatedUrls = SyncedAccessHashableCollection<String>.init(array: [])
-//        let calledUrls = SyncedAccessHashableCollection<String>.init(array: [])
-//        var urls = [""]
-//        for i in 0...500 {
-//            urls.append(UITestsConstants.baseUrl + "   ttessst \(i)")
-//        }
-//
-//        let expLoadedLastImage = expectation(description: "returned the call to the last Image")
-//        let localServer = LocalServer.getInstance { (params, callback) in
-//            let path = params.0
-//            calledUrls.syncCheckContaines(elementHashValue: path.hashValue, result: {duplicated in
-//                if duplicated{
-//                    duplicatedUrls.syncedInsert(element: path, completion: {
-//                        print("found duplicate at path \(path)")
-//                    })
-//                }
-//            })
-//
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute:  {
-//                callback(LocalServer.LocalServerCallBack(statusCode: .s200, headers: [], body: testImage1.png()!))
-//                let capurtedPath = path
-//
-//                if capurtedPath == "1000" {
-//                    expLoadedLastImage.fulfill()
-//                }
-//            })
-//        }
-//
-//        for (index,url) in urls.enumerated() {
-//                imageCollectionLoader.requestImage(requestDate: Date(), url: url, indexPath: IndexPath(row: index, section: 0), tag: "\(index)", successHandler: {
-//                    image,indexPath,_ in
-//                    print("loaded successfully \(indexPath)")
-//                })
-//        }
-//
-//
-//           waitForExpectations(timeout: 50, handler: nil)
-//        addTeardownBlock {
-//            localServer.stop()
-//        }
-//    }
+    func testSpamFromTwoDifferentInstancesSameDiskCache() {
+        var urls = [String]()
+        for i in 0...1000 {
+            urls.append(UITestsConstants.baseUrl + "ttessst\(i)/")
+        }
+        
+        
+        var variableServerResponse : (UrlSessionWrapperMock.CallParams) -> () = {
+            arguments in
+            XCTFail()
+        }
+        
+        let urlSessionMock = UrlSessionWrapperBuilder().mock(placeHolderCallBack: {
+            arguments in
+           variableServerResponse(arguments)
+        })
+        let diskCacheMock = DiskCacheBuilder().mock(storePolicy: .store, queryPolicy: .checkInSet)
+        
+        variableServerResponse = {
+            arguments in
+            arguments.callBack(testImage1.png(),nil,nil)
+        }
+        
+        
+        let imageLoader = ImageLoaderBuilder()
+            .with(ramCache: RamCacheBuilder().concrete(maxItemsCount: 20))
+            .with(diskCache: diskCacheMock)
+            .with(urlSession: urlSessionMock)
+            .customConcrete()
+            
+        
+        
+        
+       
+        
+     
+        
+        
+        let imageCollectionLoader = ImageCollectionLoaderBuilder()
+            .with(internetChecker: InternetConnectivityCheckerBuilder().concrete())
+            .with(reachability: ReachabailityMonitor())
+            .with(imageLoader: imageLoader)
+            .TESTCustomConcrete()
+        
+        let expLoadedFirstWave = expectation(description: "loaded all images of the first wave ")
+        var firstWaveReturnedImages = 0
+        for (index,url) in urls.enumerated() {
+            imageCollectionLoader.requestImage(requestDate: Date(), url: url, indexPath: IndexPath(row: index, section: 0), tag: "\(index)", successHandler: {
+                image,indexPath,_ in
+                print("loaded successfully \(indexPath)")
+                firstWaveReturnedImages = firstWaveReturnedImages + 1
+                firstWaveReturnedImages == urls.count - 1 ? (expLoadedFirstWave.fulfill()) : ()
+                
+            })
+        }
+        wait(for: [expLoadedFirstWave], timeout: 5)
+        
+        
+        variableServerResponse = {
+                  arguments in
+                arguments.callBack(nil,nil,URLError(URLError.networkConnectionLost))
+        }
+        
+        
+        
+        let expLoadedSecondWave = expectation(description: "loaded all images of the second wave")
+        var secondtWaveReturnedImages = 0
+        let secondImageCollectionLoader = ImageCollectionLoaderBuilder()
+            .with(internetChecker: InternetConnectivityCheckerBuilder().concrete())
+            .with(reachability: ReachabailityMonitor())
+            .with(imageLoader: imageLoader)
+            .TESTCustomConcrete()
+        secondImageCollectionLoader.changeTimerRetry(interval: 1)
+        
+        for (index,url) in urls.enumerated() {
+            secondImageCollectionLoader.requestImage(requestDate: Date(), url: url, indexPath: IndexPath(row: index, section: 0), tag: "\(index)", successHandler: {
+                image,indexPath,_ in
+                print("loaded successfully second \(indexPath)")
+                secondtWaveReturnedImages = secondtWaveReturnedImages + 1
+                secondtWaveReturnedImages == urls.count - 1 ? (expLoadedSecondWave.fulfill()) : ()
+            },failedHandler:{ failedRequest,failedImage,requestState in
+          
+            XCTFail()
+            })
+        }
+        
+        
+        wait(for: [expLoadedSecondWave], timeout: 5)
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

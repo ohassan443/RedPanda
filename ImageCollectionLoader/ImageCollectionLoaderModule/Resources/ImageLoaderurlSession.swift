@@ -8,22 +8,59 @@
 
 import Foundation
 
-class imageLoaderUrlSession {
-    
-    
-    static private var session : URLSession! = nil
-    
-    static func getSession() -> URLSession {
-        
-        if let staticSession = imageLoaderUrlSession.session{
-            return staticSession
+
+class UrlSessionWrapper : UrlSessionWrapperProtocol{
+    private var  session : URLSession
+    init() {
+           let config = URLSessionConfiguration.default
+           config.timeoutIntervalForRequest = 60
+           session = URLSession(configuration: config)
+    }
+    func dataTask(withUrl:String,completionHandler : @escaping (Data?,URLResponse?,Error?)->()) -> URLSessionDataTask? {
+        guard let url = URL(string: withUrl)else {
+            completionHandler(nil,nil,URLError.init(URLError.unsupportedURL))
+            return nil
         }
+       return session.dataTask(with: url, completionHandler: completionHandler)
+    }
+}
+
+
+
+class UrlSessionWrapperMock:  UrlSessionWrapperProtocol {
+    
+    class CallParams  {
+        var url : String
+        var callBack : ( Data?, URLResponse?, Error?)->()
         
-        let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 60
-        let session = URLSession(configuration: config)
-        imageLoaderUrlSession.session = session
-        
-        return session
+        init(url:String, callBack : @escaping ( Data?, URLResponse?, Error?)->()  ) {
+            self.url = url
+            self.callBack = callBack
+        }
+    }
+    
+    
+    private var placeHolderCallBack : (CallParams)->()
+  
+    
+    init(placeHolderCallBack : @escaping (CallParams)->() )  {
+        self.placeHolderCallBack = placeHolderCallBack
+    }
+   
+    func dataTask(withUrl: String, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask? {
+        placeHolderCallBack(CallParams(url: withUrl, callBack: completionHandler))
+        return nil
+    }
+    
+    
+}
+
+class UrlSessionWrapperBuilder {
+    func concrete() -> UrlSessionWrapperProtocol {
+        UrlSessionWrapper()
+    }
+    
+    func mock(placeHolderCallBack : @escaping (UrlSessionWrapperMock.CallParams)->() ) -> UrlSessionWrapperMock {
+        UrlSessionWrapperMock(placeHolderCallBack: placeHolderCallBack)
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 class DiskCacheFileSystemBuilder {
-    var cachedImages : Set<ImageUrlWrapper> = []
+    var cachedImages = SyncedAccessHashableCollection<ImageUrlWrapper>.init(array: [])
     var delay : TimeInterval = 0
     
     
@@ -30,7 +30,7 @@ class DiskCacheFileSystemBuilder {
     
   
     
-    func with(images:Set<ImageUrlWrapper>) -> DiskCacheFileSystemBuilder {
+    func with(images:SyncedAccessHashableCollection<ImageUrlWrapper>) -> DiskCacheFileSystemBuilder {
         self.cachedImages = images
         return self
     }

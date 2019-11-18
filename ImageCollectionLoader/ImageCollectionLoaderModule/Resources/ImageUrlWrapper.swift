@@ -40,11 +40,6 @@ struct ImageUrlWrapper : Hashable {
         return lhs.url == rhs.url
     }
     
-    static func setContaints(set:Set<ImageUrlWrapper>,url:String) -> ImageUrlWrapper? {
-        let result = set.first(where: {$0.url == url})
-        return result
-    }
-    
     mutating func set(lastAccessDate:Date) -> Void {
         self.lastAccessDate = lastAccessDate
     }

@@ -76,7 +76,6 @@ class DiskCacheTests: XCTestCase {
         
         
         let mockFileSystemImageCache = DiskCacheFileSystemBuilder()
-            .with(images: [])
             .mock()
         
         let mockDataBase    =  DiskCacheDataBaseBuilder().concreteForTesting()
@@ -126,7 +125,6 @@ class DiskCacheTests: XCTestCase {
     
     func testDeleteUnAvaliableImage(url:String) {
         let mockFileSystemImageCache = DiskCacheFileSystemBuilder()
-            .with(images: [])
             .mock()
         
       
@@ -182,7 +180,7 @@ class DiskCacheTests: XCTestCase {
         let imageWrapper = ImageUrlWrapper(url: url, image: image)
         
         let mockFileSystemImageCache = DiskCacheFileSystemBuilder()
-            .with(images: [imageWrapper])
+            .with(images: SyncedAccessHashableCollection<ImageUrlWrapper>(array: [imageWrapper]))
             .mock()
         
         let mockDataBase =  DiskCacheDataBaseBuilder().concreteForTesting()
@@ -241,7 +239,6 @@ class DiskCacheTests: XCTestCase {
         
         
         let mockFileSystemImageCache = DiskCacheFileSystemBuilder()
-            .with(images: [])
             .mock()
         
         let mockDataBase =  DiskCacheDataBaseBuilder().concreteForTesting()
