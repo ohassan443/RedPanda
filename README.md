@@ -81,6 +81,9 @@ Image loading and caching library for iOS written in Swift
 
 <br/>
 
+# License
+  MIT
+
 # TODO
    
   - Make Internet and reachability monitor a seperate component with injectable configuration including
