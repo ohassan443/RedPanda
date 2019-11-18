@@ -92,7 +92,6 @@ Image loading and caching library for iOS written in Swift
     + retry interval
   - Injectable preprocessing for urls to make timestamping cleaning dynamic 
   - Injectable directory to DiskCache and DiskCacheFileSystem 
-  - Make DiskCache generic instead of images only
   - add tests for spamming localServer and multiple instances of ImageCollectionLoader running at once
   - expose SyncedAccessHashableCollection and improve its api
      
