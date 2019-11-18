@@ -37,10 +37,11 @@ Image loading and caching library for iOS written in Swift
  > Avaliable through CocoaPods  
   ``` pod 'RedPanda' ```
 # Usage
-  <br/>
-     import ImageCollectionLoader
-  <br/>. 
-  
+```swift
+   import ImageCollectionLoader
+```
+<br/>
+
 * loading images into tableViews or collectionViews
   - __request date__ is a timestamp for when this call was made so the caller can decide wether it is  correct to use the  
      result image (Ex: refreshing tableView or adding/removing rows changes the indexpath to render the image at)  
