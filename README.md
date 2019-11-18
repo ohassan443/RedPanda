@@ -17,7 +17,7 @@ Image loading and caching library for iOS written in Swift
       - Ignore redundant calls for calls that are currently processing or were processed and are invalid 
       - Retry requests that failed due to network error or internet connectivity error when connection goes back up
       - Timestamping requests to cope with refreshing / updating the collection and to avoid wrong callBacks execution
-      
+      - Thread safe ram and disk caching 
    * Independent components that can be used seperatly :    
         - Disk Caching and Ram Caching 
         - Variable Ram Cache 
@@ -94,4 +94,5 @@ Image loading and caching library for iOS written in Swift
   - Injectable directory to DiskCache and DiskCacheFileSystem 
   - Make DiskCache generic instead of images only
   - add tests for spamming localServer and multiple instances of ImageCollectionLoader running at once
+  - expose SyncedAccessHashableCollection and improve its api
      
