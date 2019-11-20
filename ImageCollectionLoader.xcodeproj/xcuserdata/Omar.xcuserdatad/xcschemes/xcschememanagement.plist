@@ -9,15 +9,20 @@
 			<key>orderHint</key>
 			<integer>10</integer>
 		</dict>
+		<key>ImageCollectionLoader copy.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
 		<key>ImageCollectionLoader.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>Test111.xcscheme_^#shared#^_</key>
+		<key>Sample.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>9</integer>
 		</dict>
 		<key>UnitTests.xcscheme_^#shared#^_</key>
 		<dict>

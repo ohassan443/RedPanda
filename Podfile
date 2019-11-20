@@ -12,11 +12,11 @@ target 'ImageCollectionLoader' do
 end
 
 
-target 'Test111' do
+target 'Sample' do
   use_frameworks!
   pod 'ReachabilitySwift' , '~> 4.3.0'
   pod 'RealmSwift'
-     pod 'Embassy'
+  pod 'Embassy'
   
   # Pods for testing
 end

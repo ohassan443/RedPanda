@@ -1,6 +1,6 @@
 //
 //  ImageLoaderMockTests.swift
-//  ZabatneeTests
+//  RedPandaTests
 //
 //  Created by Omar Hassan  on 2/3/19.
 //  Copyright © 2019 Omar Hassan. All rights reserved.

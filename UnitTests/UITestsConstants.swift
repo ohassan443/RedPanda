@@ -1,6 +1,6 @@
 //
 //  UITestsConstants.swift
-//  ZabatneeUITests
+//  RedPandaUITests
 //
 //  Created by omarHassan on 8/26/19.
 //  Copyright © 2019 omar hammad. All rights reserved.

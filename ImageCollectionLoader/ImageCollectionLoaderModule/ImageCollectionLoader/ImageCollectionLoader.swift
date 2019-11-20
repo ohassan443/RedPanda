@@ -1,6 +1,6 @@
 //
 //  TableImageLoader.swift
-//  Zabatnee
+//  RedPanda
 //
 //  Created by omarHassan on 1/23/19.
 //  Copyright © 2019 Omar Hassan. All rights reserved.

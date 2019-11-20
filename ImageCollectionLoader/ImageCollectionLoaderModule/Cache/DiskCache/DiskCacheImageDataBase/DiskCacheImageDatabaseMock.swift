@@ -1,6 +1,6 @@
 //
 //  DiskCacheImageDatabaseMock.swift
-//  Zabatnee
+//  RedPanda
 //
 //  Created by Omar Hassan  on 2/11/19.
 //  Copyright © 2019 Omar Hassan. All rights reserved.

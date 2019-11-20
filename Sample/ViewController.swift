@@ -1,25 +1,22 @@
 //
 //  ViewController.swift
-//  Test111
+//  Sample
 //
-//  Created by Omar Hassan  on 11/4/19.
+//  Created by Omar Hassan  on 11/20/19.
 //  Copyright © 2019 Omar Hassan. All rights reserved.
 //
 
 import UIKit
 import ImageCollectionLoader
-import Embassy
 
 class ViewController: UIViewController {
     
     @IBOutlet weak var tv1: UITableView!
-    @IBOutlet weak var tv2: UITableView!
 
     var failed : [Int] = []
     var dataSource = [String]()
     let imageCollectionLoader = ImageCollectionLoaderBuilder().defaultImp(ramMaxItemsCount: 30)
     var session : URLSession? = nil
-    var server : HTTPServer! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +31,7 @@ class ViewController: UIViewController {
             $0?.estimatedRowHeight = 100
         })
         
-        let imageLoader = ImageLoaderBuilder().concrete(ramMaxItemsCount: 50).getImageFrom(urlString: "testUrl", completion: {
+        let imageLoader = ImageLoaderBuilder().concrete(ramMaxItemsCount: 50).getImageFrom(urlString: "https://picsum.photos/id/20/200/200", completion: {
             image in
         }, fail: {
             failMessage , error in

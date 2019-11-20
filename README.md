@@ -1,5 +1,5 @@
 # RedPanda
-Image loading and caching library for iOS written in Swift
+Image loading and caching into tableViews and collectionViews library for iOS written in Swift
 
 [Features](#Features)  
 [Depenedencies](#Depenedencies)  
@@ -55,6 +55,7 @@ Image loading and caching library for iOS written in Swift
     + case processing : the request is being processed
     
 ```swift
+
    let imageCollectionLoader = ImageCollectionLoaderBuilder().defaultImp(ramMaxItemsCount: 60)
    imageCollectionLoader.requestImage(requestDate: Date(), url: element, indexPath: indexPath, tag: "card", successHandler:         
    {
@@ -67,18 +68,35 @@ Image loading and caching library for iOS written in Swift
                 print(failedImage)
                 print(requestState)
             })
+            
 ```
 <br/>  
 
   * loading images separately
 
 ```swift
+
      let imageLoader = ImageLoaderBuilder().concrete(ramMaxItemsCount: 50).getImageFrom(urlString: "testUrl", completion: {
             image in
         }, fail: {
             failMessage , error in 
         })
+        
 ```
+
+  * Emptying cache 
+  ```swift
+    DiskCacheBuilder().concrete().deleteAll()
+    DiskCacheBuilder().concrete().deleteWith(minLastAccessDate: Date(), completion: {
+            success in
+            
+         })
+       
+    
+```
+
+
+
 
 <br/>
 

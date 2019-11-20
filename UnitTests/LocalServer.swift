@@ -1,6 +1,6 @@
 //
 //  LocalServerWrapper.swift
-//  ZabatneeUITests
+//  RedPandaUITests
 //
 //  Created by Omar Hassan  on 9/22/19.
 //  Copyright © 2019 omar hammad. All rights reserved.
