@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
 ## 1
 s.platform = :ios
-s.ios.deployment_target = '12.0'
+s.ios.deployment_target = '10.0'
 s.name = "RedPanda"
 s.summary = "Image loading and caching library"
 s.requires_arc = true
