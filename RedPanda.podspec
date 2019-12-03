@@ -8,7 +8,7 @@ s.summary = "Image loading and caching library"
 s.requires_arc = true
 
 # 2
-s.version = "0.1.17"
+s.version = "0.1.19"
 
 s.summary = <<-DESC 
 description
