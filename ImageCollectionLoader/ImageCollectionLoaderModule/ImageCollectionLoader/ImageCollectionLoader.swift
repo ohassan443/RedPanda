@@ -118,7 +118,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
 //                            print("should not enter here")
 //                            return
 //                        }
-                        runAtMainAsync { failedHandler?(nil, self.invalidRequestImage, .currentlyLoading) }
+                        runAtMainAsync { failedHandler?(request, self.invalidRequestImage, .currentlyLoading) }
                         return
                         
                     
@@ -128,7 +128,7 @@ public class ImageCollectionLoader  : ImageCollectionLoaderProtocol  {
                             invalid in
                             
                             guard !invalid else {
-                                runAtMainAsync{ failedHandler?(nil, self.invalidRequestImage, .invalid)}
+                                runAtMainAsync{ failedHandler?(request, self.invalidRequestImage, .invalid)}
                                 return
                             }
                             

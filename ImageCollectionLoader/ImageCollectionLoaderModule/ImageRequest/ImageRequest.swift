@@ -58,7 +58,7 @@ public struct imageRequest : Hashable {
         return self.url
     }
     
-    var date : Date {
+    public var date : Date {
         return self.dateRequestedAt
     }
     
